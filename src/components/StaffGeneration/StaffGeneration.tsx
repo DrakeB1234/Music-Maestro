@@ -51,7 +51,7 @@ export default function Staff({ currentNote, staffOptions }: Props) {
 
     // Format and draw
     Formatter.FormatAndDraw(context, stave, [staveNote]);
-  }, [currentNote]);
+  }, [currentNote, staffOptions]);
 
   return (
     <div className={styles.StaffGenerationWrapper}>

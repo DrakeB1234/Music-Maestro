@@ -25,14 +25,18 @@ function App() {
     }
   } as DrillOptions);
 
+  const handleSelectedDrillOptions = (options: DrillOptions) => {
+    setSelectedDrillOptions(options);
+  }
+
   useEffect(() => {
     ConnectDevice();
-  }, [])
+  }, []);
 
   return (
     <>
       <MidiInputDetection isConnected={isConnected} errorMessage={error} connectionfunc={ConnectDevice} />
-      <NoteDrillOptionsSelector SetSelectedOptions={setSelectedDrillOptions} />
+      <NoteDrillOptionsSelector SetSelectedOptions={handleSelectedDrillOptions} />
       <NoteDrill midiNotePlayed={lastNotePlayed} drillOptions={selectedDrillOptions} />
     </>
   )
