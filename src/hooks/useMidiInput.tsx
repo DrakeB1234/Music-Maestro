@@ -1,11 +1,13 @@
 import { useCallback, useState } from "react";
-import { WebMidi, Input, type NoteMessageEvent } from "webmidi";
+import { WebMidi, Input, type NoteMessageEvent, Note } from "webmidi";
+import { ConvertMidiNoteToGenericNote, GenericNote } from "../helpers/NoteHelpers";
 
-export function useMidiInput(onNote: (note: string) => void) {
+export function useMidiInput() {
 
   const [isEnabled, setIsEnabled] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastNotePlayed, setLastNotePlayed] = useState<GenericNote | null>(null);
 
   const connect = useCallback(async () => {
     try {
@@ -19,13 +21,11 @@ export function useMidiInput(onNote: (note: string) => void) {
       }
 
       const input: Input = WebMidi.inputs[0];
-      console.log("Connected to:", input.name);
       setIsEnabled(true);
       setIsConnected(true);
 
       input.addListener("noteon", (e: NoteMessageEvent) => {
-        const note = `${e.note.name}${e.note.octave}`; // e.g., "C4"
-        onNote?.(note);
+        HandleNotePlayed(e.note);
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -39,7 +39,7 @@ export function useMidiInput(onNote: (note: string) => void) {
       console.error("Failed to enable WebMidi:", err);
       setIsConnected(false);
     }
-  }, [onNote]);
+  }, [lastNotePlayed]);
 
   const disconnect = useCallback(() => {
     if (WebMidi.enabled) {
@@ -51,5 +51,10 @@ export function useMidiInput(onNote: (note: string) => void) {
     }
   }, []);
 
-  return { connect, disconnect, isEnabled, isConnected, error };
+  function HandleNotePlayed(note: Note) {
+    const newNote = ConvertMidiNoteToGenericNote(note);
+    setLastNotePlayed(newNote);
+  }
+
+  return { ConnectDevice: connect, Disconnect: disconnect, isEnabled, isConnected, error, lastNotePlayed };
 }

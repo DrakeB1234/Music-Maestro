@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { Renderer, Stave, StaveNote, Formatter } from "vexflow";
+import { Renderer, Stave, StaveNote, Formatter, type StaveNoteStruct, Accidental } from "vexflow";
+import { ConvertGenericNoteToVexNote, type GenericNote } from "../../helpers/NoteHelpers";
+import styles from './StaffGeneration.module.css';
 
 type Props = {
-  currentNote?: String
+  currentNote?: GenericNote
 }
 
-export default function Staff({ currentNote = "c/4" }: Props) {
+export default function Staff({ currentNote }: Props) {
   const [isError, setIsError] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
+    setIsError(false);
 
     // Clear previous SVG before redrawing
     containerRef.current.innerHTML = "";
@@ -21,31 +24,33 @@ export default function Staff({ currentNote = "c/4" }: Props) {
     const context = renderer.getContext();
 
     // Draw the staff
-    const stave = new Stave(10, 20, 230);
+    const stave = new Stave(0, 0, 230);
     stave.addClef("treble").setContext(context).draw();
 
-    if (!currentNote || currentNote === "") {
+    if (!currentNote || currentNote.name === "") {
       console.error('Error drawing staff, no note was found.');
       stave.draw();
       setIsError(true);
       return;
     }
-    setIsError(false);
+    const convertedVexNote = ConvertGenericNoteToVexNote(currentNote);
 
-    // Create note dynamically
     const staveNote = new StaveNote({
-      keys: [currentNote.toString()],
+      keys: [convertedVexNote],
       duration: "q",
-    });
+    } as StaveNoteStruct);
+    if (currentNote.accidental) {
+      staveNote.addModifier(new Accidental(currentNote.accidental));
+    }
 
     // Format and draw
     Formatter.FormatAndDraw(context, stave, [staveNote]);
   }, [currentNote]);
 
   return (
-    <>
-      <div ref={containerRef}></div>
+    <div className={styles.StaffGenerationWrapper}>
+      <div className={styles.StaffContainer} ref={containerRef}></div>
       <h3>{isError ? 'Error drawing note: No note found' : ''}</h3>
-    </>
+    </div>
   )
 }

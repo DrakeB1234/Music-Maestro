@@ -1,0 +1,11 @@
+.StaffGenerationWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.StaffContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
