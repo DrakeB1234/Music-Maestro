@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Renderer, Stave, StaveNote, Formatter, type StaveNoteStruct, Accidental } from "vexflow";
-import { ConvertGenericNoteToVexNote, type GenericNote } from "../../helpers/NoteHelpers";
+import { ConvertGenericNoteToVexNote, type GenericNote } from "@helpers/NoteHelpers";
 import styles from './StaffGeneration.module.css';
+import type { StaffOptions } from "@customtypes/DrillOptions";
 
 type Props = {
   currentNote?: GenericNote
+  staffOptions: StaffOptions
 }
 
-export default function Staff({ currentNote }: Props) {
+export default function Staff({ currentNote, staffOptions }: Props) {
   const [isError, setIsError] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handle options
+  const optionsClef = staffOptions.clef ? staffOptions.clef : "treble";
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -25,7 +30,7 @@ export default function Staff({ currentNote }: Props) {
 
     // Draw the staff
     const stave = new Stave(0, 0, 230);
-    stave.addClef("treble").setContext(context).draw();
+    stave.addClef(optionsClef).setContext(context).draw();
 
     if (!currentNote || currentNote.name === "") {
       console.error('Error drawing staff, no note was found.');
@@ -38,6 +43,7 @@ export default function Staff({ currentNote }: Props) {
     const staveNote = new StaveNote({
       keys: [convertedVexNote],
       duration: "q",
+      clef: optionsClef
     } as StaveNoteStruct);
     if (currentNote.accidental) {
       staveNote.addModifier(new Accidental(currentNote.accidental));

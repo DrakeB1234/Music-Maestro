@@ -1,0 +1,35 @@
+[
+  {
+    "name": "Landmark Notes Treble",
+    "staffOptions": {
+      "clef": "treble"
+    },
+    "overrideAllowedNotes": [
+      {
+        "name": "c",
+        "accidental": null,
+        "octave": 4
+      },
+      {
+        "name": "G",
+        "accidental": null,
+        "octave": 4
+      },
+      {
+        "name": "c",
+        "accidental": null,
+        "octave": 5
+      },
+      {
+        "name": "G",
+        "accidental": null,
+        "octave": 5
+      },
+      {
+        "name": "c",
+        "accidental": null,
+        "octave": 6
+      }
+    ]
+  }
+]

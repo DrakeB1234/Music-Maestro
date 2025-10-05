@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { WebMidi, Input, type NoteMessageEvent, Note } from "webmidi";
-import { ConvertMidiNoteToGenericNote, GenericNote } from "../helpers/NoteHelpers";
+import { ConvertMidiNoteToGenericNote, GenericNote } from "@helpers/NoteHelpers";
 
 export function useMidiInput() {
 
