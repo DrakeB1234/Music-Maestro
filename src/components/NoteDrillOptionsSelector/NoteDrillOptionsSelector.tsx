@@ -1,5 +1,6 @@
 import type { DrillOptions, StaffOptions } from "@customtypes/DrillOptions";
 import { useState } from "react";
+import styles from './NoteDrillOptionsSelector.module.css';
 
 type Props = {
   SetSelectedOptions: (drillOptions: DrillOptions) => void;
@@ -33,7 +34,7 @@ export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) 
   }
 
   return (
-    <div>
+    <div className={styles.NoteDrillOptionsSelectorWrapper}>
       <label>
         Clef
         <select id="clef" onChange={(e) => handleChange("clef", e.target.value)}>

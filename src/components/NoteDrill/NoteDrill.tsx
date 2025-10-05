@@ -13,6 +13,7 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
 
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
   const [isCorrectNotePlayed, setIsCorrectNotePlayed] = useState(false);
+  const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
 
   function GenerateNote() {
     let newNote = null;
@@ -31,13 +32,10 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
 
   function CheckValidNotePlayed() {
     if (!midiNotePlayed) return;
-    if (PrintGenericNote(currentNote) == PrintGenericNote(midiNotePlayed)) {
+    if (PrintGenericNote(currentNote) == PrintGenericNote(midiNotePlayed) || IsNoteEnharmonic(midiNotePlayed, currentNote)) {
       setIsCorrectNotePlayed(true);
       GenerateNote();
-    }
-    else if (IsNoteEnharmonic(midiNotePlayed, currentNote)) {
-      setIsCorrectNotePlayed(true);
-      GenerateNote();
+      setTotalCorrectNotesPlayed(totalCorrectNotesPlayed + 1);
     }
     else {
       setIsCorrectNotePlayed(false);
@@ -58,6 +56,7 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
         <h4>Correct!</h4> :
         <></>
       }
+      <h4>Total Correct Notes: {totalCorrectNotesPlayed}</h4>
     </div>
   );
 };

@@ -7,13 +7,20 @@ export function useMidiInput() {
   const [isEnabled, setIsEnabled] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fullError, setFullError] = useState<any>(null);
   const [lastNotePlayed, setLastNotePlayed] = useState<GenericNote | null>(null);
 
   const connect = useCallback(async () => {
     try {
       setError(null);
-      await WebMidi.enable();
 
+      if (!WebMidi.supported) {
+        setError("Web MIDI API is not supported in this browser.");
+        setIsConnected(false);
+        return;
+      }
+
+      await WebMidi.enable({ sysex: true });
       if (WebMidi.inputs.length === 0) {
         setError("No MIDI devices found.");
         setIsConnected(false);
@@ -24,22 +31,23 @@ export function useMidiInput() {
       setIsEnabled(true);
       setIsConnected(true);
 
+      input.removeListener();
       input.addListener("noteon", (e: NoteMessageEvent) => {
         HandleNotePlayed(e.note);
       });
-    } catch (err) {
-      if (err instanceof Error) {
-        if (err.message.includes("The request is not allowed by the user agent")) {
-          setError("Device could not be connected due to browser permission being denied.")
-        }
-        else {
-          setError("Failed to connect to MIDI device.");
-        }
-      }
-      console.error("Failed to enable WebMidi:", err);
+
+    } catch (err: any) {
+      let message = "Failed to connect to MIDI device.";
+      if (err?.message?.includes("Platform dependent init failed")) message = "MIDI not supported on this device or platform.";
+      if (err?.message?.includes("The request is not allowed by the user agent")) message = "Device could not be connected due to browser permission being denied.";
+
+      setError(message);
+      setFullError(err);
       setIsConnected(false);
+      setIsEnabled(false);
+      console.error("WebMidi error:", err);
     }
-  }, [lastNotePlayed]);
+  }, []);
 
   const disconnect = useCallback(() => {
     if (WebMidi.enabled) {
@@ -56,5 +64,5 @@ export function useMidiInput() {
     setLastNotePlayed(newNote);
   }
 
-  return { ConnectDevice: connect, Disconnect: disconnect, isEnabled, isConnected, error, lastNotePlayed };
+  return { ConnectDevice: connect, Disconnect: disconnect, isEnabled, isConnected, error, lastNotePlayed, fullError };
 }

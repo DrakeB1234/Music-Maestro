@@ -14,7 +14,10 @@ export default function Staff({ currentNote, staffOptions }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Handle options
-  const optionsClef = staffOptions.clef ? staffOptions.clef : "treble";
+  let optionsClef = "treble";
+  if (staffOptions) {
+    if (staffOptions.clef) optionsClef = staffOptions.clef;
+  }
 
   useEffect(() => {
     if (!containerRef.current) return;
