@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.3",
     "vexflow": "^5.0.0",
     "webmidi": "^3.1.13"
   },

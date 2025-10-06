@@ -22,6 +22,7 @@ ul {
   margin: 0;
   padding: 0;
   font-weight: normal;
+  color: var(--color-on-background);
 }
 
 ol,
@@ -32,4 +33,37 @@ ul {
 img {
   max-width: 100%;
   height: auto;
+}
+
+:root {
+  /* Theme */
+  --color-primary: #5161eb;
+  --color-on-primary: #e9f5ff;
+
+  --color-background: #f9f7fa;
+  --color-on-background: #23242b;
+
+  --color-surface: #ffffff;
+  --color-on-surface: #23242b;
+  --color-surface-variant: #ececec;
+
+  --color-border: #e3dfe8;
+
+  --color-error: #e53935;
+  --color-on-error: #ffffff;
+
+  --color-success: #43a047;
+  --color-on-success: #ffffff;
+
+  --color-disabled: #9e9e9e;
+
+  /* UI Components */
+  --ui-primary: var(--color-primary);
+  --ui-on-primary: var(--color-on-primary);
+  --ui-surface: var(--color-surface-variant);
+  --ui-on-surface: var(--color-on-surface);
+}
+
+html {
+  background-color: var(--color-background);
 }

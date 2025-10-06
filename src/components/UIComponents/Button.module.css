@@ -1,0 +1,50 @@
+.button {
+  border-radius: 0.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.filled-surface {
+  background-color: var(--ui-surface);
+  color: var(--color-on-surface);
+}
+
+.filled-primary {
+  background-color: var(--ui-primary);
+  color: var(--ui-on-primary);
+}
+
+.outlined {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.text {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+/* Sizes */
+.sm {
+  padding: 0.4em;
+  border-radius: 0.2em;
+}
+
+.md {
+  padding: 0.8em;
+  border-radius: 0.4em;
+}
+
+.lg {
+  padding: 1.2em;
+  border-radius: 0.6em;
+}

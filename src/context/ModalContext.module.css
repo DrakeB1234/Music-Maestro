@@ -1,0 +1,33 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  padding: 1em;
+}
+
+.modal {
+  background: var(--ui-surface, #fff);
+  color: var(--ui-on-surface, #000);
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  min-width: 400px;
+  max-width: 90vw;
+  height: fit-content;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

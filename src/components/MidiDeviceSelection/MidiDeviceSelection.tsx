@@ -1,4 +1,4 @@
-import styles from './MidiInputDetection.module.css';
+import styles from './MidiDeviceSelection.module.css';
 
 type Props = {
   isConnected: Boolean
@@ -7,9 +7,9 @@ type Props = {
   fullError: any
 }
 
-export default function MidiInputDetection(props: Props) {
+export default function MidiDeviceSelection(props: Props) {
   return (
-    <div className={styles.MidiInputDetectionWrapper}>
+    <div className={styles.MidiDeviceSelectionWrapper}>
       <div>
         <h3>{props.isConnected ? 'Device Connected' : 'Device Disconnected'}</h3>
         {!props.isConnected ?

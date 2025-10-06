@@ -1,24 +1,15 @@
-import { useState } from "react";
-import { useMidiInput } from "./hooks/useMidiInput"
-import MidiInputDetection from "./components/MidiInputDetection/MidiInputDetection";
-import NoteDrill from "./components/NoteDrill/NoteDrill";
-import NoteDrillOptionsSelector from "./components/NoteDrillOptionsSelector/NoteDrillOptionsSelector";
-import type { DrillOptions } from "./types/DrillOptions";
+import { Route, Routes } from "react-router-dom";
+import NoteDrillPage from "./pages/NoteDrillPage";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
-  // 👇 Hook handles connecting, listening, cleanup
-  const { ConnectDevice, isConnected, error, fullError, lastNotePlayed } = useMidiInput();
-  const [selectedDrillOptions, setSelectedDrillOptions] = useState<DrillOptions>({} as DrillOptions);
-
-  const handleSelectedDrillOptions = (options: DrillOptions) => {
-    setSelectedDrillOptions(options);
-  }
 
   return (
     <>
-      <MidiInputDetection isConnected={isConnected} errorMessage={error} fullError={fullError} connectionfunc={ConnectDevice} />
-      <NoteDrillOptionsSelector SetSelectedOptions={handleSelectedDrillOptions} />
-      <NoteDrill midiNotePlayed={lastNotePlayed} drillOptions={selectedDrillOptions} />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<NoteDrillPage />} />
+      </Routes>
     </>
   )
 }

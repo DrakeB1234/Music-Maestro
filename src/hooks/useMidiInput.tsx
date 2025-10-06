@@ -2,6 +2,11 @@ import { useCallback, useState } from "react";
 import { WebMidi, Input, type NoteMessageEvent, Note } from "webmidi";
 import { ConvertMidiNoteToGenericNote, GenericNote } from "@helpers/NoteHelpers";
 
+// 
+// Use the listener WebMidi.addListener("connected") to check for any connection events/disconnection events,
+// Implement hook / method for connecting to this event
+// 
+
 export function useMidiInput() {
 
   const [isEnabled, setIsEnabled] = useState(false);
@@ -64,5 +69,5 @@ export function useMidiInput() {
     setLastNotePlayed(newNote);
   }
 
-  return { ConnectDevice: connect, Disconnect: disconnect, isEnabled, isConnected, error, lastNotePlayed, fullError };
+  return { ConnectDevice: connect, DisconnectDevice: disconnect, isEnabled, isConnected, error, lastNotePlayed, fullError };
 }
