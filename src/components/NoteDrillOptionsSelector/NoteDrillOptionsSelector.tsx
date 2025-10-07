@@ -10,6 +10,7 @@ type NoteDrillSelectionOptions = {
   minOctave?: number;
   maxOctave?: number;
   clef?: "treble" | "bass";
+  timer?: number;
 }
 
 export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) {
@@ -27,6 +28,7 @@ export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) 
     SetSelectedOptions({
       minOctaveRange: options.minOctave,
       maxOctaveRange: options.maxOctave,
+      timer: options.timer,
       staffOptions: {
         clef: options.clef
       } as StaffOptions
@@ -49,6 +51,10 @@ export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) 
       <label>
         Maximum Octave Number
         <input id="maxOctave" type="number" placeholder="7" onChange={(e) => handleChange("maxOctave", e.target.value)} />
+      </label>
+      <label>
+        Timer
+        <input id="timer" type="number" placeholder="1" onChange={(e) => handleChange("timer", e.target.value)} />
       </label>
       <button onClick={applyOptions}>Apply</button>
     </div>

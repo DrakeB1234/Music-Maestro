@@ -1,29 +1,24 @@
+import { useMidiInput } from '@/hooks/useMidiInput';
 import styles from './MidiDeviceSelection.module.css';
+import Button from '../UIComponents/Button';
 
-type Props = {
-  isConnected: Boolean
-  errorMessage: String | null
-  connectionfunc: () => void
-  fullError: any
-}
+export default function MidiDeviceSelection() {
 
-export default function MidiDeviceSelection(props: Props) {
+  const { isConnected, ConnectDevice, error } = useMidiInput();
+
   return (
     <div className={styles.MidiDeviceSelectionWrapper}>
       <div>
-        <h3>{props.isConnected ? 'Device Connected' : 'Device Disconnected'}</h3>
-        {!props.isConnected ?
-          <button onClick={props.connectionfunc}>Connect</button> :
+        <h3>{isConnected ? 'Device Connected' : 'Device Disconnected'}</h3>
+        {!isConnected ?
+          <Button variant='filled-surface' size='md' onClick={ConnectDevice}>Connect</Button> :
+          <></>
+        }
+        {error ?
+          <h4>Error: {error}</h4> :
           <></>
         }
       </div>
-      {props.errorMessage ?
-        <>
-          <h3>Error: {props.errorMessage}</h3>
-          <h3>{props.fullError ? props.fullError.toString() : ''}</h3>
-        </> :
-        <></>
-      }
     </div>
   )
 }

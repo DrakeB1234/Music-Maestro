@@ -5,6 +5,7 @@ export type DrillOptions = {
   minOctaveRange?: number
   maxOctaveRange?: number
   allowAccidentals?: boolean
+  timer?: number
   // Force certain notes / octave / accidentals
   overrideAllowedNotes?: GenericNote[]
   staffOptions: StaffOptions

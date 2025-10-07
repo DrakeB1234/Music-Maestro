@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import styles from "./ModalContext.module.css";
+import Button from "@/components/UIComponents/Button";
 
 type ModalContextType = {
   openModal: (content: ReactNode) => void;
@@ -25,6 +26,11 @@ export function ModalProvider({ children }: { children: ReactNode }) {
               className={styles.modal}
               onClick={(e) => e.stopPropagation()}
             >
+              <div className={styles.CloseButtonWrapper}>
+                <div className={styles.CloseButtonContainer}>
+                  <Button variant="text" onClick={closeModal}>Close</Button>
+                </div>
+              </div>
               {modalContent}
             </div>
           </div>,

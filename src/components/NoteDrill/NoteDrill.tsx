@@ -14,8 +14,12 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
   const [isCorrectNotePlayed, setIsCorrectNotePlayed] = useState(false);
   const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(drillOptions.timer || 60);
+  const [isDrillActive, setIsDrillActive] = useState(true);
 
   function GenerateNote() {
+    if (!isDrillActive) return;
+
     let newNote = null;
     if (drillOptions.overrideAllowedNotes && drillOptions.overrideAllowedNotes.length > 0) {
       newNote = GenerateRandomOverrideNote(drillOptions.overrideAllowedNotes);
@@ -42,12 +46,33 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
     }
   }
 
+  function HandleTimerOut() {
+    alert("Time Up!");
+  }
+
   useEffect(() => {
     CheckValidNotePlayed();
   }, [midiNotePlayed]);
 
+  useEffect(() => {
+    if (!isDrillActive) return;
+
+    if (timeLeft <= 0) {
+      setIsDrillActive(false);
+      HandleTimerOut();
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [timeLeft, isDrillActive]);
+
   return (
     <div className={styles.NoteDrillWrapper}>
+      <h4>Time Left: {timeLeft}</h4>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
       <button onClick={GenerateNote}>Generate Random Note</button>
       <h4>Last Note Played: {midiNotePlayed ? PrintGenericNote(midiNotePlayed) : ''}</h4>

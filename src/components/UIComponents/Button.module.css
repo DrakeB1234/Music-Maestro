@@ -30,7 +30,7 @@
 
 .text {
   background-color: transparent;
-  color: var(--color-primary);
+  color: var(--ui-on-surface);
 }
 
 /* Sizes */

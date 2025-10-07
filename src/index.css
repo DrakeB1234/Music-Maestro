@@ -45,9 +45,9 @@ img {
 
   --color-surface: #ffffff;
   --color-on-surface: #23242b;
-  --color-surface-variant: #ececec;
+  --color-surface-variant: #d9d8e4;
 
-  --color-border: #e3dfe8;
+  --color-border: #d7d7e2;
 
   --color-error: #e53935;
   --color-on-error: #ffffff;
@@ -62,6 +62,7 @@ img {
   --ui-on-primary: var(--color-on-primary);
   --ui-surface: var(--color-surface-variant);
   --ui-on-surface: var(--color-on-surface);
+  --ui-border: var(--color-border);
 }
 
 html {

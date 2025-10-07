@@ -1,22 +1,15 @@
-import { useModal } from '@/context/ModalContext';
+import { useModal } from '@/components/UIComponents/ModalContext';
 import Button from '../UIComponents/Button';
 import styles from './Navbar.module.css';
 import MidiDeviceSelection from '../MidiDeviceSelection/MidiDeviceSelection';
-import { useMidiInput } from '@/hooks/useMidiInput';
 
 export default function Navbar() {
 
-  const { openModal, closeModal } = useModal();
-  const { ConnectDevice, isConnected, fullError, error } = useMidiInput();
+  const { openModal } = useModal();
 
   const handleOpenModal = () => {
     openModal(
-      <MidiDeviceSelection
-        connectionfunc={ConnectDevice}
-        isConnected={isConnected}
-        fullError={fullError}
-        errorMessage={error}
-      />
+      <MidiDeviceSelection />
     );
   };
 
