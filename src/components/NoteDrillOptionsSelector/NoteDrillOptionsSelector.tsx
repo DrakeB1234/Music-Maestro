@@ -1,6 +1,7 @@
 import type { DrillOptions, StaffOptions } from "@customtypes/DrillOptions";
 import { useState } from "react";
 import styles from './NoteDrillOptionsSelector.module.css';
+import Button from "../UIComponents/Button";
 
 type Props = {
   SetSelectedOptions: (drillOptions: DrillOptions) => void;
@@ -86,7 +87,9 @@ export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) 
         Accidentals
         <input id="accidentals" type="checkbox" checked={options.accidentals} onChange={(e) => handleChange(e, "accidentals", e.target.value)} />
       </label>
-      <button onClick={applyOptions}>Apply</button>
+      <div className={styles.ApplyButtonContainer}>
+        <Button variant="filled-primary" onClick={applyOptions}>Start Drill</Button>
+      </div>
     </div>
   )
 }

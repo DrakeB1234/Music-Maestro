@@ -5,3 +5,8 @@
   border: 1px solid black;
   margin: 1em;
 }
+
+.ApplyButtonContainer {
+  display: flex;
+  padding-top: 2em;
+}

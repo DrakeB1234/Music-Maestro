@@ -1,4 +1,4 @@
-import { useModal } from '@/components/UIComponents/ModalContext';
+import { useModal } from '@/context/ModalProvider';
 import Button from '../UIComponents/Button';
 import styles from './Navbar.module.css';
 import MidiDeviceSelection from '../MidiDeviceSelection/MidiDeviceSelection';

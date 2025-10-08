@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import StaffGeneration from "../StaffGeneration/StaffGeneration";
-import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote } from "@helpers/NoteHelpers";
+import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, NOTE_NAMES, PrintGenericNote } from "@helpers/NoteHelpers";
 import styles from './NoteDrill.module.css';
 import type { DrillOptions } from "@customtypes/DrillOptions";
 import Button from "../UIComponents/Button";
@@ -31,6 +31,10 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
       drillOptions.minOctaveRange,
       drillOptions.maxOctaveRange,
     );
+
+    if (newNote.name === currentNote.name) {
+      newNote.name = NOTE_NAMES[Math.floor(Math.random() * NOTE_NAMES.length)];
+    }
     setCurrentNote(newNote);
   };
 
@@ -95,7 +99,7 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
         <TimerDisplay duration={60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
       </div>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
-      <Button onClick={GenerateNote}>Generate Random Note</Button>
+      <Button size="sm" onClick={GenerateNote}>Generate Random Note</Button>
       <h4>Last Note Played: {lastGeneralNotePlayed ? PrintGenericNote(lastGeneralNotePlayed) : ''}</h4>
       <h4>Current Note: {PrintGenericNote(currentNote)}</h4>
       {isCorrectNotePlayed ?
