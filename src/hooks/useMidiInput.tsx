@@ -69,5 +69,9 @@ export function useMidiInput() {
     setLastNotePlayed(newNote);
   }
 
-  return { ConnectDevice: connect, DisconnectDevice: disconnect, isEnabled, isConnected, error, lastNotePlayed, fullError };
+  function ClearInput() {
+    setLastNotePlayed(null);
+  }
+
+  return { ConnectDevice: connect, DisconnectDevice: disconnect, ClearInput, isEnabled, isConnected, error, lastNotePlayed, fullError };
 }

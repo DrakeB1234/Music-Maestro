@@ -9,11 +9,11 @@ type Props = {
   midiNotePlayed: GenericNote | null;
   buttonNotePlayed: GenericNote | null;
   drillOptions: DrillOptions;
-  handleQuit: () => void;
+  HandleQuit: () => void;
   forceTimerStop?: boolean;
 };
 
-export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptions, handleQuit, forceTimerStop }: Props) {
+export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptions, HandleQuit, forceTimerStop }: Props) {
 
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
   const [isCorrectNotePlayed, setIsCorrectNotePlayed] = useState(false);
@@ -33,27 +33,27 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
     setCurrentNote(newNote);
   };
 
-  function CheckValidNotePlayed() {
-    if (midiNotePlayed) {
-      setLastGeneralNotePlayed(midiNotePlayed);
+  function CheckValidMidiNotePlayed() {
+    if (!midiNotePlayed) return;
+    setLastGeneralNotePlayed(midiNotePlayed);
 
-      if (PrintGenericNote(currentNote) == PrintGenericNote(midiNotePlayed) || IsNoteEnharmonic(midiNotePlayed, currentNote)) {
-        HandleCorrectNotePlayed();
-      }
-      else {
-        HandleIncorrectNotePlayed()
-      }
+    if (PrintGenericNote(midiNotePlayed) === PrintGenericNote(currentNote) || IsNoteEnharmonic(midiNotePlayed, currentNote)) {
+      HandleCorrectNotePlayed();
     }
-    else if (buttonNotePlayed) {
-      setLastGeneralNotePlayed(buttonNotePlayed);
+    else {
+      HandleIncorrectNotePlayed();
+    }
+  }
 
-      // Ignore octave checking
-      if (currentNote.name == buttonNotePlayed.name && currentNote.accidental == currentNote.accidental) {
-        HandleCorrectNotePlayed();
-      }
-      else {
-        HandleIncorrectNotePlayed();
-      }
+  function CheckValidButtonNotePlayed() {
+    if (!buttonNotePlayed) return;
+    setLastGeneralNotePlayed(buttonNotePlayed);
+
+    if (buttonNotePlayed.name === currentNote.name && buttonNotePlayed.accidental === currentNote.accidental) {
+      HandleCorrectNotePlayed();
+    }
+    else {
+      HandleIncorrectNotePlayed();
     }
   }
 
@@ -71,10 +71,21 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
     alert("Time Up!");
   }
 
+  // Functions to run at component start
   useEffect(() => {
-    CheckValidNotePlayed();
-  }, [midiNotePlayed, buttonNotePlayed]);
+    GenerateNote();
+  }, [])
 
+  // Input Detection
+  useEffect(() => {
+    CheckValidMidiNotePlayed();
+  }, [midiNotePlayed]);
+
+  useEffect(() => {
+    CheckValidButtonNotePlayed();
+  }, [buttonNotePlayed]);
+
+  // Timer
   useEffect(() => {
     if (!isDrillActive || forceTimerStop) return;
 
@@ -94,7 +105,7 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
   return (
     <div className={styles.NoteDrillWrapper}>
       <div>
-        <Button onClick={handleQuit}>Quit</Button>
+        <Button onClick={HandleQuit}>Quit</Button>
       </div>
       <h4>Time Left: {timeLeft}</h4>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />

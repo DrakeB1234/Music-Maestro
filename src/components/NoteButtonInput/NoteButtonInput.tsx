@@ -23,7 +23,7 @@ export default function NoteButtonInput({ NotePressed }: Props) {
     return;
   }
 
-  const HanldeAccidentalButtonPressed = (accidental: ActiveAccidental) => {
+  const HandleAccidentalButtonPressed = (accidental: ActiveAccidental) => {
     if (accidental === activeAccidental) {
       setActiveAccidental(null);
       return
@@ -35,8 +35,8 @@ export default function NoteButtonInput({ NotePressed }: Props) {
     <div className={styles.NoteButtonInputWrapper}>
       <div className={styles.ButtonsWrapper}>
         <div className={styles.AccidentalButtonsContainer}>
-          <Button active={activeAccidental === "#" ? true : false} onClick={() => HanldeAccidentalButtonPressed("#")}>#</Button>
-          <Button active={activeAccidental === "b" ? true : false} onClick={() => HanldeAccidentalButtonPressed("b")}>b</Button>
+          <Button active={activeAccidental === "#" ? true : false} onClick={() => HandleAccidentalButtonPressed("#")}>#</Button>
+          <Button active={activeAccidental === "b" ? true : false} onClick={() => HandleAccidentalButtonPressed("b")}>b</Button>
         </div>
         <div className={styles.NoteButtonsContainer}>
           {NOTE_NAMES.map((e: string) => (

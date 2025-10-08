@@ -7,17 +7,19 @@ import type { DrillOptions } from "@/types/DrillOptions";
 import { useState } from "react";
 
 export default function NoteDrillPage() {
-  const { lastNotePlayed: lastMidiNotePlayed } = useMidiProvider();
+  const { lastNotePlayed: lastMidiNotePlayed, ClearInput: ClearMidiInput } = useMidiProvider();
   const [selectedDrillOptions, setSelectedDrillOptions] = useState<DrillOptions>({} as DrillOptions);
   const [drillStart, setDrillStart] = useState(false);
-  const [lastButtonNotePlayed, setLastButtonNotePlayed] = useState<GenericNote | null>(null);
+  const [lastButtonNotePlayed, SetLastButtonNotePlayed] = useState<GenericNote | null>(null);
 
+  // Once Drill Options set, start drill
   const handleSelectedDrillOptions = (options: DrillOptions) => {
     setSelectedDrillOptions(options);
+    ClearMidiInput();
     setDrillStart(true);
   }
 
-  const handleDrillQuit = () => {
+  const HandleDrillQuit = () => {
     setDrillStart(false);
   }
 
@@ -25,8 +27,14 @@ export default function NoteDrillPage() {
     <div>
       {drillStart ?
         <>
-          <NoteDrill midiNotePlayed={lastMidiNotePlayed} buttonNotePlayed={lastButtonNotePlayed} drillOptions={selectedDrillOptions} handleQuit={handleDrillQuit} forceTimerStop={false} />
-          <NoteButtonInput NotePressed={setLastButtonNotePlayed} />
+          <NoteDrill
+            midiNotePlayed={lastMidiNotePlayed}
+            buttonNotePlayed={lastButtonNotePlayed}
+            drillOptions={selectedDrillOptions}
+            HandleQuit={HandleDrillQuit}
+            forceTimerStop={false}
+          />
+          <NoteButtonInput NotePressed={SetLastButtonNotePlayed} />
         </> :
         <NoteDrillOptionsSelector SetSelectedOptions={handleSelectedDrillOptions} />
       }
