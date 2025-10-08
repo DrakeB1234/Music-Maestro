@@ -33,6 +33,11 @@
   color: var(--ui-on-surface);
 }
 
+.filled-surface.active {
+  background-color: var(--ui-primary);
+  color: var(--ui-on-primary);
+}
+
 /* Sizes */
 .sm {
   padding: 0.4em;

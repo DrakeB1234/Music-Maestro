@@ -2,7 +2,7 @@ import { Note } from "webmidi";
 
 const MIN_OCTAVE_RANGE = 0;
 const MAX_OCTAVE_RANGE = 7;
-const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const ACCIDENTALS = {
   Sharp: "#",
   Flat: "b",
@@ -21,7 +21,7 @@ const NOTE_SEMITONES: Record<string, number> = {
 export class GenericNote {
   name: string
   accidental: string | null
-  octave: number
+  octave: number | null
 
   constructor(
     name: string,
@@ -85,9 +85,11 @@ export function IsNoteEnharmonic(originalNote: GenericNote, targetNote: GenericN
 
 // Returns TOTAL number of semitones from C0
 function NoteToAbsoluteSemitone(note: GenericNote): number {
-  const naturalSemitone = NOTE_SEMITONES[note.name];
+  if (!note.octave) return 0;
 
+  const naturalSemitone = NOTE_SEMITONES[note.name];
   const accidentalOffset = parseAccidental(note.accidental);
+
   return naturalSemitone + accidentalOffset + note.octave * 12;
 }
 
@@ -107,5 +109,5 @@ export function ConvertMidiNoteToGenericNote(midiNote: Note): GenericNote {
 }
 
 export function PrintGenericNote(genericNote: GenericNote): string {
-  return `${genericNote.name}${genericNote.accidental ? genericNote.accidental : ''}${genericNote.octave}` as string;
+  return `${genericNote.name}${genericNote.accidental ? genericNote.accidental : ''}${genericNote.octave ? genericNote.octave : ''}` as string;
 }

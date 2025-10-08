@@ -1,49 +1,70 @@
 import { useEffect, useState } from "react";
 import StaffGeneration from "../StaffGeneration/StaffGeneration";
-import { GenerateRandomNote, GenerateRandomOverrideNote, GenericNote, IsNoteEnharmonic, PrintGenericNote } from "@helpers/NoteHelpers";
+import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote } from "@helpers/NoteHelpers";
 import styles from './NoteDrill.module.css';
 import type { DrillOptions } from "@customtypes/DrillOptions";
+import Button from "../UIComponents/Button";
 
 type Props = {
-  midiNotePlayed: GenericNote | null
-  drillOptions: DrillOptions
+  midiNotePlayed: GenericNote | null;
+  buttonNotePlayed: GenericNote | null;
+  drillOptions: DrillOptions;
+  handleQuit: () => void;
+  forceTimerStop?: boolean;
 };
 
-export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
+export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptions, handleQuit, forceTimerStop }: Props) {
 
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
   const [isCorrectNotePlayed, setIsCorrectNotePlayed] = useState(false);
   const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
   const [timeLeft, setTimeLeft] = useState(drillOptions.timer || 60);
   const [isDrillActive, setIsDrillActive] = useState(true);
+  const [lastGeneralNotePlayed, setLastGeneralNotePlayed] = useState<GenericNote | null>(null);
 
   function GenerateNote() {
     if (!isDrillActive) return;
 
-    let newNote = null;
-    if (drillOptions.overrideAllowedNotes && drillOptions.overrideAllowedNotes.length > 0) {
-      newNote = GenerateRandomOverrideNote(drillOptions.overrideAllowedNotes);
-    }
-    else {
-      newNote = GenerateRandomNote(
-        drillOptions.allowAccidentals,
-        drillOptions.minOctaveRange,
-        drillOptions.maxOctaveRange,
-      );
-    }
+    const newNote = GenerateRandomNote(
+      drillOptions.allowAccidentals,
+      drillOptions.minOctaveRange,
+      drillOptions.maxOctaveRange,
+    );
     setCurrentNote(newNote);
   };
 
   function CheckValidNotePlayed() {
-    if (!midiNotePlayed) return;
-    if (PrintGenericNote(currentNote) == PrintGenericNote(midiNotePlayed) || IsNoteEnharmonic(midiNotePlayed, currentNote)) {
-      setIsCorrectNotePlayed(true);
-      GenerateNote();
-      setTotalCorrectNotesPlayed(totalCorrectNotesPlayed + 1);
+    if (midiNotePlayed) {
+      setLastGeneralNotePlayed(midiNotePlayed);
+
+      if (PrintGenericNote(currentNote) == PrintGenericNote(midiNotePlayed) || IsNoteEnharmonic(midiNotePlayed, currentNote)) {
+        HandleCorrectNotePlayed();
+      }
+      else {
+        HandleIncorrectNotePlayed()
+      }
     }
-    else {
-      setIsCorrectNotePlayed(false);
+    else if (buttonNotePlayed) {
+      setLastGeneralNotePlayed(buttonNotePlayed);
+
+      // Ignore octave checking
+      if (currentNote.name == buttonNotePlayed.name && currentNote.accidental == currentNote.accidental) {
+        HandleCorrectNotePlayed();
+      }
+      else {
+        HandleIncorrectNotePlayed();
+      }
     }
+  }
+
+  function HandleCorrectNotePlayed() {
+    setIsCorrectNotePlayed(true);
+    GenerateNote();
+    setTotalCorrectNotesPlayed(totalCorrectNotesPlayed + 1);
+  }
+
+  function HandleIncorrectNotePlayed() {
+    setIsCorrectNotePlayed(false);
   }
 
   function HandleTimerOut() {
@@ -52,10 +73,10 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
 
   useEffect(() => {
     CheckValidNotePlayed();
-  }, [midiNotePlayed]);
+  }, [midiNotePlayed, buttonNotePlayed]);
 
   useEffect(() => {
-    if (!isDrillActive) return;
+    if (!isDrillActive || forceTimerStop) return;
 
     if (timeLeft <= 0) {
       setIsDrillActive(false);
@@ -72,10 +93,13 @@ export default function NoteDrill({ midiNotePlayed, drillOptions }: Props) {
 
   return (
     <div className={styles.NoteDrillWrapper}>
+      <div>
+        <Button onClick={handleQuit}>Quit</Button>
+      </div>
       <h4>Time Left: {timeLeft}</h4>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
       <button onClick={GenerateNote}>Generate Random Note</button>
-      <h4>Last Note Played: {midiNotePlayed ? PrintGenericNote(midiNotePlayed) : ''}</h4>
+      <h4>Last Note Played: {lastGeneralNotePlayed ? PrintGenericNote(lastGeneralNotePlayed) : ''}</h4>
       <h4>Current Note: {PrintGenericNote(currentNote)}</h4>
       {isCorrectNotePlayed ?
         <h4>Correct!</h4> :

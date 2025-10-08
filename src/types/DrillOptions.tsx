@@ -6,8 +6,8 @@ export type DrillOptions = {
   maxOctaveRange?: number
   allowAccidentals?: boolean
   timer?: number
-  // Force certain notes / octave / accidentals
-  overrideAllowedNotes?: GenericNote[]
+  // Filter Notes, default allows all notes
+  noteFilter?: GenericNote[]
   staffOptions: StaffOptions
 }
 

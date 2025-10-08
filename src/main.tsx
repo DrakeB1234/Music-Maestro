@@ -4,13 +4,16 @@ import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
 import { ModalProvider } from './components/UIComponents/ModalContext.tsx'
+import { MidiProvider } from './context/MidiProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <ModalProvider>
-        <App />
-      </ModalProvider>
-    </BrowserRouter>
+    <MidiProvider>
+      <BrowserRouter>
+        <ModalProvider>
+          <App />
+        </ModalProvider>
+      </BrowserRouter>
+    </MidiProvider>
   </StrictMode>,
 )
