@@ -13,15 +13,11 @@ export default function Staff({ currentNote, staffOptions }: Props) {
   const [isError, setIsError] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Handle options
-  let optionsClef = "treble";
-  if (staffOptions) {
-    if (staffOptions.clef) optionsClef = staffOptions.clef;
-  }
-
   useEffect(() => {
     if (!containerRef.current) return;
     setIsError(false);
+
+    const optionsClef = staffOptions.clef ? staffOptions.clef : 'treble';
 
     // Clear previous SVG before redrawing
     containerRef.current.innerHTML = "";
@@ -54,7 +50,7 @@ export default function Staff({ currentNote, staffOptions }: Props) {
 
     // Format and draw
     Formatter.FormatAndDraw(context, stave, [staveNote]);
-  }, [currentNote, staffOptions]);
+  }, [currentNote]);
 
   return (
     <div className={styles.StaffGenerationWrapper}>

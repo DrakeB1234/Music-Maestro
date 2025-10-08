@@ -14,16 +14,38 @@ type NoteDrillSelectionOptions = {
   accidentals?: boolean;
 }
 
+const NoteDrillOptionDefaults = {
+  minOctave: 4,
+  maxOctave: 5,
+  clef: "treble",
+  timer: 60,
+  accidentals: false
+} as NoteDrillSelectionOptions
+
 export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) {
-  const [options, setOptions] = useState<NoteDrillSelectionOptions>({});
+  const [options, setOptions] = useState<NoteDrillSelectionOptions>(NoteDrillOptionDefaults);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, key: keyof NoteDrillSelectionOptions, value: string | number) => {
-    const checked = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
     const newOptions = {
-      ...options,
-      [key]: key === "clef" ? value : Number(value),
-      [key]: key === "accidentals" ? checked : Number(value),
-    };
+      ...options
+    }
+    switch (key) {
+      case "minOctave":
+        newOptions.minOctave = Number(value)
+        break;
+      case "maxOctave":
+        newOptions.maxOctave = Number(value)
+        break;
+      case "timer":
+        newOptions.timer = Number(value)
+        break;
+      case "clef":
+        newOptions.clef = value as "treble" | "bass"
+        break;
+      case "accidentals":
+        newOptions.accidentals = (e.target as HTMLInputElement).checked
+        break;
+    }
     setOptions(newOptions);
   };
 
@@ -50,19 +72,19 @@ export default function NoteDrillOptionsSelector({ SetSelectedOptions }: Props) 
       </label>
       <label>
         Minimum Octave Number
-        <input id="minOctave" type="number" placeholder="2" onChange={(e) => handleChange(e, "minOctave", e.target.value)} />
+        <input id="minOctave" type="number" placeholder="0" defaultValue={options.minOctave} onChange={(e) => handleChange(e, "minOctave", e.target.value)} />
       </label>
       <label>
         Maximum Octave Number
-        <input id="maxOctave" type="number" placeholder="7" onChange={(e) => handleChange(e, "maxOctave", e.target.value)} />
+        <input id="maxOctave" type="number" placeholder="7" defaultValue={options.maxOctave} onChange={(e) => handleChange(e, "maxOctave", e.target.value)} />
       </label>
       <label>
         Timer
-        <input id="timer" type="number" placeholder="1" onChange={(e) => handleChange(e, "timer", e.target.value)} />
+        <input id="timer" type="number" placeholder="60" defaultValue={options.timer} onChange={(e) => handleChange(e, "timer", e.target.value)} />
       </label>
       <label>
         Accidentals
-        <input id="accidentals" type="checkbox" placeholder="false" onChange={(e) => handleChange(e, "accidentals", e.target.value)} />
+        <input id="accidentals" type="checkbox" checked={options.accidentals} onChange={(e) => handleChange(e, "accidentals", e.target.value)} />
       </label>
       <button onClick={applyOptions}>Apply</button>
     </div>

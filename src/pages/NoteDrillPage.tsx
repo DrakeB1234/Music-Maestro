@@ -16,6 +16,7 @@ export default function NoteDrillPage() {
   const handleSelectedDrillOptions = (options: DrillOptions) => {
     setSelectedDrillOptions(options);
     ClearMidiInput();
+    SetLastButtonNotePlayed(null);
     setDrillStart(true);
   }
 

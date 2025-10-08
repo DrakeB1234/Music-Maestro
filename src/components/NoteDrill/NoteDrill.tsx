@@ -4,6 +4,8 @@ import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote } f
 import styles from './NoteDrill.module.css';
 import type { DrillOptions } from "@customtypes/DrillOptions";
 import Button from "../UIComponents/Button";
+import React from "react";
+import useTimerRef from "@/hooks/useTimerRef";
 
 type Props = {
   midiNotePlayed: GenericNote | null;
@@ -18,7 +20,6 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
   const [isCorrectNotePlayed, setIsCorrectNotePlayed] = useState(false);
   const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(drillOptions.timer || 60);
   const [isDrillActive, setIsDrillActive] = useState(true);
   const [lastGeneralNotePlayed, setLastGeneralNotePlayed] = useState<GenericNote | null>(null);
 
@@ -68,48 +69,33 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
   }
 
   function HandleTimerOut() {
-    alert("Time Up!");
+    console.log("Time Up!");
   }
 
   // Functions to run at component start
   useEffect(() => {
     GenerateNote();
-  }, [])
+  }, []);
 
   // Input Detection
   useEffect(() => {
+    if (!isDrillActive) return;
     CheckValidMidiNotePlayed();
   }, [midiNotePlayed]);
 
   useEffect(() => {
+    if (!isDrillActive) return;
     CheckValidButtonNotePlayed();
   }, [buttonNotePlayed]);
 
-  // Timer
-  useEffect(() => {
-    if (!isDrillActive || forceTimerStop) return;
-
-    if (timeLeft <= 0) {
-      setIsDrillActive(false);
-      HandleTimerOut();
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [timeLeft, isDrillActive]);
-
   return (
     <div className={styles.NoteDrillWrapper}>
+      <Button onClick={HandleQuit}>Quit</Button>
       <div>
-        <Button onClick={HandleQuit}>Quit</Button>
+        <TimerDisplay duration={60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
       </div>
-      <h4>Time Left: {timeLeft}</h4>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
-      <button onClick={GenerateNote}>Generate Random Note</button>
+      <Button onClick={GenerateNote}>Generate Random Note</Button>
       <h4>Last Note Played: {lastGeneralNotePlayed ? PrintGenericNote(lastGeneralNotePlayed) : ''}</h4>
       <h4>Current Note: {PrintGenericNote(currentNote)}</h4>
       {isCorrectNotePlayed ?
@@ -120,3 +106,8 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
     </div>
   );
 };
+
+function TimerDisplay({ duration, active, onTimeout }: { duration: number, active: boolean, onTimeout?: () => void }) {
+  const timeLeft = useTimerRef(active, duration, onTimeout);
+  return <h4>Time Left: {timeLeft}</h4>;
+}
