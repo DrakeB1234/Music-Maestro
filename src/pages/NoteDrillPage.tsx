@@ -1,5 +1,5 @@
 import { useMidiProvider } from "@/context/MidiProvider";
-import { defaultDrillOptions, type DrillProfile } from "@/types/DrillOptions";
+import { defaultDrillOptions, type DrillProfile, type DrillOptions } from "@/types/DrillOptions";
 import { useState } from "react";
 import styles from './NoteDrillPage.module.css';
 import Button from "@/components/UIComponents/Button";
@@ -11,15 +11,29 @@ import NoteDrill from "@/components/NoteDrill/NoteDrill";
 type SelectedOptionsComponent = "DrillOptions" | "DrillProfile" | "Default"
 
 export default function NoteDrillPage() {
-  const { ClearInput: ClearMidiInput } = useMidiProvider();
-  const [selectedDrillOptions, SetSelectedDrillOptions] = useState(
+  
+  const [selectedCustomOptions, SetSelectedDrillOptions] = useState(
     structuredClone(defaultDrillOptions)
   );
   const [selectedDrillProfile, SetSelectedDrillProfile] = useState<DrillProfile | null>(null);
-
+  
   // Toggle Components
   const [toggleSelectedOptions, SetToggleSelectedOptions] = useState<SelectedOptionsComponent>("Default");
   const [toggleStartDrill, SetToggleStartDrill] = useState<Boolean>(false);
+  
+  let drillOptions: DrillOptions = {} as DrillOptions
+  const { ClearInput: ClearMidiInput } = useMidiProvider();
+
+  const HandleDrillStart = () => {
+    ClearMidiInput();
+    if (selectedDrillProfile) {
+      drillOptions = selectedDrillProfile.drillOptions;
+    }
+    else {
+      drillOptions = selectedCustomOptions;
+    }
+    SetToggleStartDrill(true);
+  }
 
   const HandleDrillQuit = () => {
     SetToggleStartDrill(false);
@@ -31,11 +45,11 @@ export default function NoteDrillPage() {
       <>
         {!toggleStartDrill ?
           toggleSelectedOptions === "DrillOptions" ?
-            <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={() => SetToggleStartDrill(true)}>
-              <NoteDrillOptionsSelector SetSelectedOptions={SetSelectedDrillOptions} currentOptions={selectedDrillOptions} />
+            <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStart}>
+              <NoteDrillOptionsSelector SetSelectedOptions={SetSelectedDrillOptions} currentOptions={selectedCustomOptions} />
             </DrillSelectionWrapper>
             : toggleSelectedOptions === "DrillProfile" ?
-              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={() => SetToggleStartDrill(true)}>
+              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStart}>
                 <NoteDrillProfileSelector profileSelected={SetSelectedDrillProfile} />
               </DrillSelectionWrapper>
               :
@@ -53,12 +67,12 @@ export default function NoteDrillPage() {
                   </div>
                 </div>
                 <div className={styles.StartDrillContainer}>
-                  <Button variant="filled-primary" onClick={() => SetToggleStartDrill(true)}>Quick Start Drill</Button>
+                  <Button variant="filled-primary" onClick={HandleDrillStart}>Quick Start Drill</Button>
                   <h3>*Uses last used drill options</h3>
                 </div>
               </div>
           :
-          <NoteDrill drillOptions={selectedDrillOptions} HandleQuit={HandleDrillQuit} />
+          <NoteDrill drillOptions={selectedCustomOptions} HandleQuit={HandleDrillQuit} />
         }
       </>
     </div>

@@ -4,12 +4,12 @@ import { GenerateRandomNote, GenerateDifferentNoteName, GenericNote, IsNoteEnhar
 import styles from './NoteDrill.module.css';
 import Button from "../UIComponents/Button";
 import useTimerRef from "@/hooks/useTimerRef";
-import type { NoteDrillOptions } from "@/types/DrillOptions";
+import type { DrillProfile, DrillOptions } from "@/types/DrillOptions";
 import { useMidiProvider } from "@/context/MidiProvider";
 import NoteButtonInput from "../NoteButtonInput/NoteButtonInput";
 
 type Props = {
-  drillOptions: NoteDrillOptions;
+  drillOptions: DrillOptions;
   HandleQuit: () => void;
   forceTimerStop?: boolean;
 };
@@ -27,6 +27,10 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
 
   // Hooks
   const { lastNotePlayed: lastMidiNotePlayed } = useMidiProvider();
+
+  function InitNoteDrill() {
+    GenerateNote();
+  }
 
   function GenerateNote() {
     if (!isDrillActive) return;
@@ -85,7 +89,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
 
   // Functions to run at component start
   useEffect(() => {
-    GenerateNote();
+    InitNoteDrill();
   }, []);
 
   // Input Detection

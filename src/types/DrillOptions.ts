@@ -1,11 +1,19 @@
 export type DrillProfile = {
+  kind: DrillKind;
   name: string
   id: string
   type: string
-  drillOptions: NoteDrillOptions
+  drillOptions: DrillOptions
 }
 
-export type NoteDrillOptions = {
+export type DrillCustomOptions = {
+  kind: DrillKind;
+  drillOptions: DrillOptions
+}
+
+export type DrillKind = "custom" | "profile"
+
+export type DrillOptions = {
   minOctave?: number;
   maxOctave?: number;
   timer?: number;
@@ -19,12 +27,12 @@ export type StaffOptions = {
   clef?: string
 }
 
-export const defaultDrillOptions: NoteDrillOptions = {
+export const defaultDrillOptions: DrillOptions = {
   minOctave: 4,
   maxOctave: 5,
   timer: 60,
   allowAccidentals: false,
   staffOptions: {
     clef: "treble"
-  },
+  }
 };

@@ -2,6 +2,7 @@ import type { DrillProfile } from "@customtypes/DrillOptions";
 
 export const defaultDrillProfileData: DrillProfile[] = [
   {
+    kind: "profile",
     name: "Treble Landmark Notes",
     id: "3b1d93ed-0358-4fe6-979e-85a375de6478",
     type: "default",
