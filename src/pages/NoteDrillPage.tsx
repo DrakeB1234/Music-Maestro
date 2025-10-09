@@ -1,6 +1,6 @@
 import { useMidiProvider } from "@/context/MidiProvider";
-import { defaultDrillOptions, type DrillProfile, type DrillOptions } from "@/types/DrillOptions";
-import { useState } from "react";
+import { defaultDrillOptions, type DrillOptions, type DrillKind } from "@/types/DrillOptions";
+import { useRef, useState } from "react";
 import styles from './NoteDrillPage.module.css';
 import Button from "@/components/UIComponents/Button";
 import NoteDrillOptionsSelector from "@/components/NoteDrillOptionsSelector/NoteDrillOptionsSelector";
@@ -11,27 +11,39 @@ import NoteDrill from "@/components/NoteDrill/NoteDrill";
 type SelectedOptionsComponent = "DrillOptions" | "DrillProfile" | "Default"
 
 export default function NoteDrillPage() {
-  
-  const [selectedCustomOptions, SetSelectedDrillOptions] = useState(
+
+  // 
+  // Custom Options are manually set options from the user. The alternative to this is profile options. Which are
+  // options that are set by preset profile data. Options mode is used to determine where the options was retrieved from
+  // so that further processing can be made depending on what is set.
+  //  
+
+  const [selectedCustomOptions, SetSelectedDrillOptions] = useState<DrillOptions>(
     structuredClone(defaultDrillOptions)
   );
-  const [selectedDrillProfile, SetSelectedDrillProfile] = useState<DrillProfile | null>(null);
-  
+
   // Toggle Components
   const [toggleSelectedOptions, SetToggleSelectedOptions] = useState<SelectedOptionsComponent>("Default");
   const [toggleStartDrill, SetToggleStartDrill] = useState<Boolean>(false);
-  
-  let drillOptions: DrillOptions = {} as DrillOptions
+
+  const selectedProfileOptions = useRef<DrillOptions | null>(null);
+  const optionsMode = useRef<DrillKind>("custom");
+  const drillOptions = useRef<DrillOptions>({} as DrillOptions);
   const { ClearInput: ClearMidiInput } = useMidiProvider();
 
-  const HandleDrillStart = () => {
+
+  const HandleDrillStartCustomOptions = () => {
     ClearMidiInput();
-    if (selectedDrillProfile) {
-      drillOptions = selectedDrillProfile.drillOptions;
-    }
-    else {
-      drillOptions = selectedCustomOptions;
-    }
+    drillOptions.current = selectedCustomOptions;
+    optionsMode.current = "custom";
+    SetToggleStartDrill(true);
+  }
+
+  const HandleDrillStartProfileOptions = () => {
+    if (!selectedProfileOptions.current) return;
+    ClearMidiInput();
+    drillOptions.current = selectedProfileOptions.current;
+    optionsMode.current = "profile";
     SetToggleStartDrill(true);
   }
 
@@ -45,12 +57,12 @@ export default function NoteDrillPage() {
       <>
         {!toggleStartDrill ?
           toggleSelectedOptions === "DrillOptions" ?
-            <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStart}>
+            <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStartCustomOptions}>
               <NoteDrillOptionsSelector SetSelectedOptions={SetSelectedDrillOptions} currentOptions={selectedCustomOptions} />
             </DrillSelectionWrapper>
             : toggleSelectedOptions === "DrillProfile" ?
-              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStart}>
-                <NoteDrillProfileSelector profileSelected={SetSelectedDrillProfile} />
+              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStartProfileOptions}>
+                <NoteDrillProfileSelector optionsRef={selectedProfileOptions} />
               </DrillSelectionWrapper>
               :
               <div className={styles.SelectorsParent}>
@@ -67,12 +79,12 @@ export default function NoteDrillPage() {
                   </div>
                 </div>
                 <div className={styles.StartDrillContainer}>
-                  <Button variant="filled-primary" onClick={HandleDrillStart}>Quick Start Drill</Button>
+                  <Button variant="filled-primary" onClick={HandleDrillStartCustomOptions}>Quick Start Drill</Button>
                   <h3>*Uses last used drill options</h3>
                 </div>
               </div>
           :
-          <NoteDrill drillOptions={selectedCustomOptions} HandleQuit={HandleDrillQuit} />
+          <NoteDrill drillOptions={drillOptions.current} HandleQuit={HandleDrillQuit} />
         }
       </>
     </div>

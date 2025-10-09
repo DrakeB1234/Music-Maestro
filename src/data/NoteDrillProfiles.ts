@@ -9,7 +9,7 @@ export const defaultDrillProfileData: DrillProfile[] = [
     drillOptions: {
       minOctave: 4,
       maxOctave: 5,
-      timer: 60,
+      timer: 999,
       allowAccidentals: false,
       excludedNoteNames: [
         "D", "E", "F", "A", "B"

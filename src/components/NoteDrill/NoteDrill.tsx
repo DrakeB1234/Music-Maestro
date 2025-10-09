@@ -29,6 +29,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
   const { lastNotePlayed: lastMidiNotePlayed } = useMidiProvider();
 
   function InitNoteDrill() {
+    console.log(drillOptions)
     GenerateNote();
   }
 

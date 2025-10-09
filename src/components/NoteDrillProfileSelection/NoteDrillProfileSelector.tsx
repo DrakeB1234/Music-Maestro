@@ -1,34 +1,29 @@
 import { useEffect, useState } from "react";
 import { defaultDrillProfileData } from "@data/NoteDrillProfiles.ts";
-import type { DrillProfile } from "@/types/DrillOptions";
+import type { DrillOptions, DrillProfile } from "@/types/DrillOptions";
 import styles from './NoteDrillProfileSelector.module.css';
-import Button from "../UIComponents/Button";
 
-export default function NoteDrillProfileSelector({ profileSelected }: { profileSelected: (profile: DrillProfile) => void }) {
+type Props = {
+  optionsRef: React.RefObject<DrillOptions | null>;
+}
 
-  const [availableProfiles, setAvailableProfiles] = useState<DrillProfile[] | null>(null);
-  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+export default function NoteDrillProfileSelector({ optionsRef }: Props) {
+
+  const [availableProfiles, SetAvailableProfiles] = useState<DrillProfile[] | null>(null);
+  const [selectedProfileId, SetSelectedProfileId] = useState<string | null>(null);
 
   function HandleProfileSelect(profileId: string) {
-    if (profileId === selectedProfileId) {
-      setSelectedProfileId(null)
-      return;
-    }
-    setSelectedProfileId(profileId)
-  }
+    SetSelectedProfileId(profileId)
 
-  function HandleUseProfileClick() {
-    if (!selectedProfileId || !availableProfiles) return;
-
-    const profile = availableProfiles?.find(e => e.id === selectedProfileId);
+    const profile = availableProfiles?.find(e => e.id === profileId);
     if (!profile) return;
 
-    profileSelected(profile);
+    optionsRef.current = profile.drillOptions;
   }
 
   useEffect(() => {
     const defaultProfileData = defaultDrillProfileData as DrillProfile[];
-    setAvailableProfiles(defaultProfileData);
+    SetAvailableProfiles(defaultProfileData);
 
   }, []);
 
@@ -49,9 +44,6 @@ export default function NoteDrillProfileSelector({ profileSelected }: { profileS
           <h3>No Profiles Found!</h3>
         </div>
       }
-      <div className={styles.UseProfileButtonContainer}>
-        <Button variant="filled-primary" onClick={HandleUseProfileClick}>Use Profile</Button>
-      </div>
     </div>
   )
 }
