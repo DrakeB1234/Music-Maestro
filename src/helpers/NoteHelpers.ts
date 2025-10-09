@@ -66,6 +66,13 @@ export function GenerateRandomNote(
   return { name: noteName, accidental: accidental, octave: octave } as GenericNote;
 };
 
+export function GenerateDifferentNoteName(noteName: string): string {
+  const nameIdx = NOTE_NAMES.findIndex(name => name == noteName);
+  if (!nameIdx) return noteName;
+  const newIdx = (nameIdx + 3) % NOTE_NAMES.length;
+  return NOTE_NAMES[newIdx];
+}
+
 export function GenerateRandomOverrideNote(overrideNotes: GenericNote[]): GenericNote {
   const newNote = overrideNotes[Math.floor(Math.random() * overrideNotes.length)];
   return newNote;

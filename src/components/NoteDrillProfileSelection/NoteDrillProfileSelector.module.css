@@ -1,0 +1,22 @@
+.ProfileItemsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.ProfileItemContainer {
+  display: flex;
+  padding: 1em 1.2em;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: blue;
+}
+
+.UseProfileButtonContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+}

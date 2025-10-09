@@ -1,44 +1,82 @@
-import NoteButtonInput from "@/components/NoteButtonInput/NoteButtonInput";
-import NoteDrill from "@/components/NoteDrill/NoteDrill";
-import NoteDrillOptionsSelector from "@/components/NoteDrillOptionsSelector/NoteDrillOptionsSelector";
 import { useMidiProvider } from "@/context/MidiProvider";
-import type { GenericNote } from "@/helpers/NoteHelpers";
-import type { DrillOptions } from "@/types/DrillOptions";
+import { defaultDrillOptions, type DrillProfile } from "@/types/DrillOptions";
 import { useState } from "react";
+import styles from './NoteDrillPage.module.css';
+import Button from "@/components/UIComponents/Button";
+import NoteDrillOptionsSelector from "@/components/NoteDrillOptionsSelector/NoteDrillOptionsSelector";
+import NoteDrillProfileSelector from "@/components/NoteDrillProfileSelection/NoteDrillProfileSelector";
+import NoteDrill from "@/components/NoteDrill/NoteDrill";
+
+// Null represents nothing selected, so show default
+type SelectedOptionsComponent = "DrillOptions" | "DrillProfile" | "Default"
 
 export default function NoteDrillPage() {
-  const { lastNotePlayed: lastMidiNotePlayed, ClearInput: ClearMidiInput } = useMidiProvider();
-  const [selectedDrillOptions, setSelectedDrillOptions] = useState<DrillOptions>({} as DrillOptions);
-  const [drillStart, setDrillStart] = useState(false);
-  const [lastButtonNotePlayed, SetLastButtonNotePlayed] = useState<GenericNote | null>(null);
+  const { ClearInput: ClearMidiInput } = useMidiProvider();
+  const [selectedDrillOptions, SetSelectedDrillOptions] = useState(
+    structuredClone(defaultDrillOptions)
+  );
+  const [selectedDrillProfile, SetSelectedDrillProfile] = useState<DrillProfile | null>(null);
 
-  // Once Drill Options set, start drill
-  const handleSelectedDrillOptions = (options: DrillOptions) => {
-    setSelectedDrillOptions(options);
-    ClearMidiInput();
-    SetLastButtonNotePlayed(null);
-    setDrillStart(true);
-  }
+  // Toggle Components
+  const [toggleSelectedOptions, SetToggleSelectedOptions] = useState<SelectedOptionsComponent>("Default");
+  const [toggleStartDrill, SetToggleStartDrill] = useState<Boolean>(false);
 
   const HandleDrillQuit = () => {
-    setDrillStart(false);
+    SetToggleStartDrill(false);
+    SetToggleSelectedOptions("Default");
   }
 
   return (
-    <div>
-      {drillStart ?
-        <>
-          <NoteDrill
-            midiNotePlayed={lastMidiNotePlayed}
-            buttonNotePlayed={lastButtonNotePlayed}
-            drillOptions={selectedDrillOptions}
-            HandleQuit={HandleDrillQuit}
-            forceTimerStop={false}
-          />
-          <NoteButtonInput NotePressed={SetLastButtonNotePlayed} />
-        </> :
-        <NoteDrillOptionsSelector SetSelectedOptions={handleSelectedDrillOptions} />
-      }
+    <div className={styles.NoteDrillPageWrapper}>
+      <>
+        {!toggleStartDrill ?
+          toggleSelectedOptions === "DrillOptions" ?
+            <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={() => SetToggleStartDrill(true)}>
+              <NoteDrillOptionsSelector SetSelectedOptions={SetSelectedDrillOptions} currentOptions={selectedDrillOptions} />
+            </DrillSelectionWrapper>
+            : toggleSelectedOptions === "DrillProfile" ?
+              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={() => SetToggleStartDrill(true)}>
+                <NoteDrillProfileSelector profileSelected={SetSelectedDrillProfile} />
+              </DrillSelectionWrapper>
+              :
+              <div className={styles.SelectorsParent}>
+                <div className={styles.SelectorsWrapper}>
+                  <div className={styles.SelectorContainer} onClick={() => SetToggleSelectedOptions("DrillProfile")}>
+                    <h3>Profile</h3>
+                    <h3>Use preset options to test your skills</h3>
+                    <h3>Tracks progress</h3>
+                  </div>
+                  <div className={styles.SelectorContainer} onClick={() => SetToggleSelectedOptions("DrillOptions")}>
+                    <h3>Custom Options</h3>
+                    <h3>Quickly customize options for your drill</h3>
+                    <h3>Does not track progress</h3>
+                  </div>
+                </div>
+                <div className={styles.StartDrillContainer}>
+                  <Button variant="filled-primary" onClick={() => SetToggleStartDrill(true)}>Quick Start Drill</Button>
+                  <h3>*Uses last used drill options</h3>
+                </div>
+              </div>
+          :
+          <NoteDrill drillOptions={selectedDrillOptions} HandleQuit={HandleDrillQuit} />
+        }
+      </>
     </div>
   )
+}
+
+interface DrillSelectionWrapperProps {
+  onBack: () => void
+  children: React.ReactNode;
+  onStart: () => void
+}
+
+function DrillSelectionWrapper({ children, onBack, onStart }: DrillSelectionWrapperProps) {
+  return (
+    <div className={styles.DrillSelectionWrapper}>
+      <Button onClick={onBack}>Back</Button>
+      {children}
+      <Button variant="filled-primary" onClick={onStart}>Start Drill</Button>
+    </div>
+  );
 }

@@ -1,35 +1,14 @@
 [
   {
-    "name": "Landmark Notes Treble",
+    "name": "Treble Landmark Notes",
+    "id": "3b1d93ed-0358-4fe6-979e-85a375de6478",
+    "minOctaveRange": 4,
+    "maxOctaveRange": 5,
+    "allowAccidentals": false,
+    "timer": 60,
+    "noteNameFilter": [],
     "staffOptions": {
       "clef": "treble"
-    },
-    "overrideAllowedNotes": [
-      {
-        "name": "c",
-        "accidental": null,
-        "octave": 4
-      },
-      {
-        "name": "G",
-        "accidental": null,
-        "octave": 4
-      },
-      {
-        "name": "c",
-        "accidental": null,
-        "octave": 5
-      },
-      {
-        "name": "G",
-        "accidental": null,
-        "octave": 5
-      },
-      {
-        "name": "c",
-        "accidental": null,
-        "octave": 6
-      }
-    ]
+    }
   }
 ]

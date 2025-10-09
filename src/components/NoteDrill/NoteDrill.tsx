@@ -1,48 +1,53 @@
 import { useEffect, useState } from "react";
 import StaffGeneration from "../StaffGeneration/StaffGeneration";
-import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, NOTE_NAMES, PrintGenericNote } from "@helpers/NoteHelpers";
+import { GenerateRandomNote, GenerateDifferentNoteName, GenericNote, IsNoteEnharmonic, PrintGenericNote } from "@helpers/NoteHelpers";
 import styles from './NoteDrill.module.css';
-import type { DrillOptions } from "@customtypes/DrillOptions";
 import Button from "../UIComponents/Button";
-import React from "react";
 import useTimerRef from "@/hooks/useTimerRef";
+import type { NoteDrillOptions } from "@/types/DrillOptions";
+import { useMidiProvider } from "@/context/MidiProvider";
+import NoteButtonInput from "../NoteButtonInput/NoteButtonInput";
 
 type Props = {
-  midiNotePlayed: GenericNote | null;
-  buttonNotePlayed: GenericNote | null;
-  drillOptions: DrillOptions;
+  drillOptions: NoteDrillOptions;
   HandleQuit: () => void;
   forceTimerStop?: boolean;
 };
 
-export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptions, HandleQuit, forceTimerStop }: Props) {
-
+export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: Props) {
+  // Note State
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
-  const [isCorrectNotePlayed, setIsCorrectNotePlayed] = useState(false);
   const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
-  const [isDrillActive, setIsDrillActive] = useState(true);
   const [lastGeneralNotePlayed, setLastGeneralNotePlayed] = useState<GenericNote | null>(null);
+
+  // Toggle States
+  const [isDrillActive, setIsDrillActive] = useState(true);
+
+  const [lastButtonNotePlayed, SetLastButtonNotePlayed] = useState<GenericNote | null>(null);
+
+  // Hooks
+  const { lastNotePlayed: lastMidiNotePlayed } = useMidiProvider();
 
   function GenerateNote() {
     if (!isDrillActive) return;
 
     const newNote = GenerateRandomNote(
       drillOptions.allowAccidentals,
-      drillOptions.minOctaveRange,
-      drillOptions.maxOctaveRange,
+      drillOptions.minOctave,
+      drillOptions.maxOctave,
     );
-
-    if (newNote.name === currentNote.name) {
-      newNote.name = NOTE_NAMES[Math.floor(Math.random() * NOTE_NAMES.length)];
+    if (newNote.name === currentNote.name && newNote.octave === currentNote.octave) {
+      newNote.name = GenerateDifferentNoteName(newNote.name);
     }
+
     setCurrentNote(newNote);
   };
 
   function CheckValidMidiNotePlayed() {
-    if (!midiNotePlayed) return;
-    setLastGeneralNotePlayed(midiNotePlayed);
+    if (!lastMidiNotePlayed) return;
+    setLastGeneralNotePlayed(lastMidiNotePlayed);
 
-    if (PrintGenericNote(midiNotePlayed) === PrintGenericNote(currentNote) || IsNoteEnharmonic(midiNotePlayed, currentNote)) {
+    if (PrintGenericNote(lastMidiNotePlayed) === PrintGenericNote(currentNote) || IsNoteEnharmonic(lastMidiNotePlayed, currentNote)) {
       HandleCorrectNotePlayed();
     }
     else {
@@ -51,10 +56,11 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
   }
 
   function CheckValidButtonNotePlayed() {
-    if (!buttonNotePlayed) return;
-    setLastGeneralNotePlayed(buttonNotePlayed);
+    if (!lastButtonNotePlayed) return;
+    setLastGeneralNotePlayed(lastButtonNotePlayed);
 
-    if (buttonNotePlayed.name === currentNote.name && buttonNotePlayed.accidental === currentNote.accidental) {
+    // Ignores octave checking for button notes
+    if (lastButtonNotePlayed.name === currentNote.name && lastButtonNotePlayed.accidental === currentNote.accidental) {
       HandleCorrectNotePlayed();
     }
     else {
@@ -63,16 +69,17 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
   }
 
   function HandleCorrectNotePlayed() {
-    setIsCorrectNotePlayed(true);
+    console.log("Correct Note!")
     GenerateNote();
     setTotalCorrectNotesPlayed(totalCorrectNotesPlayed + 1);
   }
 
   function HandleIncorrectNotePlayed() {
-    setIsCorrectNotePlayed(false);
+    console.log("Incorrect Note!")
   }
 
   function HandleTimerOut() {
+    setIsDrillActive(false)
     console.log("Time Up!");
   }
 
@@ -85,28 +92,26 @@ export default function NoteDrill({ midiNotePlayed, buttonNotePlayed, drillOptio
   useEffect(() => {
     if (!isDrillActive) return;
     CheckValidMidiNotePlayed();
-  }, [midiNotePlayed]);
+  }, [lastMidiNotePlayed]);
 
   useEffect(() => {
     if (!isDrillActive) return;
     CheckValidButtonNotePlayed();
-  }, [buttonNotePlayed]);
+  }, [lastButtonNotePlayed]);
 
   return (
     <div className={styles.NoteDrillWrapper}>
       <Button onClick={HandleQuit}>Quit</Button>
       <div>
-        <TimerDisplay duration={60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
+        <TimerDisplay duration={drillOptions.timer || 60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
       </div>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
       <Button size="sm" onClick={GenerateNote}>Generate Random Note</Button>
       <h4>Last Note Played: {lastGeneralNotePlayed ? PrintGenericNote(lastGeneralNotePlayed) : ''}</h4>
       <h4>Current Note: {PrintGenericNote(currentNote)}</h4>
-      {isCorrectNotePlayed ?
-        <h4>Correct!</h4> :
-        <></>
-      }
       <h4>Total Correct Notes: {totalCorrectNotesPlayed}</h4>
+
+      <NoteButtonInput SetNotePressed={SetLastButtonNotePlayed} />
     </div>
   );
 };

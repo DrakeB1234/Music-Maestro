@@ -4,12 +4,12 @@ import styles from './NoteButtonInput.module.css';
 import { useState } from "react";
 
 type Props = {
-  NotePressed: (note: GenericNote) => void
+  SetNotePressed: (note: GenericNote) => void
 }
 
 type ActiveAccidental = "#" | "b" | null
 
-export default function NoteButtonInput({ NotePressed }: Props) {
+export default function NoteButtonInput({ SetNotePressed: NotePressed }: Props) {
 
   const [activeAccidental, setActiveAccidental] = useState<ActiveAccidental>(null);
 

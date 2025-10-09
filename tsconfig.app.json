@@ -15,7 +15,8 @@
       "@customtypes/*": ["types/*"],
       "@components/*": ["components/*"],
       "@helpers/*": ["helpers/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@data/*": ["data/*"]
     },
 
     /* Bundler mode */
