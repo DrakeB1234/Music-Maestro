@@ -1,6 +1,6 @@
 import styles from './NoteDrillOptionsSelector.module.css';
 import Button from "../UIComponents/Button";
-import { defaultDrillOptions, type DrillOptions } from "@/types/DrillOptions";
+import { defaultDrillOptions, type DrillOptions } from "@/types/DrillOptionTypes";
 
 type Props = {
   SetSelectedOptions: React.Dispatch<React.SetStateAction<DrillOptions>>;

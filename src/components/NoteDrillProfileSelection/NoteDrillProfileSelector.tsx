@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { defaultDrillProfileData } from "@data/NoteDrillProfiles.ts";
-import type { DrillOptions, DrillProfile } from "@/types/DrillOptions";
+import type { DrillOptions, DrillProfile } from "@/types/DrillOptionTypes";
 import styles from './NoteDrillProfileSelector.module.css';
 
 type Props = {

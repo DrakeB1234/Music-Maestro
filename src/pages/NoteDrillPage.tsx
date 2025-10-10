@@ -1,5 +1,5 @@
 import { useMidiProvider } from "@/context/MidiProvider";
-import { defaultDrillOptions, type DrillOptions, type DrillKind } from "@/types/DrillOptions";
+import { defaultDrillOptions, type DrillOptions, type DrillKind } from "@/types/DrillOptionTypes";
 import { useRef, useState } from "react";
 import styles from './NoteDrillPage.module.css';
 import Button from "@/components/UIComponents/Button";
@@ -22,15 +22,14 @@ export default function NoteDrillPage() {
     structuredClone(defaultDrillOptions)
   );
 
-  // Toggle Components
   const [toggleSelectedOptions, SetToggleSelectedOptions] = useState<SelectedOptionsComponent>("Default");
   const [toggleStartDrill, SetToggleStartDrill] = useState<Boolean>(false);
 
   const selectedProfileOptions = useRef<DrillOptions | null>(null);
   const optionsMode = useRef<DrillKind>("custom");
   const drillOptions = useRef<DrillOptions>({} as DrillOptions);
-  const { ClearInput: ClearMidiInput } = useMidiProvider();
 
+  const { ClearInput: ClearMidiInput } = useMidiProvider();
 
   const HandleDrillStartCustomOptions = () => {
     ClearMidiInput();

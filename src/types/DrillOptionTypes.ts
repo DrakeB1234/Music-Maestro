@@ -1,13 +1,10 @@
 export type DrillProfile = {
-  kind: DrillKind;
   name: string
   id: string
-  type: string
   drillOptions: DrillOptions
 }
 
 export type DrillCustomOptions = {
-  kind: DrillKind;
   drillOptions: DrillOptions
 }
 
@@ -24,7 +21,7 @@ export type DrillOptions = {
 }
 
 export type StaffOptions = {
-  clef?: string
+  clef?: "treble" | "bass"
 }
 
 export const defaultDrillOptions: DrillOptions = {
