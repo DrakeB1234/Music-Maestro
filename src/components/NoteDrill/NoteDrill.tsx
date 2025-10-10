@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StaffGeneration from "../StaffGeneration/StaffGeneration";
-import { GenerateRandomNote, GenerateDifferentNoteName, GenericNote, IsNoteEnharmonic, PrintGenericNote } from "@helpers/NoteHelpers";
+import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote, GenerateRandomInclusiveNote } from "@helpers/NoteHelpers";
 import styles from './NoteDrill.module.css';
 import Button from "../UIComponents/Button";
 import useTimerRef from "@/hooks/useTimerRef";
-import type { DrillProfile, DrillOptions } from "@/types/DrillOptionTypes";
+import type { DrillOptions } from "@/types/DrillOptionTypes";
 import { useMidiProvider } from "@/context/MidiProvider";
 import NoteButtonInput from "../NoteButtonInput/NoteButtonInput";
 
@@ -19,30 +19,38 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
   const [currentNote, setCurrentNote] = useState(new GenericNote("c", null, 4));
   const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
   const [lastGeneralNotePlayed, setLastGeneralNotePlayed] = useState<GenericNote | null>(null);
+  const [lastButtonNotePlayed, SetLastButtonNotePlayed] = useState<GenericNote | null>(null);
+  // Only generate notes SPECIFIED by note options
+  const inclusiveNoteMode = useRef<boolean>(false);
 
   // Toggle States
   const [isDrillActive, setIsDrillActive] = useState(true);
-
-  const [lastButtonNotePlayed, SetLastButtonNotePlayed] = useState<GenericNote | null>(null);
 
   // Hooks
   const { lastNotePlayed: lastMidiNotePlayed } = useMidiProvider();
 
   function InitNoteDrill() {
-    console.log(drillOptions)
+    if (drillOptions.inclusiveNotes && drillOptions.inclusiveNotes.length > 1) {
+      inclusiveNoteMode.current = true;
+    }
     GenerateNote();
   }
 
   function GenerateNote() {
     if (!isDrillActive) return;
 
-    const newNote = GenerateRandomNote(
-      drillOptions.allowAccidentals,
-      drillOptions.minOctave,
-      drillOptions.maxOctave,
-    );
-    if (newNote.name === currentNote.name && newNote.octave === currentNote.octave) {
-      newNote.name = GenerateDifferentNoteName(newNote.name);
+    let newNote: GenericNote = {} as GenericNote;
+    // This will never be undefined due to check in InitNoteDrill(), but compiler gives issue
+    if (drillOptions.inclusiveNotes && inclusiveNoteMode) {
+      newNote = GenerateRandomInclusiveNote(drillOptions.inclusiveNotes, currentNote);
+    }
+    else {
+      newNote = GenerateRandomNote(
+        currentNote,
+        drillOptions.allowAccidentals,
+        drillOptions.minOctave,
+        drillOptions.maxOctave,
+      );
     }
 
     setCurrentNote(newNote);

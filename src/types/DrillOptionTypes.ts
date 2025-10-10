@@ -1,3 +1,5 @@
+import type { GenericNote } from "@/helpers/NoteHelpers"
+
 export type DrillProfile = {
   name: string
   id: string
@@ -17,6 +19,8 @@ export type DrillOptions = {
   allowAccidentals?: boolean;
   // Will prevent note names from appearing in drill
   excludedNoteNames?: string[]
+  // Will ONLY include notes provided in arr
+  inclusiveNotes?: GenericNote[]
   staffOptions: StaffOptions
 }
 

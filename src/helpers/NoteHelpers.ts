@@ -35,21 +35,22 @@ export class GenericNote {
 }
 
 export function GenerateRandomNote(
+  exclusiveNote: GenericNote,
   generateAccidentals: boolean = false,
   minOctave: number = 2,
   maxOctave: number = 6,
-): GenericNote {
-  const noteName = NOTE_NAMES[Math.floor(Math.random() * NOTE_NAMES.length)];
+) {
+  let noteName = NOTE_NAMES[Math.floor(Math.random() * NOTE_NAMES.length)];
 
   if (maxOctave > MAX_OCTAVE_RANGE) maxOctave = MAX_OCTAVE_RANGE;
   if (minOctave < MIN_OCTAVE_RANGE) minOctave = MIN_OCTAVE_RANGE;
 
   let octave = Math.floor(Math.random() * (maxOctave + 1));
-  let accidental = null;
-
   if (octave < minOctave) {
     octave = minOctave;
   }
+
+  let accidental = null;
   if (generateAccidentals) {
     const isGenerate = Math.floor(Math.random() * 3);
     switch (isGenerate) {
@@ -63,18 +64,32 @@ export function GenerateRandomNote(
         accidental = null
     }
   }
+
+  // Generate new note name if duplicate was found
+  if (noteName === exclusiveNote.name && octave === exclusiveNote.octave) {
+    noteName = GenerateDifferentNoteName(noteName);
+  }
+
   return { name: noteName, accidental: accidental, octave: octave } as GenericNote;
 };
 
-export function GenerateDifferentNoteName(noteName: string): string {
+function GenerateDifferentNoteName(noteName: string): string {
   const nameIdx = NOTE_NAMES.findIndex(name => name == noteName);
   if (!nameIdx) return noteName;
-  const newIdx = (nameIdx + 3) % NOTE_NAMES.length;
+  const nameIdxIncrement = Math.floor(Math.random() * NOTE_NAMES.length - 1);
+  const newIdx = (nameIdx + nameIdxIncrement) % NOTE_NAMES.length;
   return NOTE_NAMES[newIdx];
 }
 
-export function GenerateRandomOverrideNote(overrideNotes: GenericNote[]): GenericNote {
-  const newNote = overrideNotes[Math.floor(Math.random() * overrideNotes.length)];
+export function GenerateRandomInclusiveNote(inclusiveNotes: GenericNote[], exclusiveNote: GenericNote): GenericNote {
+  let newNote = inclusiveNotes[Math.floor(Math.random() * inclusiveNotes.length)];
+
+  if (newNote.name === exclusiveNote.name && newNote.octave === exclusiveNote.octave) {
+    let newIdx = inclusiveNotes.findIndex(prev => prev === newNote);
+    newIdx = (newIdx + 1) % inclusiveNotes.length;
+    newNote = inclusiveNotes[newIdx];
+  }
+
   return newNote;
 }
 
