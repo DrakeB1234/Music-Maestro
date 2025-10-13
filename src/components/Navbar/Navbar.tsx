@@ -20,7 +20,7 @@ export default function Navbar() {
       </div>
 
       <div className={styles.DeviceSetupContainer}>
-        <Button variant='filled-surface' size='md' onClick={handleOpenModal}>Device Setup</Button>
+        <Button variant='outlined' text='Device Setup' onClick={handleOpenModal} />
       </div>
     </div>
   )

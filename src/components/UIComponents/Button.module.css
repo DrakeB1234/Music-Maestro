@@ -1,59 +1,44 @@
 .button {
-  border-radius: 0.2em;
-  font-weight: 600;
+  font-size: 1rem;
+
+  padding: 0.75rem 1.3rem;
   cursor: pointer;
-  transition: all 0.2s ease;
   border: none;
+  background: none;
+  transition: background-color 0.1s ease, color 0.1s ease, border-color 0.1s ease;
 }
 
-.button:hover {
-  filter: brightness(90%);
+/* Round */
+.round-small {
+  border-radius: 6px;
 }
 
-.button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.round-full {
+  border-radius: 100px;
 }
 
-/* Variants */
-.filled-surface {
-  background-color: var(--ui-surface);
-  color: var(--color-on-surface);
-}
+/* Variants w/ color */
+.contained.primary {
+  background-color: var(--color-primary-main);
+  color: var(--color-primary-text);
 
-.filled-primary {
-  background-color: var(--ui-primary);
-  color: var(--ui-on-primary);
+  &:hover {
+    background-color: var(--color-primary-dark);
+  }
 }
 
 .outlined {
-  background-color: transparent;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  border: 1px solid var(--color-divider);
+
+  &:hover {
+    background-color: var(--palette-light-3);
+  }
 }
 
-.text {
-  background-color: transparent;
-  color: var(--ui-on-surface);
-}
+.text.neutral {
+  color: var(--palette-dark-2);
 
-.filled-surface.active {
-  background-color: var(--ui-primary);
-  color: var(--ui-on-primary);
-}
-
-/* Sizes */
-.sm {
-  padding: 0.4em;
-  border-radius: 0.2em;
-}
-
-.md {
-  padding: 0.8em 1em;
-  border-radius: 0.4em;
-}
-
-.lg {
-  padding: 1.2em 1.4em;
-  border-radius: 0.6em;
+  &:hover {
+    background-color: var(--palette-light-3);
+  }
 }

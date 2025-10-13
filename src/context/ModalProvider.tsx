@@ -28,7 +28,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
             >
               <div className={styles.CloseButtonWrapper}>
                 <div className={styles.CloseButtonContainer}>
-                  <Button variant="text" onClick={closeModal}>Close</Button>
+                  <Button variant="text" color="neutral" text="Close" onClick={closeModal} />
                 </div>
               </div>
               {modalContent}

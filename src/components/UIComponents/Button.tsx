@@ -1,31 +1,32 @@
-import React from "react";
 import styles from "./Button.module.css";
 
-type ButtonVariant = "filled-surface" | "filled-primary" | "outlined" | "text";
-type ButtonSize = "sm" | "md" | "lg";
+type ButtonVariant = "text" | "outlined" | "contained";
+type ButtonColor = "primary" | "neutral";
+type ButtonRound = "small" | "full";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
-  size?: ButtonSize;
-  active?: boolean;
+  color?: ButtonColor;
+  round?: ButtonRound;
+  text?: string;
 }
 
 export default function Button({
-  children,
-  variant = "filled-surface",
-  active = false,
-  size = "md",
-  disabled = false,
-  className,
+  variant = "contained",
+  color = "primary",
+  round = "full",
+  text = "BUTTON",
+  disabled,
   ...props
 }: ButtonProps) {
   return (
     <button
-      className={`${styles.button} ${styles[variant]} ${styles[size]} ${active ? styles.active : ''}`}
+      className={`${styles.button} ${styles[variant]} ${styles[color]} ${styles[`round-${round}`]}`}
       disabled={disabled}
       {...props}
     >
-      {children}
+      {text}
     </button>
   );
 }
+

@@ -65,7 +65,7 @@ export default function NoteDrillOptionsSelector({ SetSelectedOptions, currentOp
         <input id="accidentals" type="checkbox" checked={currentOptions.allowAccidentals} onChange={(e) => handleChange(e, "accidentals", e.target.value)} />
       </label>
       <div className={styles.ResetOptionsButtonContainer}>
-        <Button variant="filled-primary" onClick={ResetOptions}>Reset Options</Button>
+        <Button variant="outlined" text='Reset Options' onClick={ResetOptions} />
       </div>
     </div>
   )

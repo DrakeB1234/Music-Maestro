@@ -12,7 +12,7 @@ export default function MidiDeviceSelection() {
       <div>
         <h3>{isConnected ? 'Device Connected' : 'Device Disconnected'}</h3>
         {!isConnected ?
-          <Button variant='filled-surface' size='md' onClick={ConnectDevice}>Connect</Button> :
+          <Button variant='contained' text='Connect' onClick={ConnectDevice} /> :
           <></>
         }
         {error ?

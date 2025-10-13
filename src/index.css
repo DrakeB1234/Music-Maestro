@@ -36,35 +36,47 @@ img {
 }
 
 :root {
-  /* Theme */
-  --color-primary: #cf4af7;
-  --color-on-primary: #ffffff;
+  /* Fonts */
+  --font-family-base: "Montserrat", sans-serif;
 
-  --color-background: #f9f7fa;
-  --color-on-background: #23242b;
+  /* Base Palette */
+  --palette-primary: #6c5eff;
+  --palette-primary-dark: #5d3fe2;
+  --palette-accent: #14a9ff;
+  --palette-light-1: #FFFFFF;
+  --palette-light-2: #f4f3f8;
+  --palette-light-3: #e8e6ee;
+  --palette-dark-1: #52476B;
+  --palette-dark-2: #201736;
+  --palette-dark-3: #201736;
 
-  --color-surface: #ffffff;
-  --color-on-surface: #23242b;
-  --color-surface-variant: #d9d8e4;
+  /* Semantic Colors */
+  --color-primary-main: var(--palette-primary);
+  --color-primary-dark: var(--palette-primary-dark);
+  --color-primary-text: var(--palette-light-1);
 
-  --color-border: #d7d7e2;
+  --color-background-default: var(--palette-light-2);
+  --color-background-card: var(--palette-light-1);
+  --color-background-text: var(--palette-light-1);
 
-  --color-error: #e53935;
-  --color-on-error: #ffffff;
+  --color-shadow: rgba(0, 0, 0, 0.2);
 
-  --color-success: #43a047;
-  --color-on-success: #ffffff;
+  --color-text-primary: var(--palette-dark-2);
+  --color-text-secondary: var(--palette-dark-1);
 
-  --color-disabled: #9e9e9e;
+  --color-divider: var(--palette-light-4);
 
-  /* UI Components */
-  --ui-primary: var(--color-primary);
-  --ui-on-primary: var(--color-on-primary);
-  --ui-surface: var(--color-surface-variant);
-  --ui-on-surface: var(--color-on-surface);
-  --ui-border: var(--color-border);
+  /* Status colors */
+  --color-success-main: #16a34a;
+  --color-error-main: #dc2626;
+  --color-warning-main: #f59e0b;
+
 }
 
 html {
-  background-color: var(--color-background);
+  background-color: var(--color-background-default);
+}
+
+body {
+  font-family: var(--font-family-base);
 }

@@ -1,13 +1,13 @@
-.ProfileItemsWrapper {
+.PresetsItemsWrapper {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
 }
 
-.ProfileItemContainer {
+.PresetsItemContainer {
   display: flex;
   padding: 1em 1.2em;
-  border: 1px solid black;
+  border: 1px solid var();
   cursor: pointer;
 }
 
@@ -15,7 +15,7 @@
   background-color: blue;
 }
 
-.UseProfileButtonContainer {
+.UsePresetsButtonContainer {
   display: flex;
   justify-content: center;
   padding-top: 1em;

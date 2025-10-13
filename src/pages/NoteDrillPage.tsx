@@ -4,17 +4,17 @@ import { useRef, useState } from "react";
 import styles from './NoteDrillPage.module.css';
 import Button from "@/components/UIComponents/Button";
 import NoteDrillOptionsSelector from "@/components/NoteDrillOptionsSelector/NoteDrillOptionsSelector";
-import NoteDrillProfileSelector from "@/components/NoteDrillProfileSelection/NoteDrillProfileSelector";
+import NoteDrillPresetSelector from "@/components/NoteDrillPresetsSelection/NoteDrillPresetsSelector";
 import NoteDrill from "@/components/NoteDrill/NoteDrill";
 
 // Null represents nothing selected, so show default
-type SelectedOptionsComponent = "DrillOptions" | "DrillProfile" | "Default"
+type SelectedOptionsComponent = "DrillOptions" | "DrillPreset" | "Default"
 
 export default function NoteDrillPage() {
 
   // 
-  // Custom Options are manually set options from the user. The alternative to this is profile options. Which are
-  // options that are set by preset profile data. Options mode is used to determine where the options was retrieved from
+  // Custom Options are manually set options from the user. The alternative to this is Preset options. Which are
+  // options that are set by Preset data. Options mode is used to determine where the options was retrieved from
   // so that further processing can be made depending on what is set.
   //  
 
@@ -25,7 +25,7 @@ export default function NoteDrillPage() {
   const [toggleSelectedOptions, SetToggleSelectedOptions] = useState<SelectedOptionsComponent>("Default");
   const [toggleStartDrill, SetToggleStartDrill] = useState<Boolean>(false);
 
-  const selectedProfileOptions = useRef<DrillOptions | null>(null);
+  const selectedPresetOptions = useRef<DrillOptions | null>(null);
   const optionsMode = useRef<DrillKind>("custom");
   const drillOptions = useRef<DrillOptions>({} as DrillOptions);
 
@@ -38,11 +38,11 @@ export default function NoteDrillPage() {
     SetToggleStartDrill(true);
   }
 
-  const HandleDrillStartProfileOptions = () => {
-    if (!selectedProfileOptions.current) return;
+  const HandleDrillStartPresetOptions = () => {
+    if (!selectedPresetOptions.current) return;
     ClearMidiInput();
-    drillOptions.current = selectedProfileOptions.current;
-    optionsMode.current = "profile";
+    drillOptions.current = selectedPresetOptions.current;
+    optionsMode.current = "preset";
     SetToggleStartDrill(true);
   }
 
@@ -59,15 +59,15 @@ export default function NoteDrillPage() {
             <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStartCustomOptions}>
               <NoteDrillOptionsSelector SetSelectedOptions={SetSelectedDrillOptions} currentOptions={selectedCustomOptions} />
             </DrillSelectionWrapper>
-            : toggleSelectedOptions === "DrillProfile" ?
-              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStartProfileOptions}>
-                <NoteDrillProfileSelector optionsRef={selectedProfileOptions} />
+            : toggleSelectedOptions === "DrillPreset" ?
+              <DrillSelectionWrapper onBack={() => SetToggleSelectedOptions("Default")} onStart={HandleDrillStartPresetOptions}>
+                <NoteDrillPresetSelector optionsRef={selectedPresetOptions} />
               </DrillSelectionWrapper>
               :
               <div className={styles.SelectorsParent}>
                 <div className={styles.SelectorsWrapper}>
-                  <div className={styles.SelectorContainer} onClick={() => SetToggleSelectedOptions("DrillProfile")}>
-                    <h3>Profile</h3>
+                  <div className={styles.SelectorContainer} onClick={() => SetToggleSelectedOptions("DrillPreset")}>
+                    <h3>Preset</h3>
                     <h3>Use preset options to test your skills</h3>
                     <h3>Tracks progress</h3>
                   </div>
@@ -78,7 +78,7 @@ export default function NoteDrillPage() {
                   </div>
                 </div>
                 <div className={styles.StartDrillContainer}>
-                  <Button variant="filled-primary" onClick={HandleDrillStartCustomOptions}>Quick Start Drill</Button>
+                  <Button text="Quick Start Drill" onClick={HandleDrillStartCustomOptions} />
                   <h3>*Uses last used drill options</h3>
                 </div>
               </div>
@@ -99,9 +99,9 @@ interface DrillSelectionWrapperProps {
 function DrillSelectionWrapper({ children, onBack, onStart }: DrillSelectionWrapperProps) {
   return (
     <div className={styles.DrillSelectionWrapper}>
-      <Button onClick={onBack}>Back</Button>
+      <Button variant="outlined" text="Back" onClick={onBack} />
       {children}
-      <Button variant="filled-primary" onClick={onStart}>Start Drill</Button>
+      <Button text="Drill Start" onClick={onStart} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { GenericNote } from "@/helpers/NoteHelpers"
 
-export type DrillProfile = {
+export type DrillPreset = {
   name: string
   id: string
   drillOptions: DrillOptions
@@ -10,7 +10,7 @@ export type DrillCustomOptions = {
   drillOptions: DrillOptions
 }
 
-export type DrillKind = "custom" | "profile"
+export type DrillKind = "custom" | "preset"
 
 export type DrillOptions = {
   minOctave?: number;
