@@ -1,5 +1,14 @@
-.MidiDeviceSelectionWrapper {
+.ContentContainer {
+  padding: var(--spacing-base);
+
+  &>p {
+    color: var(--color-error);
+    margin-top: var(--spacing-small);
+  }
+}
+
+.ButtonContainer {
   display: flex;
-  flex-direction: column;
-  padding: 1em;
+  justify-content: flex-end;
+  padding: var(--spacing-base);
 }

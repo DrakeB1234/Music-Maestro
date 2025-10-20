@@ -1,11 +1,17 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  type ReactNode,
+  useCallback,
+} from "react";
 import { createPortal } from "react-dom";
 import styles from "./ModalProvider.module.css";
-import Button from "@/components/UIComponents/Button";
 
 type ModalContextType = {
   openModal: (content: ReactNode) => void;
   closeModal: () => void;
+  isOpen: boolean;
 };
 
 const ModalContext = createContext<ModalContextType | null>(null);
@@ -13,29 +19,34 @@ const ModalContext = createContext<ModalContextType | null>(null);
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
 
-  const openModal = (content: ReactNode) => setModalContent(content);
-  const closeModal = () => setModalContent(null);
+  const openModal = useCallback((content: ReactNode) => {
+    setModalContent(content);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setModalContent(null);
+  }, []);
+
+  const isOpen = modalContent !== null;
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal }}>
+    <ModalContext.Provider value={{ openModal, closeModal, isOpen }}>
       {children}
-      {modalContent &&
-        createPortal(
-          <div className={styles.backdrop} onClick={closeModal}>
-            <div
-              className={styles.modal}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className={styles.CloseButtonWrapper}>
-                <div className={styles.CloseButtonContainer}>
-                  <Button variant="text" color="neutral" text="Close" onClick={closeModal} />
-                </div>
-              </div>
-              {modalContent}
-            </div>
-          </div>,
-          document.body // ensures modal is above everything
-        )}
+
+      {createPortal(
+        <div
+          className={`${styles.backdrop} ${isOpen ? styles.open : ""}`}
+          onClick={closeModal}
+        >
+          <div
+            className={`${styles.modal} ${isOpen ? styles.open : ""}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {modalContent}
+          </div>
+        </div>,
+        document.body
+      )}
     </ModalContext.Provider>
   );
 }

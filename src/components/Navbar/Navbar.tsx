@@ -1,7 +1,9 @@
 import { useModal } from '@/context/ModalProvider';
-import Button from '../UIComponents/Button';
 import styles from './Navbar.module.css';
 import MidiDeviceSelection from '../MidiDeviceSelection/MidiDeviceSelection';
+import { MenuIcon, MusicNoteIcon } from '../Icons/Icons';
+import Button from '../UIComponents/Button';
+import IconWrapper from '../UIComponents/IconWrapper';
 
 export default function Navbar() {
 
@@ -15,13 +17,16 @@ export default function Navbar() {
 
   return (
     <div className={styles.NavbarWrapper}>
-      <div className={`${styles.TitleContainer} ${styles.NavbarPadding}`}>
-        <h3>Note App</h3>
+
+      <div className={styles.SizeWrapper}>
+        <IconWrapper icon={<MusicNoteIcon />} />
+        <div className={styles.TitleContainer}>
+          <h1 className='body'>Sightreading</h1>
+        </div>
+        <Button onClick={handleOpenModal} icon={<MenuIcon />} variant='outlined-secondary' />
       </div>
 
-      <div className={styles.DeviceSetupContainer}>
-        <Button variant='outlined' text='Device Setup' onClick={handleOpenModal} />
-      </div>
     </div>
+
   )
 }

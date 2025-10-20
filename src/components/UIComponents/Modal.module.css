@@ -1,0 +1,14 @@
+.headerContainer {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-2xsmall) var(--spacing-base);
+  border-bottom: 1px solid var(--color-border);
+
+  &>h1 {
+    margin-left: var(--spacing-2xsmall);
+  }
+
+  &>button {
+    margin-left: auto;
+  }
+}

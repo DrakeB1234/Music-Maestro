@@ -1,0 +1,14 @@
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: var(--min-button-size);
+  width: var(--min-button-size);
+  background-color: var(--color-primary-surface);
+  border-radius: var(--radius-full);
+
+  &>svg {
+    fill: var(--color-primary);
+  }
+}

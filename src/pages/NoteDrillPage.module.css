@@ -1,53 +1,64 @@
 .NoteDrillPageWrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1em;
-}
-
-.SelectorsParent {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
 }
 
-.SelectorsWrapper {
+.SizeWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--max-app-width);
+  padding: var(--spacing-large) var(--spacing-base);
+}
+
+.HeaderContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.CardWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-base);
+  padding-top: var(--spacing-base);
+
+  &>div {
+    flex: 1 1 15.625rem;
+  }
+}
+
+.CardContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: stretch;
+
+  &>:last-child {
+    margin-top: auto;
+  }
+}
+
+.IconContainer {
   display: flex;
   justify-content: center;
-  max-width: 800px;
+  padding: 0 var(--spacing-base);
+  padding-top: var(--spacing-large);
 }
 
-.SelectorContainer {
-  flex: 1;
-  cursor: pointer;
-  border: 1px solid black;
-  padding: 1em;
-  transition: background-color 0.2s ease;
-
-  &:first-child {
-    border-radius: 0.5em 0 0 0.5em;
-    border-right: 0;
-  }
-
-  &:nth-child(2n) {
-    border-radius: 0 0.5em 0.5em 0;
-  }
-
-  &:hover {
-    background-color: var(--color-primary);
-  }
-}
-
-.StartDrillContainer {
+.TextContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3em;
+  padding: var(--spacing-base) var(--spacing-base);
+  text-align: center;
+
+  &>h2 {
+    margin-bottom: var(--spacing-2xsmall);
+  }
 }
 
-.DrillSelectionWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2em;
+.ButtonContainer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-base);
 }

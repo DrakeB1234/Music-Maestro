@@ -1,15 +1,26 @@
 .NavbarWrapper {
   display: flex;
   align-items: center;
-  height: 54px;
-  overflow: hidden;
-  background-color: var(--color-background-card);
-  padding: 0 1em;
+  justify-content: center;
+  background-color: var(--color-app-surface);
+  padding: var(--spacing-2xsmall) 0;
+  border-bottom: 2px solid var(--color-border-light);
+}
+
+.SizeWrapper {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-small);
+  width: 100%;
+  max-width: var(--max-app-width);
+  padding: 0 var(--spacing-base);
+
+  &>:last-child {
+    margin-left: auto;
+  }
 }
 
 .TitleContainer {
   display: flex;
-  flex-grow: 1;
   align-items: center;
-  padding: 0 0.5em;
 }

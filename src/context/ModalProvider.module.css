@@ -1,46 +1,32 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--color-modal-background);
   display: flex;
   justify-content: center;
-  z-index: 10;
-  padding: 1em;
+  align-items: flex-start;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .modal {
-  position: relative;
-  background: var(--ui-background, #fff);
-  border: 1px solid var(--ui-border, #000);
-  color: var(--ui-on-surface, #000);
-  padding: 0.3rem;
+  padding: var(--spacing-base);
+  width: 100%;
+  max-width: 31rem;
   border-radius: 0.5rem;
-  min-width: 400px;
-  max-width: 90vw;
-  height: fit-content;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.15s ease-out;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: transform 0.2s ease-out, opacity 0.20s ease-out;
 }
 
-.CloseButtonWrapper {
-  margin-bottom: 0.3em;
-}
-
-.CloseButtonContainer {
-  position: absolute;
-  display: flex;
-  right: 0;
-  top: 0;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.modal.open {
+  transform: scale(1);
+  opacity: 1;
 }

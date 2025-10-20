@@ -10,10 +10,10 @@ type Props = {
 export default function NoteDrillPresetselector({ optionsRef }: Props) {
 
   const [availablePresets, SetAvailablePresets] = useState<DrillPreset[] | null>(null);
-  const [selectedPresetsId, SetSelectedPresetsId] = useState<string | null>(null);
+  const [selectedPresetId, SetSelectedPresetId] = useState<string | null>(null);
 
   function HandlePresetselect(PresetsId: string) {
-    SetSelectedPresetsId(PresetsId)
+    SetSelectedPresetId(PresetsId)
 
     const Presets = availablePresets?.find(e => e.id === PresetsId);
     if (!Presets) return;
@@ -34,7 +34,7 @@ export default function NoteDrillPresetselector({ optionsRef }: Props) {
         <div className={styles.PresetsItemsWrapper}>
           {availablePresets.map((e) => (
             <div key={e.id} onClick={() => HandlePresetselect(e.id)}
-              className={`${styles.PresetsItemContainer} ${selectedPresetsId == e.id ? styles.selected : ''}`}
+              className={`${styles.PresetsItemContainer} ${selectedPresetId == e.id ? styles.selected : ''}`}
             >
               <h3>{e.name}</h3>
             </div>

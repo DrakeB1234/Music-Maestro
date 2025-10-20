@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 html {
   box-sizing: border-box;
-  font-size: 16px;
 }
 
 *,
@@ -21,8 +22,9 @@ ol,
 ul {
   margin: 0;
   padding: 0;
-  font-weight: normal;
-  color: var(--color-on-background);
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
 }
 
 ol,
@@ -36,47 +38,141 @@ img {
 }
 
 :root {
-  /* Fonts */
-  --font-family-base: "Montserrat", sans-serif;
+  /* Spacing */
+  --spacing-2xsmall: 0.25rem;
+  --spacing-xsmall: 0.5rem;
+  --spacing-small: 0.75rem;
+  --spacing-base: 1rem;
+  --spacing-large: 1.5rem;
+  --spacing-xlarge: 2rem;
+  --spacing-2xlarge: 3rem;
 
-  /* Base Palette */
-  --palette-primary: #6c5eff;
-  --palette-primary-dark: #5d3fe2;
-  --palette-accent: #14a9ff;
-  --palette-light-1: #FFFFFF;
-  --palette-light-2: #f4f3f8;
-  --palette-light-3: #e8e6ee;
-  --palette-dark-1: #52476B;
-  --palette-dark-2: #201736;
-  --palette-dark-3: #201736;
+  /* Font families */
+  --font-family: "Inter", sans-serif;
 
-  /* Semantic Colors */
-  --color-primary-main: var(--palette-primary);
-  --color-primary-dark: var(--palette-primary-dark);
-  --color-primary-text: var(--palette-light-1);
+  /* Font weights */
+  --weight-base: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
 
-  --color-background-default: var(--palette-light-2);
-  --color-background-card: var(--palette-light-1);
-  --color-background-text: var(--palette-light-1);
+  /* Font sizes */
+  --font-size-xsmall: 0.75rem;
+  --font-size-small: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-large: 1.125rem;
+  --font-size-xlarge: 1.25rem;
+  --font-size-2xlarge: 1.5rem;
+  --font-size-3xlarge: 2rem;
 
-  --color-shadow: rgba(0, 0, 0, 0.2);
+  /* palettes */
+  --palette-black: #000000;
+  --palette-white: #ffffff;
 
-  --color-text-primary: var(--palette-dark-2);
-  --color-text-secondary: var(--palette-dark-1);
+  --palette-grey-100: #F2F3F5;
+  --palette-grey-200: #E4E6EB;
+  --palette-grey-300: #D0D4DB;
+  --palette-grey-400: #99A1B0;
+  --palette-grey-500: #6B7282;
+  --palette-grey-600: #4A5566;
+  --palette-grey-700: #374254;
+  --palette-grey-800: #1E2838;
+  --palette-grey-900: #101829;
 
-  --color-divider: var(--palette-light-4);
+  --palette-blue-100: #E6F1FF;
+  --palette-blue-200: #BFDCFF;
+  --palette-blue-300: #8FC5FF;
+  --palette-blue-400: #8FC5FF;
+  --palette-blue-500: #2B80FF;
+  --palette-blue-600: #145EFC;
+  --palette-blue-700: #1345DD;
+  --palette-blue-800: #1433A4;
+  --palette-blue-900: #102974;
 
-  /* Status colors */
-  --color-success-main: #16a34a;
-  --color-error-main: #dc2626;
-  --color-warning-main: #f59e0b;
+  --palette-red-500: #CA4848;
 
+  /* application vars */
+  --max-app-width: 1000px;
+  --min-button-size: 40px;
+
+  --radius-base: 0.5rem;
+  --radius-large: 1rem;
+  --radius-full: 10rem;
+
+  --transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  --ui-font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
+
+  --color-text: var(--palette-grey-900);
+  --color-text-light: var(--palette-grey-600);
+
+  --color-primary: var(--palette-blue-500);
+  --color-primary-hover: var(--palette-blue-600);
+  --color-primary-surface: var(--palette-blue-100);
+  --color-primary-surface-hover: var(--palette-blue-200);
+  --color-onprimary: var(--palette-white);
+
+  --color-app-background: #FAFCFF;
+  --color-app-hover: var(--palette-grey-100);
+  --color-app-surface: var(--palette-white);
+
+  --color-border-dark: var(--palette-grey-500);
+  --color-border: var(--palette-grey-300);
+  --color-border-light: var(--palette-grey-100);
+
+  --color-error: var(--palette-red-500);
+
+  --color-modal-background: #00000070;
+
+  --elevation-light: 0 0.125rem 0 0 #00000020;
+  --elevation-medium: 0 0.125rem 0 0 #00000040;
 }
 
 html {
-  background-color: var(--color-background-default);
+  font-size: 16px;
 }
 
 body {
-  font-family: var(--font-family-base);
+  background-color: var(--color-app-background);
+}
+
+/* Font defaults / classes */
+
+h1 {
+  font: var(--weight-bold) var(--font-size-large)/1.4 var(--font-family);
+  color: var(--color-text);
+}
+
+h2 {
+  font: var(--weight-bold) var(--font-size-base)/1.4 var(--font-family);
+  color: var(--color-text);
+}
+
+p {
+  font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
+  color: var(--color-text);
+}
+
+.heading {
+  font: var(--weight-bold) var(--font-size-large)/1.4 var(--font-family);
+  color: var(--color-text);
+}
+
+.heading-secondary {
+  font: var(--weight-bold) var(--font-size-base)/1.4 var(--font-family);
+  color: var(--color-text);
+}
+
+.body {
+  font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
+  color: var(--color-text);
+}
+
+.body-secondary {
+  font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
+  color: var(--color-text-light);
+}
+
+.caption {
+  font: var(--weight-base) var(--font-size-small)/1.4 var(--font-family);
+  color: var(--color-text-light);
 }

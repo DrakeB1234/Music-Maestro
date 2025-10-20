@@ -1,29 +1,25 @@
-import styles from './MidiDeviceSelection.module.css';
-import Button from '../UIComponents/Button';
 import { useMidiProvider } from "@/context/MidiProvider";
-import { PrintGenericNote } from '@/helpers/NoteHelpers';
+import Modal from '../UIComponents/Modal';
+import { LinkIcon } from "../Icons/Icons";
+import styles from './MidiDeviceSelection.module.css';
+import Button from "../UIComponents/Button";
 
 export default function MidiDeviceSelection() {
 
   const { isConnected, ConnectDevice, error, lastNotePlayed } = useMidiProvider();
 
   return (
-    <div className={styles.MidiDeviceSelectionWrapper}>
-      <div>
-        <h3>{isConnected ? 'Device Connected' : 'Device Disconnected'}</h3>
-        {!isConnected ?
-          <Button variant='contained' text='Connect' onClick={ConnectDevice} /> :
-          <></>
-        }
+    <Modal headerText="Connect Device" icon={<LinkIcon />}>
+      <div className={styles.ContentContainer}>
+        <h2 className="body-secondary">Plug in your keyboard or controller to practice!</h2>
         {error ?
-          <h4>Error: {error}</h4> :
-          <></>
-        }
-        {lastNotePlayed ?
-          <h4>Played {PrintGenericNote(lastNotePlayed)}</h4> :
+          <p>Error: {error}</p> :
           <></>
         }
       </div>
-    </div>
+      <div className={styles.ButtonContainer}>
+        <Button text="Connect Device" />
+      </div>
+    </Modal>
   )
 }

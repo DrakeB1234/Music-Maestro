@@ -1,0 +1,17 @@
+.HomePageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--navbar-height);
+  background-color: var(--palette-white);
+  border-bottom: 2px solid var(--palette-grey-200);
+}
+
+.SizeWrapper {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-small);
+  width: 100%;
+  max-width: var(--max-app-width);
+  padding: 0 var(--spacing-base);
+}
