@@ -23,7 +23,7 @@ export default function Navbar() {
         <div className={styles.TitleContainer}>
           <h1 className='body'>Sightreading</h1>
         </div>
-        <Button onClick={handleOpenModal} icon={<MenuIcon />} variant='outlined-secondary' />
+        <Button onClick={handleOpenModal} icon={<MenuIcon />} variant='outlined' />
       </div>
 
     </div>

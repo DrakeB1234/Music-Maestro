@@ -22,8 +22,8 @@ export default function Modal({
     <Card padding="none">
       <div className={styles.headerContainer}>
         {icon}
-        <h1>{headerText}</h1>
-        <Button onClick={closeModal} icon={<CloseIcon color="var(--color-text-light)" />} variant="outlined-secondary" />
+        <h1 className="truncate-overflow-text">{headerText}</h1>
+        <Button onClick={closeModal} icon={<CloseIcon color="var(--color-text-light)" />} variant="text" />
       </div>
       {children}
     </Card>

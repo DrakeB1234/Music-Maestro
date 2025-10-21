@@ -6,7 +6,7 @@ export default function BackButtonContainer({ onBack }: { onBack: () => void }) 
     <div className={styles.BackButtonWrapper}>
       <div onClick={onBack} className={styles.BackButtonContainer}>
         <BackIcon />
-        <h2>Back</h2>
+        <h2 className='body'>Back</h2>
       </div>
     </div>
   )

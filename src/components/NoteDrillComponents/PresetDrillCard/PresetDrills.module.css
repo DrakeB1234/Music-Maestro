@@ -2,3 +2,40 @@
   display: flex;
   flex-direction: column;
 }
+
+.CardContainer {
+  display: grid;
+  gap: var(--spacing-base);
+  padding-top: var(--spacing-base);
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.TextContainer {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-base);
+  padding-bottom: 0;
+  margin-bottom: var(--spacing-2xsmall);
+}
+
+.HeaderContainer {
+  display: flex;
+  gap: var(--spacing-2xsmall);
+}
+
+.DifficultyButtonsContainer {
+  padding: var(--spacing-xsmall) var(--spacing-base);
+}
+
+.PracticeButtonContainer {
+  display: flex;
+  gap: var(--spacing-small);
+  padding: var(--spacing-base);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 600px) {
+  .CardContainer {
+    grid-template-columns: 1fr;
+  }
+}

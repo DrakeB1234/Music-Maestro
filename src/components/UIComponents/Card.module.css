@@ -5,6 +5,7 @@
   background-color: var(--color-app-surface);
   width: 100%;
   box-shadow: var(--elevation-light);
+  overflow: hidden;
 }
 
 .clickable {

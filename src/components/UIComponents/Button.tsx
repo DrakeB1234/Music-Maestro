@@ -1,6 +1,6 @@
 import styles from "./Button.module.css";
 
-type ButtonVariant = "text" | "outlined" | "outlined-secondary" | "contained" | "contained-secondary";
+type ButtonVariant = "text" | "outlined" | "contained" | "contained-secondary";
 type ButtonRound = "small" | "full";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

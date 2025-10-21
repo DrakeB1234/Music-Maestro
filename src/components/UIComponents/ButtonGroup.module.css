@@ -1,0 +1,7 @@
+.ButtonGroupWrapper {
+  display: flex;
+}
+
+.ButtonGroupActive {
+  background-color: var(--color-app-background);
+}

@@ -30,7 +30,7 @@ export function MusicNoteIcon({ size = 24, color = DEFAULT_COLOR }) {
     </svg>
   );
 }
-export function LyricsIcon({ size = 24, color = DEFAULT_COLOR }) {
+export function QueueMusicIcon({ size = 24, color = DEFAULT_COLOR }) {
   return (
     <svg
       width={size}
@@ -40,7 +40,37 @@ export function LyricsIcon({ size = 24, color = DEFAULT_COLOR }) {
     >
       <path
         color={color}
-        d="M240-400h160v-80H240v80Zm520-80q-50 0-85-35t-35-85q0-50 35-85t85-35q11 0 20.5 2t19.5 5v-207h160v80h-80v240q0 50-35 85t-85 35Zm-520-40h280v-80H240v80Zm0-120h280v-80H240v80Zm0 400L80-80v-720q0-33 23.5-56.5T160-880h440q33 0 56.5 23.5T680-800v17q-55 24-87.5 73.5T560-600q0 60 32.5 109.5T680-417v97q0 33-23.5 56.5T600-240H240Z"
+        d="M640-160q-50 0-85-35t-35-85q0-50 35-85t85-35q11 0 21 1.5t19 6.5v-328h200v80H760v360q0 50-35 85t-85 35ZM120-320v-80h320v80H120Zm0-160v-80h480v80H120Zm0-160v-80h480v80H120Z"
+      />
+    </svg>
+  );
+}
+export function PlaylistIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path
+        color={color}
+        d="m562-225 199-199-57-56-142 142-56-57-57 57 113 113ZM280-360h120v-80H280v80Zm0-120h280v-80H280v80Zm0-120h280v-80H280v80ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
+      />
+    </svg>
+  );
+}
+export function PlayIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path
+        color={color}
+        d="M320-200v-560l440 280-440 280Z"
       />
     </svg>
   );

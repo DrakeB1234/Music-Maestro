@@ -3,8 +3,7 @@ import styles from './NoteDrillPage.module.css';
 import Card from "@/components/UIComponents/Card";
 import Button from "@/components/UIComponents/Button";
 import IconWrapper from "@/components/UIComponents/IconWrapper";
-import { LyricsIcon, TuneIcon } from "@/components/Icons/Icons";
-import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
+import { QueueMusicIcon, TuneIcon } from "@/components/Icons/Icons";
 import PresetDrills from "@/components/NoteDrillComponents/PresetDrillCard/PresetDrills";
 
 // Null represents nothing selected, so show default
@@ -12,7 +11,7 @@ type ActiveComponent = "main" | "preset" | "custom"
 
 export default function NoteDrillPage() {
 
-  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("main");
+  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("preset");
   const togglePresetComponent = () => setActiveComponent("preset");
   const toggleCustomComponent = () => setActiveComponent("custom");
   const backToMain = () => setActiveComponent("main");
@@ -48,11 +47,11 @@ function MainComponent({
       <div className={styles.HeaderContainer}>
         <h1 className="heading-secondary">Drill Practice</h1>
       </div>
-      <div className={styles.CardWrapper}>
+      <div className={styles.CardContainer}>
         <Card onClick={togglePresetComponent} padding="none">
           <div className={styles.CardContent}>
             <div className={styles.IconContainer}>
-              <IconWrapper icon={<LyricsIcon />} />
+              <IconWrapper icon={<QueueMusicIcon />} />
             </div>
             <div className={styles.TextContainer}>
               <h2 className="heading">Preset Drills</h2>
