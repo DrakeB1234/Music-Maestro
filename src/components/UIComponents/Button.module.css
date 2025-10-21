@@ -35,7 +35,7 @@
   }
 
   &:active {
-    top: 0.125rem;
+    top: 1px;
     box-shadow: none;
   }
 }
@@ -50,8 +50,17 @@
   }
 }
 
+.outlined.active {
+  color: var(--color-onprimary);
+  background-color: var(--color-primary);
+}
+
 .text {
   &:hover {
     background-color: var(--color-app-hover);
   }
+}
+
+.text.active {
+  background-color: var(--color-app-hover);
 }

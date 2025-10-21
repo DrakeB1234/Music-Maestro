@@ -45,7 +45,8 @@ img {
   --spacing-base: 1rem;
   --spacing-large: 1.5rem;
   --spacing-xlarge: 2rem;
-  --spacing-2xlarge: 3rem;
+  --spacing-2xlarge: 3.5rem;
+  --spacing-3xlarge: 5rem;
 
   /* Font families */
   --font-family: "Inter", sans-serif;

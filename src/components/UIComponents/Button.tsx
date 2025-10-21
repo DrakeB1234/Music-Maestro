@@ -9,6 +9,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   fullWidth?: boolean;
   icon?: React.ReactNode;
+  active?: boolean
 }
 
 export default function Button({
@@ -18,11 +19,12 @@ export default function Button({
   fullWidth = false,
   icon = null,
   disabled,
+  active,
   ...props
 }: ButtonProps) {
   return (
     <button
-      className={`${styles.button} ${styles[variant]} ${styles[`round-${round}`]} ${fullWidth ? styles.fullWidth : ''}`}
+      className={`${styles.button} ${styles[variant]} ${active ? styles.active : ''} ${styles[`round-${round}`]} ${fullWidth ? styles.fullWidth : ''} `}
       disabled={disabled}
       {...props}
     >

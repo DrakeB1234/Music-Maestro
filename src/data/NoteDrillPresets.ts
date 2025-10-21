@@ -1,9 +1,10 @@
-import type { DrillProfile } from "@/types/DrillOptionTypes";
+import type { DrillPreset } from "@/types/DrillOptionTypes";
 
-export const defaultDrillPresetsData: DrillProfile[] = [
+export const defaultDrillPresetsData: DrillPreset[] = [
   {
     name: "Treble Landmark Notes",
     id: "3b1d93ed-0358-4fe6-979e-85a375de6478",
+    description: "C/G notes for learning landmark system",
     drillOptions: {
       timer: 999,
       allowAccidentals: false,
@@ -21,6 +22,7 @@ export const defaultDrillPresetsData: DrillProfile[] = [
   {
     name: "Bass Landmark Notes",
     id: "ba032c09-fcc8-461a-b58e-74d492e35320",
+    description: "C/F notes for learning landmark system",
     drillOptions: {
       timer: 999,
       allowAccidentals: false,

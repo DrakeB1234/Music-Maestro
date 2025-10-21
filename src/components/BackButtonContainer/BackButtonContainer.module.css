@@ -1,11 +1,3 @@
 .BackButtonWrapper {
-  display: flex;
-}
-
-.BackButtonContainer {
-  display: flex;
-  cursor: pointer;
-  gap: var(--spacing-xsmall);
-  padding-right: var(--spacing-base);
-  margin-bottom: var(--spacing-base);
+  margin-bottom: var(--spacing-xsmall);
 }

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import StaffGeneration from "../StaffGeneration/StaffGeneration";
+import StaffGeneration from "@components/StaffGeneration/StaffGeneration";
 import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote, GenerateRandomInclusiveNote } from "@helpers/NoteHelpers";
 import styles from './NoteDrill.module.css';
-import Button from "../UIComponents/Button";
+import Button from "@components/UIComponents/Button";
 import useTimerRef from "@/hooks/useTimerRef";
 import type { DrillOptions } from "@/types/DrillOptionTypes";
 import { useMidiProvider } from "@/context/MidiProvider";
-import NoteButtonInput from "../NoteButtonInput/NoteButtonInput";
+import NoteButtonInput from "@components/NoteButtonInput/NoteButtonInput";
 
 type Props = {
   drillOptions: DrillOptions;
@@ -114,12 +114,12 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
 
   return (
     <div className={styles.NoteDrillWrapper}>
-      <Button onClick={HandleQuit}>Quit</Button>
+      <Button onClick={HandleQuit} variant="outlined" text="Quit" />
       <div>
         <TimerDisplay duration={drillOptions.timer || 60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
       </div>
       <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
-      <Button size="sm" onClick={GenerateNote}>Generate Random Note</Button>
+      <Button onClick={GenerateNote} text="Generate Random Note" variant="outlined" />
       <h4>Last Note Played: {lastGeneralNotePlayed ? PrintGenericNote(lastGeneralNotePlayed) : ''}</h4>
       <h4>Current Note: {PrintGenericNote(currentNote)}</h4>
       <h4>Total Correct Notes: {totalCorrectNotesPlayed}</h4>

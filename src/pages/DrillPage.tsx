@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from './NoteDrillPage.module.css';
+import styles from './DrillPage.module.css';
 import Card from "@/components/UIComponents/Card";
 import Button from "@/components/UIComponents/Button";
 import IconWrapper from "@/components/UIComponents/IconWrapper";
@@ -9,9 +9,9 @@ import PresetDrills from "@/components/NoteDrillComponents/PresetDrillCard/Prese
 // Null represents nothing selected, so show default
 type ActiveComponent = "main" | "preset" | "custom"
 
-export default function NoteDrillPage() {
+export default function DrillPage() {
 
-  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("preset");
+  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("main");
   const togglePresetComponent = () => setActiveComponent("preset");
   const toggleCustomComponent = () => setActiveComponent("custom");
   const backToMain = () => setActiveComponent("main");
@@ -45,7 +45,7 @@ function MainComponent({
   return (
     <>
       <div className={styles.HeaderContainer}>
-        <h1 className="heading-secondary">Drill Practice</h1>
+        <h1>Drill Practice</h1>
       </div>
       <div className={styles.CardContainer}>
         <Card onClick={togglePresetComponent} padding="none">

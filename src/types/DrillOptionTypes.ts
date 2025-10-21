@@ -3,6 +3,7 @@ import type { GenericNote } from "@/helpers/NoteHelpers"
 export type DrillPreset = {
   name: string
   id: string
+  description: string
   drillOptions: DrillOptions
 }
 

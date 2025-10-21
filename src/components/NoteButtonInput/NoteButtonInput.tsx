@@ -35,12 +35,12 @@ export default function NoteButtonInput({ SetNotePressed: NotePressed }: Props) 
     <div className={styles.NoteButtonInputWrapper}>
       <div className={styles.ButtonsWrapper}>
         <div className={styles.AccidentalButtonsContainer}>
-          <Button active={activeAccidental === "#" ? true : false} onClick={() => HandleAccidentalButtonPressed("#")}>#</Button>
-          <Button active={activeAccidental === "b" ? true : false} onClick={() => HandleAccidentalButtonPressed("b")}>b</Button>
+          <Button active={activeAccidental === "#" ? true : false} onClick={() => HandleAccidentalButtonPressed("#")} variant="outlined" text="#" />
+          <Button active={activeAccidental === "b" ? true : false} onClick={() => HandleAccidentalButtonPressed("b")} variant="outlined" text="b" />
         </div>
         <div className={styles.NoteButtonsContainer}>
           {NOTE_NAMES.map((e: string) => (
-            <Button key={e} onClick={() => HandleNoteButtonPressed(e)}>{e}</Button>
+            <Button key={e} onClick={() => HandleNoteButtonPressed(e)} variant="outlined" text={e} />
           ))}
         </div>
       </div>

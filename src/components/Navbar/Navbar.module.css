@@ -20,6 +20,12 @@
   }
 }
 
+.IconTextContainer {
+  display: flex;
+  gap: var(--spacing-small);
+  cursor: pointer;
+}
+
 .TitleContainer {
   display: flex;
   align-items: center;
