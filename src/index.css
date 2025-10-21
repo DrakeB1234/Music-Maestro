@@ -96,7 +96,7 @@ img {
 
   --radius-base: 0.5rem;
   --radius-large: 1rem;
-  --radius-full: 10rem;
+  --radius-full: 99rem;
 
   --transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
@@ -129,10 +129,19 @@ img {
 
 html {
   font-size: 16px;
+  font-family: var(--font-family);
 }
 
 body {
   background-color: var(--color-app-background);
+}
+
+.size-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--max-app-width);
+  padding: var(--spacing-large) var(--spacing-base);
 }
 
 /* Font defaults / classes */

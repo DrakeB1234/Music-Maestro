@@ -17,7 +17,7 @@
 }
 
 .modal {
-  padding: var(--spacing-base);
+  padding: var(--spacing-small);
   width: 100%;
   max-width: 31rem;
   border-radius: 0.5rem;

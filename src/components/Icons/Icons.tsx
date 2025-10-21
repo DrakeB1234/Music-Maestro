@@ -1,4 +1,4 @@
-const DEFAULT_COLOR: string = "var(--palette-grey-900)"
+const DEFAULT_COLOR: string = "var(--color-text)"
 
 export function MenuIcon({ size = 24, color = DEFAULT_COLOR }) {
   return (
@@ -90,3 +90,19 @@ export function LinkIcon({ size = 24, color = DEFAULT_COLOR }) {
     </svg>
   );
 }
+export function BackIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path
+        color={color}
+        d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+      />
+    </svg>
+  );
+}
+
