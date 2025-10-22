@@ -4,7 +4,7 @@ import { PlayIcon, PlaylistIcon } from '@/components/Icons/Icons';
 import Card from '@/components/UIComponents/Card';
 import Button from '@/components/UIComponents/Button';
 import { defaultDrillPresetsData } from '@/data/NoteDrillPresets';
-import type { DrillPreset } from '@/types/DrillOptionTypes';
+import type { DrillPreset } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {

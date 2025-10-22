@@ -11,7 +11,13 @@ export type DrillCustomOptions = {
   drillOptions: DrillOptions
 }
 
-export type DrillKind = "custom" | "preset"
+export type DrillKind = "custom" | "preset";
+
+export type DrillClefTypes = "treble" | "bass";
+export const clefOctaveLimits: Record<DrillClefTypes, { minOctave: number; maxOctave: number }> = {
+  treble: { minOctave: 4, maxOctave: 7 },
+  bass: { minOctave: 1, maxOctave: 5 },
+};
 
 export type DrillOptions = {
   minOctave?: number;
@@ -26,7 +32,7 @@ export type DrillOptions = {
 }
 
 export type StaffOptions = {
-  clef?: "treble" | "bass"
+  clef?: DrillClefTypes;
 }
 
 export const defaultDrillOptions: DrillOptions = {

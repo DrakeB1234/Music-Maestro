@@ -4,7 +4,7 @@ import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote, Ge
 import styles from './NoteDrill.module.css';
 import Button from "@components/UIComponents/Button";
 import useTimerRef from "@/hooks/useTimerRef";
-import type { DrillOptions } from "@/types/DrillOptionTypes";
+import type { DrillOptions } from "@/types/DrillTypes";
 import { useMidiProvider } from "@/context/MidiProvider";
 import NoteButtonInput from "@components/NoteButtonInput/NoteButtonInput";
 

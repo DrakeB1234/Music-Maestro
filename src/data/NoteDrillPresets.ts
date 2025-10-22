@@ -1,4 +1,4 @@
-import type { DrillPreset } from "@/types/DrillOptionTypes";
+import type { DrillPreset } from "@/types/DrillTypes";
 
 export const defaultDrillPresetsData: DrillPreset[] = [
   {

@@ -5,91 +5,132 @@ import Input from '@/components/UIComponents/Inputs/Input';
 import { useRef, useState } from 'react';
 import Button from '@/components/UIComponents/Button';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
+import { type DrillClefTypes, type DrillOptions, clefOctaveLimits } from '@/types/DrillTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   onBack: () => void;
 }
 
-interface FormProps {
-  clef: string,
-  minOctave: string,
-  maxOctave: string,
+interface SelectOption {
+  label: string
+  value: string
 }
 
-type clefTypes = "treble" | "bass";
+interface FormErrors {
+  timer: string
+}
 
 export default function CustomDrills({ onBack }: Props) {
+  const navigate = useNavigate();
 
   // Handle Form Input
   const clefRef = useRef<HTMLSelectElement>(null);
-  const minOctaveRef = useRef<HTMLInputElement>(null);
-  const maxOctaveRef = useRef<HTMLInputElement>(null);
+  const minOctaveRef = useRef<HTMLSelectElement>(null);
+  const maxOctaveRef = useRef<HTMLSelectElement>(null);
+  const timerRef = useRef<HTMLInputElement>(null);
 
-  const [errors, setErrors] = useState<FormProps>();
+  const [errors, setErrors] = useState<FormErrors>();
+  const [octaveOptions, setOctaveOptions] = useState<SelectOption[]>(generateOctaveOptions('treble'));
 
   // When clef is changed, min / max octave ranges must change aswell. 
-  function handleClefChange(clef: string) {
-    console.log(clef);
+  function handleClefChange() {
+    const clef = clefRef.current?.value.trim();
+    if (!clef) return;
+    setOctaveOptions(generateOctaveOptions(clef as DrillClefTypes));
+  }
+
+  function generateOctaveOptions(clef: DrillClefTypes): SelectOption[] {
+    const { minOctave, maxOctave } = clefOctaveLimits[clef];
+    return Array.from({ length: maxOctave - minOctave + 1 }, (_, i) => {
+      const octave = minOctave + i;
+      return { label: octave.toString(), value: octave.toString() };
+    });
   }
 
   function handleSubmit() {
-    const clef = clefRef.current?.value.trim();
-    const minOctave = minOctaveRef.current?.value.trim();
-    const maxOctave = maxOctaveRef.current?.value.trim();
+    const clef = clefRef.current?.value.trim() as DrillClefTypes;
+    const minOctave = Number(minOctaveRef.current?.value.trim());
+    const maxOctave = Number(maxOctaveRef.current?.value.trim());
+    const time = Number(timerRef.current?.value.trim());
 
-    const newErrors: FormProps = { clef: "", minOctave: "", maxOctave: "" };
-    let hasError = false;
+    let newErrors = { timer: "" } as FormErrors;
+    let hasErrors = false;
 
-    if (!clef) {
-      newErrors.clef = "Required.";
-      hasError = true;
+    if (!clef || !minOctave || !maxOctave || time === undefined) {
+      return;
     }
-    if (!minOctave) {
-      newErrors.minOctave = "Required";
-      hasError = true;
-    }
-    if (!maxOctave) {
-      newErrors.maxOctave = "Required";
-      hasError = true;
+
+    if (time < 0 || time > 999) {
+      newErrors.timer = "Choose 0 to 999";
+      hasErrors = true;
     }
 
     setErrors(newErrors);
-
-    if (!hasError) {
-      console.log({ clef, min: minOctave, max: maxOctave });
+    if (hasErrors) {
+      return;
     }
+
+
+    const newOptions = {
+      timer: time,
+      minOctave: minOctave,
+      maxOctave: maxOctave,
+      staffOptions: {
+        clef: clef
+      }
+    } as DrillOptions;
+
+    navigate("/drills/start", { state: { type: "custom", options: newOptions } });
   };
 
   return (
-    <div className={styles.CustomDrillsWraper}>
-      <BackButtonContainer onBack={onBack} />
-      <Card padding='none'>
-        <div className={styles.CardHeaderContainer}>
-          <h1>Custom Drill Options</h1>
-        </div>
-        <div className={styles.InputsContainer}>
-          <SelectInput
-            htmlName='clef'
-            label='Clef'
-            options={[
-              { label: "Treble", value: "treble" as clefTypes },
-              { label: "Bass", value: "bass" as clefTypes },
-            ]}
-            defaultValue={"treble" as clefTypes}
-            ref={clefRef}
-            handleChange={handleClefChange}
-          />
-          <h2>Octave Range</h2>
-          <div className={styles.FlexInputsContainer}>
-            <Input ref={minOctaveRef} type='text' label='Min' htmlName='minOctave' placeholder='4' error={errors?.minOctave} />
-            <Input ref={maxOctaveRef} type='text' label='Max' htmlName='maxOctave' placeholder='7' error={errors?.maxOctave} />
+    <div className={styles.CustomDrillsWrapper}>
+      <div className={styles.ContentWrapper}>
+        <BackButtonContainer onBack={onBack} />
+        <Card padding='none'>
+          <div className={styles.CardHeaderContainer}>
+            <h1>Custom Drill Options</h1>
           </div>
-          <h2>Accidentals</h2>
-        </div>
-        <div className={styles.SubmitButtonContainer}>
-          <Button onClick={handleSubmit} variant="contained" text="Start Drill" fullWidth={true} />
-        </div>
-      </Card>
+          <div className={styles.InputsContainer}>
+            <SelectInput
+              htmlName='clef'
+              label='Clef'
+              options={[
+                { label: "Treble", value: "treble" as DrillClefTypes },
+                { label: "Bass", value: "bass" as DrillClefTypes },
+              ]}
+              defaultValue={"treble" as DrillClefTypes}
+              ref={clefRef}
+              handleChange={handleClefChange}
+            />
+
+            <h2>Octave Range</h2>
+            <div className={styles.FlexInputsContainer}>
+              <SelectInput
+                htmlName='minOctave'
+                label='Min'
+                options={octaveOptions}
+                defaultValue={octaveOptions[0].value}
+                ref={minOctaveRef}
+              />
+              <SelectInput
+                htmlName='maxOctave'
+                label='Max'
+                options={octaveOptions}
+                defaultValue={octaveOptions[octaveOptions.length - 1].value}
+                ref={maxOctaveRef}
+              />
+            </div>
+
+            <h2>Timer</h2>
+            <Input htmlName='timer' label='Time' placeholder='30' type='number' error={errors?.timer} ref={timerRef} defaultValue='60' min={0} max={999} />
+          </div>
+          <div className={styles.SubmitButtonContainer}>
+            <Button onClick={handleSubmit} variant="contained" text="Start Drill" fullWidth={true} />
+          </div>
+        </Card>
+      </div>
     </div>
   )
 }

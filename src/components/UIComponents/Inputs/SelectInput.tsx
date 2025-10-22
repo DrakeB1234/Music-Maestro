@@ -11,7 +11,7 @@ interface Props {
   options: Option[];
   defaultValue?: string;
   ref?: React.Ref<HTMLSelectElement>;
-  handleChange?: (value: string) => void;
+  handleChange?: () => void;
 }
 
 export default function SelectInput({
@@ -26,12 +26,12 @@ export default function SelectInput({
     <div className={styles.InputWrapper}>
       <label className='body' htmlFor={htmlName}>{label}</label>
       <select
-        className={styles.Input}
+        className={styles.InputSelect}
         name={htmlName}
         id={htmlName}
         ref={ref}
         defaultValue={defaultValue}
-        onChange={(e) => handleChange && handleChange(e.target.value)}
+        onChange={handleChange}
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>

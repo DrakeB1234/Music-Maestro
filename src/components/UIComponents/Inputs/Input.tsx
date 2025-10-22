@@ -1,31 +1,27 @@
 import styles from './Input.module.css';
 
-interface Props {
-  type?: "text" | "number";
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   htmlName: string;
-  placeholder: string;
   error?: string;
   ref?: React.Ref<HTMLInputElement>;
 }
 
 export default function Input({
-  type = "text",
   label,
   htmlName,
-  placeholder,
   error,
   ref,
+  ...props
 }: Props) {
   return (
     <div className={styles.InputWrapper}>
       <label className='body' htmlFor={htmlName}>{label}</label>
       <input
         className={styles.Input}
-        type={type}
         name={htmlName}
-        placeholder={placeholder}
         ref={ref}
+        {...props}
       />
       <p className={`caption truncate-overflow-text ${styles.Error}`}> {error && `* ${error}`}</p>
     </div>

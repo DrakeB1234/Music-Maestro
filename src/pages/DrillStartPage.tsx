@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type { DrillOptions } from "@/types/DrillOptionTypes";
+import type { DrillOptions } from "@/types/DrillTypes";
 import { defaultDrillPresetsData } from "@/data/NoteDrillPresets";
 import NoteDrill from "@/components/DrillComponents/NoteDrill/NoteDrill";
 import { useMidiInput } from "@/hooks/useMidiInput";
@@ -28,6 +28,9 @@ export default function DrillStart() {
     if (paramOptions.type === "preset") {
       const preset = defaultDrillPresetsData.find(e => e.id === paramOptions.id);
       options = preset ? preset.drillOptions : null;
+    }
+    if (paramOptions.type === "custom") {
+      options = paramOptions.options;
     }
 
     if (!options) {

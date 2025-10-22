@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Renderer, Stave, StaveNote, Formatter, type StaveNoteStruct, Accidental } from "vexflow";
 import { ConvertGenericNoteToVexNote, type GenericNote } from "@helpers/NoteHelpers";
 import styles from './StaffGeneration.module.css';
-import type { StaffOptions } from "@/types/DrillOptionTypes";
+import type { StaffOptions } from "@/types/DrillTypes";
 
 type Props = {
   currentNote?: GenericNote

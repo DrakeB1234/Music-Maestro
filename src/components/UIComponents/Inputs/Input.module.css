@@ -24,6 +24,21 @@
   }
 }
 
+.InputSelect {
+  width: 100%;
+  padding: var(--spacing-small);
+  border-radius: var(--radius-small);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-app-surface);
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid var(--color-primary);
+  }
+}
+
 .InputWrapper>p {
   /* Line height, to prevent layout shifts */
   min-height: 1.4em;
