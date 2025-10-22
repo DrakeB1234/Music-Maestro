@@ -2,11 +2,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { DrillOptions } from "@/types/DrillOptionTypes";
 import { defaultDrillPresetsData } from "@/data/NoteDrillPresets";
-import NoteDrill from "@/components/NoteDrillComponents/NoteDrill/NoteDrill";
+import NoteDrill from "@/components/DrillComponents/NoteDrill/NoteDrill";
+import { useMidiInput } from "@/hooks/useMidiInput";
 
 export default function DrillStart() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { ClearInput: ClearMidiInput } = useMidiInput();
+
   const paramOptions = location.state as
     | { type: "preset"; id: string }
     | { type: "custom"; options: DrillOptions }
@@ -33,6 +36,7 @@ export default function DrillStart() {
       return;
     }
 
+    ClearMidiInput();
     setDrillOptions(options);
   }
 

@@ -47,8 +47,8 @@
 }
 
 .ButtonContainer {
-  border-top: 1px solid var(--color-border);
   padding: var(--spacing-base);
+  padding-top: var(--spacing-small)
 }
 
 @media (max-width: 600px) {

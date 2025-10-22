@@ -4,14 +4,15 @@ import Card from "@/components/UIComponents/Card";
 import Button from "@/components/UIComponents/Button";
 import IconWrapper from "@/components/UIComponents/IconWrapper";
 import { QueueMusicIcon, TuneIcon } from "@/components/Icons/Icons";
-import PresetDrills from "@/components/NoteDrillComponents/PresetDrillCard/PresetDrills";
+import PresetDrills from "@/components/DrillComponents/PresetDrills/PresetDrills";
+import CustomDrills from "@/components/DrillComponents/CustomDrills/CustomDrills";
 
 // Null represents nothing selected, so show default
 type ActiveComponent = "main" | "preset" | "custom"
 
 export default function DrillPage() {
 
-  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("main");
+  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("custom");
   const togglePresetComponent = () => setActiveComponent("preset");
   const toggleCustomComponent = () => setActiveComponent("custom");
   const backToMain = () => setActiveComponent("main");
@@ -26,7 +27,7 @@ export default function DrillPage() {
           />
         )}
         {activeComponent === "preset" && <PresetDrills onBack={backToMain} />}
-        {activeComponent === "custom" && <h1>Custom</h1>}
+        {activeComponent === "custom" && <CustomDrills onBack={backToMain} />}
 
       </div>
     </div>

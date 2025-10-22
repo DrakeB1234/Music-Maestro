@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2em;
+  gap: var(--spacing-small);
   width: 100%;
   max-width: 700px;
   padding: 1em;
@@ -18,7 +18,7 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  gap: 0.2em;
+  gap: var(--spacing-2xsmall);
 
   &>button {
     width: clamp(80px, 10%, 100px);
@@ -29,7 +29,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5em;
+  gap: var(--spacing-2xsmall);
   width: 100%;
 
   &>button {

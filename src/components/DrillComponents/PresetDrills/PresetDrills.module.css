@@ -6,9 +6,7 @@
 .CardContainer {
   display: grid;
   gap: var(--spacing-base);
-  padding-top: var(--spacing-base);
   grid-template-columns: repeat(2, 1fr);
-
 }
 
 .HeadingContainer {
@@ -18,19 +16,14 @@
 .TextContainer {
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-base);
-  padding-bottom: 0;
-  margin-bottom: var(--spacing-xlarge);
+  padding: var(--spacing-xlarge) var(--spacing-base);
+  padding-top: var(--spacing-large);
 }
 
 .HeaderContainer {
   display: flex;
   gap: var(--spacing-2xsmall);
   margin-bottom: var(--spacing-2xsmall);
-}
-
-.DifficultyButtonsContainer {
-  padding: var(--spacing-xsmall) var(--spacing-base);
 }
 
 .PracticeButtonContainer {

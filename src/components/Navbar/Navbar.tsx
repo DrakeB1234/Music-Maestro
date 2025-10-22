@@ -23,7 +23,7 @@ export default function Navbar() {
         <div onClick={() => navigate("/")} className={styles.IconTextContainer}>
           <IconWrapper icon={<MusicNoteIcon />} />
           <div className={styles.TitleContainer}>
-            <h1 className='body'>Sightreading</h1>
+            <h1 className='body mobile-hide'>Sightreading</h1>
           </div>
         </div>
         <Button onClick={handleOpenModal} icon={<MenuIcon />} variant='outlined' />
