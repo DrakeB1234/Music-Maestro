@@ -12,7 +12,7 @@ type ActiveComponent = "main" | "preset" | "custom"
 
 export default function DrillPage() {
 
-  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("custom");
+  const [activeComponent, setActiveComponent] = useState<ActiveComponent>("main");
   const togglePresetComponent = () => setActiveComponent("preset");
   const toggleCustomComponent = () => setActiveComponent("custom");
   const backToMain = () => setActiveComponent("main");
@@ -73,7 +73,7 @@ function MainComponent({
               <p className={`caption`}>Create your own personalized exercises tailored to your specific learning goals</p>
             </div>
             <div className={styles.ButtonContainer}>
-              <Button variant="contained" text="Create Drill" fullWidth={true} />
+              <Button variant="contained" text="Customize Drill" fullWidth={true} />
             </div>
           </div>
         </Card>

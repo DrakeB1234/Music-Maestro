@@ -33,6 +33,10 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
     if (drillOptions.inclusiveNotes && drillOptions.inclusiveNotes.length > 1) {
       inclusiveNoteMode.current = true;
     }
+    if (!drillOptions.allowedAccidentals.naturals && !drillOptions.allowedAccidentals.flats && !drillOptions.allowedAccidentals.sharps) {
+      drillOptions.allowedAccidentals.naturals = true;
+    }
+
     GenerateNote();
   }
 
@@ -47,7 +51,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
     else {
       newNote = GenerateRandomNote(
         currentNote,
-        drillOptions.allowAccidentals,
+        drillOptions.allowedAccidentals,
         drillOptions.minOctave,
         drillOptions.maxOctave,
       );

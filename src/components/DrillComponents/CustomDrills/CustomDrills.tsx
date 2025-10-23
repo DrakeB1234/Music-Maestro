@@ -21,6 +21,12 @@ interface FormErrors {
   timer: string
 }
 
+interface AccidentalToggles {
+  Naturals: boolean;
+  Sharps: boolean;
+  Flats: boolean;
+}
+
 export default function CustomDrills({ onBack }: Props) {
   const navigate = useNavigate();
 
@@ -32,12 +38,24 @@ export default function CustomDrills({ onBack }: Props) {
 
   const [errors, setErrors] = useState<FormErrors>();
   const [octaveOptions, setOctaveOptions] = useState<SelectOption[]>(generateOctaveOptions('treble'));
+  const [accidentalToggles, setAccidentalToggles] = useState<AccidentalToggles>({
+    Naturals: true,
+    Sharps: false,
+    Flats: false
+  });
 
   // When clef is changed, min / max octave ranges must change aswell. 
   function handleClefChange() {
     const clef = clefRef.current?.value.trim();
     if (!clef) return;
     setOctaveOptions(generateOctaveOptions(clef as DrillClefTypes));
+  }
+
+  function handleAccidentalToggle(accidental: keyof AccidentalToggles) {
+    setAccidentalToggles(prev => ({
+      ...prev,
+      [accidental]: !prev[accidental]
+    }));
   }
 
   function generateOctaveOptions(clef: DrillClefTypes): SelectOption[] {
@@ -76,6 +94,11 @@ export default function CustomDrills({ onBack }: Props) {
       timer: time,
       minOctave: minOctave,
       maxOctave: maxOctave,
+      allowedAccidentals: {
+        naturals: accidentalToggles.Naturals,
+        sharps: accidentalToggles.Sharps,
+        flats: accidentalToggles.Flats,
+      },
       staffOptions: {
         clef: clef
       }
@@ -125,6 +148,13 @@ export default function CustomDrills({ onBack }: Props) {
 
             <h2>Timer</h2>
             <Input htmlName='timer' label='Time' placeholder='30' type='number' error={errors?.timer} ref={timerRef} defaultValue='60' min={0} max={999} />
+
+            <h2>Accidentals</h2>
+            <div className={styles.FlexButtonsContainer}>
+              <Button onClick={() => handleAccidentalToggle('Naturals')} variant='text' text='Naturals' active={accidentalToggles.Naturals} />
+              <Button onClick={() => handleAccidentalToggle('Sharps')} variant='text' text='Sharps' active={accidentalToggles.Sharps} />
+              <Button onClick={() => handleAccidentalToggle('Flats')} variant='text' text='Flats' active={accidentalToggles.Flats} />
+            </div>
           </div>
           <div className={styles.SubmitButtonContainer}>
             <Button onClick={handleSubmit} variant="contained" text="Start Drill" fullWidth={true} />

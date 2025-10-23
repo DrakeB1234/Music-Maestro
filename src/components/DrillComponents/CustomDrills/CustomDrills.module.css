@@ -28,7 +28,12 @@
 .FlexInputsContainer {
   display: flex;
   gap: var(--spacing-small);
-  overflow: hidden;
+}
+
+.FlexButtonsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2xsmall);
 }
 
 .SubmitButtonContainer {

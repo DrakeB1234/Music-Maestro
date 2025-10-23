@@ -62,5 +62,6 @@
 }
 
 .text.active {
-  background-color: var(--color-app-hover);
+  color: var(--color-onprimary);
+  background-color: var(--color-primary);
 }

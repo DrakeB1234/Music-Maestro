@@ -21,6 +21,7 @@ export default function ToggleButtonGroup({
   const [activeValue, setActiveValue] = useState<string | number | undefined>(defaultValue);
 
   const handleClick = (value: string | number) => {
+    if (value === activeValue) return;
     setActiveValue(value);
     if (onChange) onChange(value);
   };

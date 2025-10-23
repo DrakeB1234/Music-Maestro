@@ -19,11 +19,17 @@ export const clefOctaveLimits: Record<DrillClefTypes, { minOctave: number; maxOc
   bass: { minOctave: 1, maxOctave: 5 },
 };
 
+export type AllowedAccidentals = {
+  naturals: boolean;
+  sharps?: boolean;
+  flats?: boolean;
+}
+
 export type DrillOptions = {
   minOctave?: number;
   maxOctave?: number;
   timer?: number;
-  allowAccidentals?: boolean;
+  allowedAccidentals: AllowedAccidentals,
   // Will prevent note names from appearing in drill
   excludedNoteNames?: string[]
   // Will ONLY include notes provided in arr
@@ -39,7 +45,9 @@ export const defaultDrillOptions: DrillOptions = {
   minOctave: 4,
   maxOctave: 5,
   timer: 60,
-  allowAccidentals: false,
+  allowedAccidentals: {
+    naturals: true
+  },
   staffOptions: {
     clef: "treble"
   }

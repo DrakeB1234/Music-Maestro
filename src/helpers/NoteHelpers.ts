@@ -1,13 +1,11 @@
+import type { AllowedAccidentals } from "@/types/DrillTypes";
 import { Note } from "webmidi";
 
 const MIN_OCTAVE_RANGE = 0;
 const MAX_OCTAVE_RANGE = 7;
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const ACCIDENTALS = {
-  Sharp: "#",
-  Flat: "b",
-  Natural: "n"
-}
+
+
 const NOTE_SEMITONES: Record<string, number> = {
   C: 0,
   D: 2,
@@ -16,6 +14,13 @@ const NOTE_SEMITONES: Record<string, number> = {
   G: 7,
   A: 9,
   B: 11,
+};
+
+type Accidental = "#" | "b" | "n";
+export const ACCIDENTALS = {
+  Sharp: "#" as Accidental,
+  Flat: "b" as Accidental,
+  Natural: "n" as Accidental
 };
 
 export class GenericNote {
@@ -36,7 +41,7 @@ export class GenericNote {
 
 export function GenerateRandomNote(
   exclusiveNote: GenericNote,
-  generateAccidentals: boolean = false,
+  allowedAccidentals: AllowedAccidentals,
   minOctave: number = 2,
   maxOctave: number = 6,
 ) {
@@ -50,19 +55,15 @@ export function GenerateRandomNote(
     octave = minOctave;
   }
 
-  let accidental = null;
-  if (generateAccidentals) {
-    const isGenerate = Math.floor(Math.random() * 3);
-    switch (isGenerate) {
-      case 0:
-        accidental = ACCIDENTALS.Flat;
-        break;
-      case 1:
-        accidental = ACCIDENTALS.Sharp;
-        break;
-      default:
-        accidental = null
-    }
+  const accidentalPool: string[] = [];
+  if (allowedAccidentals.naturals) accidentalPool.push("n");
+  if (allowedAccidentals.sharps) accidentalPool.push("#");
+  if (allowedAccidentals.flats) accidentalPool.push("b");
+
+  let accidental: string | null = null;
+  if (accidentalPool.length > 0) {
+    accidental = accidentalPool[Math.floor(Math.random() * accidentalPool.length)];
+    if (accidental === "n") accidental = null;
   }
 
   // Generate new note name if duplicate was found
