@@ -32,7 +32,6 @@ export default function useTimerRef(
 
       timeLeftRef.current -= 1;
 
-      // Only update display (and cause re-render) once per second
       setDisplayTime(timeLeftRef.current);
     }, 1000);
 

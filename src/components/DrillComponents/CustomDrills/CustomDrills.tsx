@@ -151,9 +151,9 @@ export default function CustomDrills({ onBack }: Props) {
 
             <h2>Accidentals</h2>
             <div className={styles.FlexButtonsContainer}>
-              <Button onClick={() => handleAccidentalToggle('Naturals')} variant='text' text='Naturals' active={accidentalToggles.Naturals} />
-              <Button onClick={() => handleAccidentalToggle('Sharps')} variant='text' text='Sharps' active={accidentalToggles.Sharps} />
-              <Button onClick={() => handleAccidentalToggle('Flats')} variant='text' text='Flats' active={accidentalToggles.Flats} />
+              <Button onClick={() => handleAccidentalToggle('Naturals')} variant='text-secondary' text='Naturals' active={accidentalToggles.Naturals} />
+              <Button onClick={() => handleAccidentalToggle('Sharps')} variant='text-secondary' text='Sharps' active={accidentalToggles.Sharps} />
+              <Button onClick={() => handleAccidentalToggle('Flats')} variant='text-secondary' text='Flats' active={accidentalToggles.Flats} />
             </div>
           </div>
           <div className={styles.SubmitButtonContainer}>

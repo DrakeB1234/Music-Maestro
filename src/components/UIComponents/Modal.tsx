@@ -23,7 +23,7 @@ export default function Modal({
       <div className={styles.headerContainer}>
         {icon}
         <h1 className="truncate-overflow-text">{headerText}</h1>
-        <Button onClick={closeModal} icon={<CloseIcon color="var(--color-text-light)" />} variant="text" />
+        <Button onClick={closeModal} icon={<CloseIcon color="var(--color-text-light)" />} variant="text-secondary" />
       </div>
       {children}
     </Card>

@@ -1,40 +1,18 @@
 .NoteButtonInputWrapper {
   display: flex;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.ButtonsWrapper {
-  display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-small);
-  width: 100%;
-  max-width: 700px;
-  padding: 1em;
 }
 
 .AccidentalButtonsContainer {
   display: flex;
-  justify-content: center;
-  width: 100%;
-  gap: var(--spacing-2xsmall);
-
-  &>button {
-    width: clamp(80px, 10%, 100px);
-  }
+  gap: var(--spacing-xsmall);
 }
 
 .NoteButtonsContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--spacing-2xsmall);
-  width: 100%;
-
-  &>button {
-    flex: 1 1 0;
-    max-width: 80px;
-    min-width: 80px;
-  }
+  gap: var(--spacing-xsmall);
 }

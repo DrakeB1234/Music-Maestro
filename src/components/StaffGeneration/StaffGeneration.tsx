@@ -9,9 +9,9 @@ type Props = {
   staffOptions: StaffOptions
 }
 
-export default function Staff({ currentNote, staffOptions }: Props) {
+export default function StaffGeneration({ currentNote, staffOptions }: Props) {
   const [isError, setIsError] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -19,16 +19,14 @@ export default function Staff({ currentNote, staffOptions }: Props) {
 
     const optionsClef = staffOptions.clef ? staffOptions.clef : 'treble';
 
-    // Clear previous SVG before redrawing
-    containerRef.current.innerHTML = "";
-
     // Setup renderer
-    const renderer = new Renderer(containerRef.current, Renderer.Backends.SVG);
-    renderer.resize(250, 150);
+    const renderer = new Renderer(containerRef.current, Renderer.Backends.CANVAS);
+    renderer.resize(190, 210); // more vertical room
     const context = renderer.getContext();
+    context.scale(1.5, 1.5);
 
-    // Draw the staff
-    const stave = new Stave(0, 0, 230);
+    // Draw the staff 
+    const stave = new Stave(0, 20, 125);
     stave.addClef(optionsClef).setContext(context).draw();
 
     if (!currentNote || currentNote.name === "") {
@@ -54,8 +52,8 @@ export default function Staff({ currentNote, staffOptions }: Props) {
 
   return (
     <div className={styles.StaffGenerationWrapper}>
-      <div className={styles.StaffContainer} ref={containerRef}></div>
-      <h3>{isError ? 'Error drawing note: No note found' : ''}</h3>
+      <canvas className={styles.StaffContainer} ref={containerRef}></canvas>
+      <p className="caption">{isError && 'Error generating staff'}</p>
     </div>
   )
 }

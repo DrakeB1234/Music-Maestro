@@ -1,11 +1,10 @@
 .StaffGenerationWrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .StaffContainer {
   display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+  overflow: visible;
 }

@@ -2,6 +2,7 @@ import { GenericNote, NOTE_NAMES } from "@/helpers/NoteHelpers";
 import Button from "../UIComponents/Button";
 import styles from './NoteButtonInput.module.css';
 import { useState } from "react";
+import { FlatIcon, SharpIcon } from "../Icons/Icons";
 
 type Props = {
   SetNotePressed: (note: GenericNote) => void
@@ -33,16 +34,14 @@ export default function NoteButtonInput({ SetNotePressed: NotePressed }: Props) 
 
   return (
     <div className={styles.NoteButtonInputWrapper}>
-      <div className={styles.ButtonsWrapper}>
-        <div className={styles.AccidentalButtonsContainer}>
-          <Button active={activeAccidental === "#" ? true : false} onClick={() => HandleAccidentalButtonPressed("#")} variant="outlined" text="#" />
-          <Button active={activeAccidental === "b" ? true : false} onClick={() => HandleAccidentalButtonPressed("b")} variant="outlined" text="b" />
-        </div>
-        <div className={styles.NoteButtonsContainer}>
-          {NOTE_NAMES.map((e: string) => (
-            <Button key={e} onClick={() => HandleNoteButtonPressed(e)} variant="outlined" text={e} />
-          ))}
-        </div>
+      <div className={styles.AccidentalButtonsContainer}>
+        <Button active={activeAccidental === "#" ? true : false} onClick={() => HandleAccidentalButtonPressed("#")} variant="outlined" icon={<SharpIcon />} />
+        <Button active={activeAccidental === "b" ? true : false} onClick={() => HandleAccidentalButtonPressed("b")} variant="outlined" icon={<FlatIcon />} />
+      </div>
+      <div className={styles.NoteButtonsContainer}>
+        {NOTE_NAMES.map((e: string) => (
+          <Button key={e} onClick={() => HandleNoteButtonPressed(e)} variant="outlined" size="large" text={e} />
+        ))}
       </div>
     </div>
   )

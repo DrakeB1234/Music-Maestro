@@ -4,6 +4,8 @@ import type { DrillOptions } from "@/types/DrillTypes";
 import { defaultDrillPresetsData } from "@/data/NoteDrillPresets";
 import NoteDrill from "@/components/DrillComponents/NoteDrill/NoteDrill";
 import { useMidiInput } from "@/hooks/useMidiInput";
+import styles from './DrillStartPage.module.css';
+import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
 
 export default function DrillStart() {
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ export default function DrillStart() {
   const [drillOptions, setDrillOptions] = useState<DrillOptions | null>(null);
 
   function Init() {
+    ClearMidiInput();
     if (!paramOptions) {
       navigate("/");
       return;
@@ -39,7 +42,6 @@ export default function DrillStart() {
       return;
     }
 
-    ClearMidiInput();
     setDrillOptions(options);
   }
 
@@ -51,19 +53,14 @@ export default function DrillStart() {
     Init();
   }, []);
 
-  if (!paramOptions) return <p>No drill data provided.</p>;
+  if (!paramOptions) return;
 
   return (
-    <div className="size-wrapper">
-      <h1>Starting Drill...</h1>
-      {paramOptions.type === "preset" &&
-        <div>
-          <p>Preset drill ID: {paramOptions.id}</p>
-          <pre>{JSON.stringify(drillOptions, null, 2)}</pre>
-        </div>
-      }
-      {paramOptions.type === "custom" && <pre>{JSON.stringify(paramOptions.options, null, 2)}</pre>}
-      {drillOptions && <NoteDrill drillOptions={drillOptions} HandleQuit={HandleQuit} />}
+    <div className={styles.DrillStartWrapper}>
+      <div className="size-wrapper">
+        <BackButtonContainer onBack={HandleQuit} />
+        {drillOptions && <NoteDrill drillOptions={drillOptions} HandleQuit={HandleQuit} />}
+      </div>
     </div>
   );
 }

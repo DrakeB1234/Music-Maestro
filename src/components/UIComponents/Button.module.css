@@ -4,11 +4,23 @@
   align-items: center;
   gap: var(--spacing-2xsmall);
   font: var(--ui-font);
-  padding: var(--spacing-xsmall) var(--spacing-xsmall);
   cursor: pointer;
   border: none;
   background: none;
   transition: var(--transition);
+}
+
+/* Handle button sizes (padding) */
+.button.size-small {
+  padding: var(--spacing-xsmall) var(--spacing-xsmall);
+}
+
+.button.size-medium {
+  padding: var(--spacing-xsmall) var(--spacing-base);
+}
+
+.button.size-large {
+  padding: var(--spacing-xsmall) var(--spacing-large);
 }
 
 .fullWidth {
@@ -53,9 +65,20 @@
 .outlined.active {
   color: var(--color-onprimary);
   background-color: var(--color-primary);
+
+  &>svg>path {
+    fill: var(--color-onprimary);
+    color: var(--color-onprimary);
+  }
 }
 
 .text {
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}
+
+.text-secondary {
   &:hover {
     background-color: var(--color-app-hover);
   }
@@ -64,4 +87,19 @@
 .text.active {
   color: var(--color-onprimary);
   background-color: var(--color-primary);
+
+  &>svg>path {
+    fill: var(--color-onprimary);
+    color: var(--color-onprimary);
+  }
+}
+
+.text-secondary.active {
+  color: var(--color-onprimary);
+  background-color: var(--color-primary);
+
+  &>svg>path {
+    fill: var(--color-onprimary);
+    color: var(--color-onprimary);
+  }
 }

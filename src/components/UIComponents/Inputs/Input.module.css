@@ -24,6 +24,20 @@
   }
 }
 
+/* "opt-in" to customize select element */
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
+select::picker-icon {
+  color: var(--color-text);
+}
+
+select:open::picker-icon {
+  rotate: 180deg;
+}
+
 .InputSelect {
   width: 100%;
   padding: var(--spacing-small);
@@ -36,6 +50,20 @@
 
   &:focus {
     outline: 2px solid var(--color-primary);
+  }
+
+}
+
+.InputSelect>option {
+  padding: var(--spacing-small) var(--font-size-xsmall);
+
+  &:hover {
+    background-color: var(--color-app-hover);
+  }
+
+  &:focus {
+    color: var(--color-onprimary);
+    background-color: var(--color-primary);
   }
 }
 

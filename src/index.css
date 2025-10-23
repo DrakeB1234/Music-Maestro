@@ -114,7 +114,7 @@ img {
   --color-primary-surface-hover: var(--palette-blue-200);
   --color-onprimary: var(--palette-white);
 
-  --color-app-background: #FAFCFF;
+  --color-app-background: hsl(216, 100%, 98%);
   --color-app-hover: var(--palette-grey-100);
   --color-app-surface: var(--palette-white);
 

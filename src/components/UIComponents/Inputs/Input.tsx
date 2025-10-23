@@ -20,6 +20,7 @@ export default function Input({
       <input
         className={styles.Input}
         name={htmlName}
+        id={htmlName}
         ref={ref}
         {...props}
       />

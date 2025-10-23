@@ -5,7 +5,7 @@ import styles from './BackButtonContainer.module.css';
 export default function BackButtonContainer({ onBack }: { onBack: () => void }) {
   return (
     <div className={styles.BackButtonWrapper}>
-      <Button onClick={onBack} icon={<BackIcon />} text='Back' variant='text' />
+      <Button onClick={onBack} icon={<BackIcon />} text='Back' variant='text-secondary' />
     </div>
   )
 }

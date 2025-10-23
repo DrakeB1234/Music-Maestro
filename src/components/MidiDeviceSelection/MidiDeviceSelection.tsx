@@ -23,7 +23,7 @@ export default function MidiDeviceSelection() {
           <h2 className="body-secondary">Play a note to test!</h2>
           <div className={styles.NoteContainer}>
             <MusicNoteIcon color="var(--color-primary)" />
-            <p>{lastNotePlayed ? PrintGenericNote(lastNotePlayed) : ''}</p>
+            <p>{lastNotePlayed && PrintGenericNote(lastNotePlayed)}</p>
           </div>
         </div>
       }

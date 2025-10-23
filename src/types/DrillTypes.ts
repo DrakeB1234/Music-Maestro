@@ -1,23 +1,24 @@
 import type { GenericNote } from "@/helpers/NoteHelpers"
 
+export type DrillKind = "custom" | "preset";
+export type DrillClefTypes = "treble" | "bass";
+export type DrillDifficultyTypes = "easy" | "medium" | "hard";
+export const clefOctaveLimits: Record<DrillClefTypes, { minOctave: number; maxOctave: number }> = {
+  treble: { minOctave: 4, maxOctave: 7 },
+  bass: { minOctave: 1, maxOctave: 5 },
+};
+
 export type DrillPreset = {
-  name: string
-  id: string
-  description: string
-  drillOptions: DrillOptions
+  name: string;
+  id: string;
+  description: string;
+  difficulty: DrillDifficultyTypes;
+  drillOptions: DrillOptions;
 }
 
 export type DrillCustomOptions = {
   drillOptions: DrillOptions
 }
-
-export type DrillKind = "custom" | "preset";
-
-export type DrillClefTypes = "treble" | "bass";
-export const clefOctaveLimits: Record<DrillClefTypes, { minOctave: number; maxOctave: number }> = {
-  treble: { minOctave: 4, maxOctave: 7 },
-  bass: { minOctave: 1, maxOctave: 5 },
-};
 
 export type AllowedAccidentals = {
   naturals: boolean;

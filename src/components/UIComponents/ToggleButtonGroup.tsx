@@ -32,7 +32,7 @@ export default function ToggleButtonGroup({
         <Button
           key={button.value}
           text={button.label}
-          variant="text"
+          variant="text-secondary"
           active={activeValue === button.value}
           onClick={() => handleClick(button.value)}
         />

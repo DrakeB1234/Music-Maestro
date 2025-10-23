@@ -1,5 +1,29 @@
-.NoteDrillWrapper {
-  padding: 1em;
-  border: 1px solid black;
-  margin: 1em;
+.headingContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xsmall);
+  padding: var(--spacing-xsmall);
+  background-color: var(--color-primary);
+}
+
+.InfoContainer {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xsmall);
+  justify-content: space-evenly;
+
+  &>p {
+    color: var(--color-onprimary);
+  }
+}
+
+.StaffContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.ButtonInputWrapper {
+  border-top: 1px solid var(--color-border);
+  padding: var(--spacing-base) 0;
 }

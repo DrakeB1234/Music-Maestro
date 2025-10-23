@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import StaffGeneration from "@components/StaffGeneration/StaffGeneration";
 import { GenerateRandomNote, GenericNote, IsNoteEnharmonic, PrintGenericNote, GenerateRandomInclusiveNote } from "@helpers/NoteHelpers";
 import styles from './NoteDrill.module.css';
@@ -7,6 +7,8 @@ import useTimerRef from "@/hooks/useTimerRef";
 import type { DrillOptions } from "@/types/DrillTypes";
 import { useMidiProvider } from "@/context/MidiProvider";
 import NoteButtonInput from "@components/NoteButtonInput/NoteButtonInput";
+import Card from "@/components/UIComponents/Card";
+import { SettingsIcon } from "@/components/Icons/Icons";
 
 type Props = {
   drillOptions: DrillOptions;
@@ -20,6 +22,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
   const [totalCorrectNotesPlayed, setTotalCorrectNotesPlayed] = useState(0);
   const [lastGeneralNotePlayed, setLastGeneralNotePlayed] = useState<GenericNote | null>(null);
   const [lastButtonNotePlayed, SetLastButtonNotePlayed] = useState<GenericNote | null>(null);
+
   // Only generate notes SPECIFIED by note options
   const inclusiveNoteMode = useRef<boolean>(false);
 
@@ -27,7 +30,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
   const [isDrillActive, setIsDrillActive] = useState(true);
 
   // Hooks
-  const { lastNotePlayed: lastMidiNotePlayed } = useMidiProvider();
+  const { lastNotePlayed: lastMidiNotePlayed, ClearInput: ClearMidiInput } = useMidiProvider();
 
   function InitNoteDrill() {
     if (drillOptions.inclusiveNotes && drillOptions.inclusiveNotes.length > 1) {
@@ -37,6 +40,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
       drillOptions.allowedAccidentals.naturals = true;
     }
 
+    ClearMidiInput();
     GenerateNote();
   }
 
@@ -45,7 +49,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
 
     let newNote: GenericNote = {} as GenericNote;
     // This will never be undefined due to check in InitNoteDrill(), but compiler gives issue
-    if (drillOptions.inclusiveNotes && inclusiveNoteMode) {
+    if (drillOptions.inclusiveNotes && inclusiveNoteMode.current) {
       newNote = GenerateRandomInclusiveNote(drillOptions.inclusiveNotes, currentNote);
     }
     else {
@@ -100,6 +104,10 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
     console.log("Time Up!");
   }
 
+  const handleNoteButtonPressed = useCallback((note: GenericNote) => {
+    SetLastButtonNotePlayed(note);
+  }, []);
+
   // Functions to run at component start
   useEffect(() => {
     InitNoteDrill();
@@ -118,22 +126,34 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
 
   return (
     <div className={styles.NoteDrillWrapper}>
-      <Button onClick={HandleQuit} variant="outlined" text="Quit" />
-      <div>
-        <TimerDisplay duration={drillOptions.timer || 60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
-      </div>
-      <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
-      <Button onClick={GenerateNote} text="Generate Random Note" variant="outlined" />
-      <h4>Last Note Played: {lastGeneralNotePlayed ? PrintGenericNote(lastGeneralNotePlayed) : ''}</h4>
-      <h4>Current Note: {PrintGenericNote(currentNote)}</h4>
-      <h4>Total Correct Notes: {totalCorrectNotesPlayed}</h4>
-
-      <NoteButtonInput SetNotePressed={SetLastButtonNotePlayed} />
+      <Card padding="none">
+        <div className={styles.headingContainer}>
+          <div className={styles.InfoContainer}>
+            <p>1/9</p>
+            <p>11%</p>
+            <TimerDisplay duration={drillOptions.timer || 60} active={isDrillActive && !forceTimerStop} onTimeout={HandleTimerOut} />
+          </div>
+          <Button variant="text" icon={<SettingsIcon color="var(--color-onprimary)" />} />
+        </div>
+        <div className={styles.StaffContainer}>
+          <StaffGeneration currentNote={currentNote} staffOptions={drillOptions.staffOptions} />
+        </div>
+        <p>{`${lastGeneralNotePlayed && PrintGenericNote(lastGeneralNotePlayed)} / ${PrintGenericNote(currentNote)}`}</p>
+        <div className={styles.ButtonInputWrapper}>
+          <NoteButtonInput SetNotePressed={handleNoteButtonPressed} />
+        </div>
+      </Card>
     </div>
   );
 };
 
 function TimerDisplay({ duration, active, onTimeout }: { duration: number, active: boolean, onTimeout?: () => void }) {
   const timeLeft = useTimerRef(active, duration, onTimeout);
-  return <h4>Time Left: {timeLeft}</h4>;
+  return <p>{formatSeconds(timeLeft)}</p>;
+}
+
+export function formatSeconds(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 }

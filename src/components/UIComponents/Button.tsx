@@ -1,7 +1,8 @@
 import styles from "./Button.module.css";
 
-type ButtonVariant = "text" | "outlined" | "contained" | "contained-secondary";
+type ButtonVariant = "text" | "text-secondary" | "outlined" | "contained" | "contained-secondary";
 type ButtonRound = "small" | "full";
+type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -9,13 +10,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   fullWidth?: boolean;
   icon?: React.ReactNode;
-  active?: boolean
+  active?: boolean;
+  size?: ButtonSize;
 }
 
 export default function Button({
   variant = "contained",
   round = "small",
   text = "",
+  size = "small",
   fullWidth = false,
   icon = null,
   disabled,
@@ -24,7 +27,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`${styles.button} ${styles[variant]} ${active ? styles.active : ''} ${styles[`round-${round}`]} ${fullWidth ? styles.fullWidth : ''} `}
+      className={`${styles.button} ${styles[`size-${size}`]} ${styles[variant]} ${active ? styles.active : ''} ${styles[`round-${round}`]} ${fullWidth ? styles.fullWidth : ''} `}
       disabled={disabled}
       {...props}
     >

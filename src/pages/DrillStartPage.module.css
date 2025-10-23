@@ -1,0 +1,8 @@
+.DrillStartWrapper {
+  display: flex;
+  justify-content: center;
+
+  &>div {
+    padding: var(--spacing-2xsmall);
+  }
+}
