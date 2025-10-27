@@ -1,16 +1,16 @@
 .ContentContainer {
   padding: var(--spacing-base);
+}
 
-  &>p {
-    color: var(--color-error);
-    margin-top: var(--spacing-small);
-  }
+.errorText {
+  color: var(--color-error);
+  margin-top: var(--spacing-xsmall);
 }
 
 .ButtonContainer {
   display: flex;
   justify-content: flex-end;
-  padding: var(--spacing-base);
+  margin-top: var(--spacing-base);
 }
 
 .NoteContainer {

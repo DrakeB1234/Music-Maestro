@@ -4,6 +4,7 @@ import { Note } from "webmidi";
 const MIN_OCTAVE_RANGE = 0;
 const MAX_OCTAVE_RANGE = 7;
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+export type NOTE_NAME_TYPES = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 
 
 const NOTE_SEMITONES: Record<string, number> = {
@@ -24,23 +25,23 @@ export const ACCIDENTALS = {
 };
 
 export class GenericNote {
-  name: string
-  accidental: string | null
-  octave: number | null
+  name: NOTE_NAME_TYPES;
+  accidental: Accidental | null;
+  octave: number | null;
 
   constructor(
-    name: string,
-    accidental: string | null,
+    name: NOTE_NAME_TYPES,
+    accidental: Accidental | null,
     octave: number
   ) {
-    this.name = name.toUpperCase();
+    this.name = name;
     this.accidental = accidental;
     this.octave = octave;
   }
 }
 
 export function GenerateRandomNote(
-  exclusiveNote: GenericNote,
+  exclusiveNote: GenericNote | null,
   allowedAccidentals: AllowedAccidentals,
   minOctave: number = 2,
   maxOctave: number = 6,
@@ -67,36 +68,31 @@ export function GenerateRandomNote(
   }
 
   // Generate new note name if duplicate was found
-  if (noteName === exclusiveNote.name && octave === exclusiveNote.octave) {
-    noteName = GenerateDifferentNoteName(noteName);
+  if (exclusiveNote && noteName === exclusiveNote.name && octave === exclusiveNote.octave) {
+    const nameIdx = NOTE_NAMES.findIndex(name => name == exclusiveNote.name);
+    noteName = NOTE_NAMES[(nameIdx + 1) % NOTE_NAMES.length];
   }
 
   return { name: noteName, accidental: accidental, octave: octave } as GenericNote;
 };
 
-function GenerateDifferentNoteName(noteName: string): string {
-  const nameIdx = NOTE_NAMES.findIndex(name => name == noteName);
-  if (!nameIdx) return noteName;
-  const nameIdxIncrement = Math.floor(Math.random() * NOTE_NAMES.length - 1);
-  const newIdx = (nameIdx + nameIdxIncrement) % NOTE_NAMES.length;
-  return NOTE_NAMES[newIdx];
-}
-
-export function GenerateRandomInclusiveNote(inclusiveNotes: GenericNote[], exclusiveNote: GenericNote): GenericNote {
+export function GenerateRandomInclusiveNote(inclusiveNotes: GenericNote[], exclusiveNote: GenericNote | null): GenericNote {
   let newNote = inclusiveNotes[Math.floor(Math.random() * inclusiveNotes.length)];
+  if (!exclusiveNote) {
+    return newNote;
+  }
 
   if (newNote.name === exclusiveNote.name && newNote.octave === exclusiveNote.octave) {
     let newIdx = inclusiveNotes.findIndex(prev => prev === newNote);
-    newIdx = (newIdx + 1) % inclusiveNotes.length;
-    newNote = inclusiveNotes[newIdx];
+    newNote = inclusiveNotes[(newIdx + 1) % inclusiveNotes.length];
   }
 
   return newNote;
 }
 
 // This means that a G# is also a Ab. This checks whether the note played is enharmonic to another
-export function IsNoteEnharmonic(originalNote: GenericNote, targetNote: GenericNote): boolean {
-  const originalNoteSemitone: number = NoteToAbsoluteSemitone(originalNote);
+function IsNoteEnharmonic(playedNote: GenericNote, targetNote: GenericNote): boolean {
+  const originalNoteSemitone: number = NoteToAbsoluteSemitone(playedNote);
   const targetNoteSemitone: number = NoteToAbsoluteSemitone(targetNote);
   if (originalNoteSemitone == targetNoteSemitone) {
     return true
@@ -105,6 +101,27 @@ export function IsNoteEnharmonic(originalNote: GenericNote, targetNote: GenericN
     return false;
   }
 };
+
+export function CheckValidButtonNotePlayed(playedNote: GenericNote, targetNote: GenericNote): boolean {
+  // Ignores octave checking for button notes
+  if (playedNote.name === targetNote.name && playedNote.accidental === targetNote.accidental) {
+    return true;
+  }
+  if (IsNoteEnharmonic(playedNote, targetNote)) {
+    return true;
+  }
+  return false;
+}
+
+export function CheckValidMidiNotePlayed(playedNote: GenericNote, targetNote: GenericNote): boolean {
+  if (playedNote.name === targetNote.name && playedNote.accidental === targetNote.accidental && playedNote.octave === targetNote.octave) {
+    return true;
+  }
+  if (IsNoteEnharmonic(playedNote, targetNote)) {
+    return true;
+  }
+  return false;
+}
 
 // Returns TOTAL number of semitones from C0
 function NoteToAbsoluteSemitone(note: GenericNote): number {
@@ -128,7 +145,7 @@ export function ConvertGenericNoteToVexNote(genericNote: GenericNote): string {
 };
 
 export function ConvertMidiNoteToGenericNote(midiNote: Note): GenericNote {
-  return new GenericNote(midiNote.name, midiNote.accidental, midiNote.octave);
+  return new GenericNote(midiNote.name.toUpperCase() as NOTE_NAME_TYPES, midiNote.accidental as Accidental | null, midiNote.octave);
 }
 
 export function PrintGenericNote(genericNote: GenericNote): string {

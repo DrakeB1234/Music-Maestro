@@ -16,11 +16,16 @@ export default function Navbar() {
     );
   };
 
+  const handleIconPressed = () => {
+    navigate("/");
+    return;
+  }
+
   return (
     <div className={styles.NavbarWrapper}>
 
       <div className={styles.SizeWrapper}>
-        <div onClick={() => navigate("/")} className={styles.IconTextContainer}>
+        <div onClick={handleIconPressed} className={styles.IconTextContainer}>
           <IconWrapper icon={<MusicNoteIcon />} />
           <div className={styles.TitleContainer}>
             <h1 className='body mobile-hide'>Sightreading</h1>

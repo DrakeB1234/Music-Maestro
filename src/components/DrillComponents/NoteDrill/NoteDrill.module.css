@@ -3,6 +3,7 @@
   align-items: center;
   gap: var(--spacing-xsmall);
   padding: var(--spacing-xsmall);
+  padding-left: var(--spacing-large);
   background-color: var(--color-primary);
 }
 
@@ -11,16 +12,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-xsmall);
-  justify-content: space-evenly;
 
   &>p {
+    flex: 1;
+    text-align: center;
     color: var(--color-onprimary);
   }
-}
-
-.StaffContainer {
-  display: flex;
-  justify-content: center;
 }
 
 .ButtonInputWrapper {

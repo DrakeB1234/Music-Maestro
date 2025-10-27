@@ -1,35 +1,48 @@
-import { useMidiProvider } from "@/context/MidiProvider";
 import Modal from '../UIComponents/Modal';
 import { LinkIcon, MusicNoteIcon } from "../Icons/Icons";
 import styles from './MidiDeviceSelection.module.css';
 import Button from "../UIComponents/Button";
-import { PrintGenericNote } from "@/helpers/NoteHelpers";
+import { GenericNote, PrintGenericNote } from "@/helpers/NoteHelpers";
+import { useNoteInputStore } from '@/store/noteInputStore';
+import { useEffect } from 'react';
+import { useNoteDrillStore } from '@/store/noteDrillStore';
 
 export default function MidiDeviceSelection() {
-
-  const { isConnected, ConnectDevice, error, lastNotePlayed } = useMidiProvider();
+  const midiDeviceErrorMessage = useNoteInputStore((state) => state.midiDeviceErrorMessage);
+  const isMidiDeviceConnected = useNoteInputStore((state) => state.isMidiDeviceConnected);
+  const connectMidiDevice = useNoteInputStore((state) => state.connectMidiDevice);
 
   return (
     <Modal headerText="Connect Device" icon={<LinkIcon />}>
-      {!isConnected ?
-        <div className={styles.ContentContainer}>
+      <div className={styles.ContentContainer}>
+        {isMidiDeviceConnected
+          ?
+          <>
+            <h2 className="body-secondary">Play a note to test!</h2>
+            <div className={styles.NoteContainer}>
+              <MusicNoteIcon color="var(--color-primary)" />
+              <PlayedNoteText />
+            </div>
+          </>
+          :
           <h2 className="body-secondary">Plug in your keyboard or controller to practice!</h2>
-          {error ?
-            <p>Error: {error}</p> :
-            <></>
-          }
-        </div> :
-        <div className={styles.ContentContainer}>
-          <h2 className="body-secondary">Play a note to test!</h2>
-          <div className={styles.NoteContainer}>
-            <MusicNoteIcon color="var(--color-primary)" />
-            <p>{lastNotePlayed && PrintGenericNote(lastNotePlayed)}</p>
-          </div>
+        }
+        {midiDeviceErrorMessage
+          ?
+          <p className={styles.errorText}>Error: {midiDeviceErrorMessage}</p>
+          :
+          <div></div>
+        }
+
+        <div className={styles.ButtonContainer}>
+          <Button text="Connect Device" onClick={connectMidiDevice} />
         </div>
-      }
-      <div className={styles.ButtonContainer}>
-        <Button text="Connect Device" onClick={ConnectDevice} />
       </div>
     </Modal>
   )
+}
+
+function PlayedNoteText() {
+  const playedNote = useNoteDrillStore((state) => state.playedNote);
+  return <p>{playedNote && PrintGenericNote(playedNote)}</p>
 }

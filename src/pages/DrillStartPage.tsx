@@ -1,65 +1,56 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import type { DrillOptions } from "@/types/DrillTypes";
-import { defaultDrillPresetsData } from "@/data/NoteDrillPresets";
 import NoteDrill from "@/components/DrillComponents/NoteDrill/NoteDrill";
-import { useMidiInput } from "@/hooks/useMidiInput";
 import styles from './DrillStartPage.module.css';
 import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
+import { useEffect, useState } from "react";
+import { useNoteDrillStore } from "@/store/noteDrillStore";
+import { defaultDrillOptions } from "@/helpers/DrillHelpers";
+import { defaultDrillPresetsData } from "@/data/NoteDrillPresets";
+import type { DrillOptions } from "@/types/DrillTypes";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function DrillStart() {
+export default function DrillStartPage() {
+  const drillOptions = useNoteDrillStore((state) => state.drillOptions);
+  const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
   const navigate = useNavigate();
   const location = useLocation();
-  const { ClearInput: ClearMidiInput } = useMidiInput();
 
   const paramOptions = location.state as
     | { type: "preset"; id: string }
     | { type: "custom"; options: DrillOptions }
     | undefined;
 
-  const [drillOptions, setDrillOptions] = useState<DrillOptions | null>(null);
-
-  function Init() {
-    ClearMidiInput();
-    if (!paramOptions) {
-      navigate("/");
-      return;
-    }
-
-    let options: DrillOptions | null = null;
-
-    if (paramOptions.type === "preset") {
-      const preset = defaultDrillPresetsData.find(e => e.id === paramOptions.id);
-      options = preset ? preset.drillOptions : null;
-    }
-    if (paramOptions.type === "custom") {
-      options = paramOptions.options;
-    }
-
-    if (!options) {
-      console.error("Failed to start drill. No drill options found.");
-      navigate("/");
-      return;
-    }
-
-    setDrillOptions(options);
-  }
-
-  function HandleQuit() {
+  function handleBackButtonPressed() {
     navigate("/");
+    return;
   }
 
   useEffect(() => {
-    Init();
-  }, []);
-
-  if (!paramOptions) return;
+    if (!paramOptions) {
+      console.warn("Failed to start drill. No drill options found.");
+      navigate("/");
+      return;
+    }
+    if (paramOptions.type === "preset") {
+      const preset = defaultDrillPresetsData.find(e => e.id === paramOptions.id);
+      if (preset) {
+        setDrillOptions(preset.drillOptions);
+      }
+    }
+    else if (paramOptions.type === "custom") {
+      setDrillOptions(paramOptions.options);
+    }
+    else {
+      console.warn("Failed to start drill.");
+      navigate("/");
+      return;
+    }
+  }, [paramOptions, navigate]);
 
   return (
     <div className={styles.DrillStartWrapper}>
       <div className="size-wrapper">
-        <BackButtonContainer onBack={HandleQuit} />
-        {drillOptions && <NoteDrill drillOptions={drillOptions} HandleQuit={HandleQuit} />}
+        <BackButtonContainer onBack={handleBackButtonPressed} />
+        <NoteDrill />
       </div>
     </div>
   );

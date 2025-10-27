@@ -3,15 +3,15 @@ import Button from "../UIComponents/Button";
 import styles from './NoteButtonInput.module.css';
 import { useState } from "react";
 import { FlatIcon, SharpIcon } from "../Icons/Icons";
+import { useNoteInputStore } from "@/store/noteInputStore";
 
 type Props = {
-  SetNotePressed: (note: GenericNote) => void
 }
 
 type ActiveAccidental = "#" | "b" | null
 
-export default function NoteButtonInput({ SetNotePressed: NotePressed }: Props) {
-
+export default function NoteButtonInput() {
+  const triggerButtonInput = useNoteInputStore((s) => s.triggerButtonInput);
   const [activeAccidental, setActiveAccidental] = useState<ActiveAccidental>(null);
 
   const HandleNoteButtonPressed = (noteName: string) => {
@@ -20,8 +20,7 @@ export default function NoteButtonInput({ SetNotePressed: NotePressed }: Props) 
       accidental: activeAccidental,
       octave: null
     } as GenericNote
-    NotePressed(genericNote);
-    return;
+    triggerButtonInput(genericNote);
   }
 
   const HandleAccidentalButtonPressed = (accidental: ActiveAccidental) => {
