@@ -1,16 +1,16 @@
 import NoteDrill from "@/components/DrillComponents/NoteDrill/NoteDrill";
 import styles from './DrillStartPage.module.css';
 import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNoteDrillStore } from "@/store/noteDrillStore";
-import { defaultDrillOptions } from "@/helpers/DrillHelpers";
 import { defaultDrillPresetsData } from "@/data/NoteDrillPresets";
 import type { DrillOptions } from "@/types/DrillTypes";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function DrillStartPage() {
-  const drillOptions = useNoteDrillStore((state) => state.drillOptions);
+  const setDrillTime = useNoteDrillStore((state) => state.setDrillTime);
   const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
+  const resetDrill = useNoteDrillStore((state) => state.reset);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,6 +25,12 @@ export default function DrillStartPage() {
   }
 
   useEffect(() => {
+    const handleProperDrillStart = (options: DrillOptions) => {
+      resetDrill();
+      setDrillOptions(options);
+      setDrillTime(options.timer ? options.timer : 0);
+    }
+
     if (!paramOptions) {
       console.warn("Failed to start drill. No drill options found.");
       navigate("/");
@@ -33,11 +39,11 @@ export default function DrillStartPage() {
     if (paramOptions.type === "preset") {
       const preset = defaultDrillPresetsData.find(e => e.id === paramOptions.id);
       if (preset) {
-        setDrillOptions(preset.drillOptions);
+        handleProperDrillStart(preset.drillOptions);
       }
     }
     else if (paramOptions.type === "custom") {
-      setDrillOptions(paramOptions.options);
+      handleProperDrillStart(paramOptions.options);
     }
     else {
       console.warn("Failed to start drill.");

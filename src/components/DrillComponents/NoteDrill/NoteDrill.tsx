@@ -10,7 +10,6 @@ import { useNoteInputStore } from "@/store/noteInputStore";
 
 export default function NoteDrill() {
   // Store states
-  const drillOptions = useNoteDrillStore((state) => state.drillOptions);
   const setCurrentNote = useNoteDrillStore((state) => state.setCurrentNote);
   const incrementTotalNotesPlayed = useNoteDrillStore((state) => state.incrementTotalNotesPlayed);
   const incrementCorrectNotesPlayed = useNoteDrillStore((state) => state.incrementCorrectNotesPlayed);
@@ -25,7 +24,12 @@ export default function NoteDrill() {
   const connectMidiDevice = useNoteInputStore((state) => state.connectMidiDevice);
 
   function handleGenerateNote() {
-    const { currentNote } = useNoteDrillStore.getState();
+    const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
+    if (!isDrillTimerRunning) return;
+
+    const currentNote = useNoteDrillStore.getState().currentNote;
+    const drillOptions = useNoteDrillStore.getState().drillOptions;
+
     let newNote: GenericNote;
 
     if (drillOptions.inclusiveNotes && drillOptions.inclusiveNotes?.length > 1) {
@@ -47,7 +51,10 @@ export default function NoteDrill() {
   }
 
   function handleButtonPlayed(note: GenericNote) {
-    const { currentNote } = useNoteDrillStore.getState();
+    const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
+    if (!isDrillTimerRunning) return;
+
+    const currentNote = useNoteDrillStore.getState().currentNote;
     setPlayedNote(note);
 
     if (currentNote && CheckValidButtonNotePlayed(note, currentNote)) {
@@ -58,7 +65,10 @@ export default function NoteDrill() {
   }
 
   function handleMidiPlayed(note: GenericNote) {
-    const { currentNote } = useNoteDrillStore.getState();
+    const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
+    if (!isDrillTimerRunning) return;
+
+    const currentNote = useNoteDrillStore.getState().currentNote;
     setPlayedNote(note);
 
     if (currentNote && CheckValidMidiNotePlayed(note, currentNote)) {
@@ -79,6 +89,8 @@ export default function NoteDrill() {
   }
 
   function handleForceMidiInput() {
+    const drillOptions = useNoteDrillStore.getState().drillOptions;
+
     const newNote = GenerateRandomNote(
       null,
       drillOptions.allowedAccidentals,
@@ -86,6 +98,10 @@ export default function NoteDrill() {
       drillOptions.maxOctave,
     );
     forceMidiInput(newNote);
+  }
+
+  function handleDrillTimeout() {
+    console.log("OVER");
   }
 
   useEffect(() => {
@@ -108,9 +124,10 @@ export default function NoteDrill() {
   return (
     <div className={styles.NoteDrillWrapper}>
       <Card padding="none">
-        <StaffGeneration staffOptions={drillOptions.staffOptions} />
+        <StaffGeneration />
         <Info />
         <Stats />
+        <DrillTimer handleTimeOut={handleDrillTimeout} />
         <Button text="Connect Midi" onClick={connectMidiDevice} />
         <Button text="Force Midi" onClick={handleForceMidiInput} />
         <Button text="Generate Note" onClick={handleGenerateNote} />
@@ -137,6 +154,36 @@ function Stats() {
   return (
     <h1>{correctNotesPlayed}/{totalNotesPlayed} {correctPercentage}</h1>
   )
+}
+
+interface DrillTimerProps {
+  handleTimeOut: () => void;
+}
+
+function DrillTimer({ handleTimeOut }: DrillTimerProps) {
+  const isDrillTimerRunning = useNoteDrillStore((state) => state.isDrillTimerRunning);
+  const drillTime = useNoteDrillStore((state) => state.drillTime);
+  const decrementDrillTime = useNoteDrillStore((state) => state.decrementDrillTime);
+
+  useEffect(() => {
+    if (!isDrillTimerRunning) {
+      handleTimeOut();
+      return;
+    };
+
+    const interval = setInterval(() => {
+      decrementDrillTime();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval)
+    };
+  }, [isDrillTimerRunning, decrementDrillTime]);
+
+  return (
+    <p>Time Left: {drillTime}</p>
+  )
+
 }
 
 

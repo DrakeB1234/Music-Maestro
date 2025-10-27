@@ -17,6 +17,13 @@ interface NoteDrillState {
   incrementTotalNotesPlayed: () => void;
   correctNotesPlayed: number;
   incrementCorrectNotesPlayed: () => void;
+
+  isDrillTimerRunning: boolean;
+  drillTime: number;
+  decrementDrillTime: () => void;
+  setDrillTime: (time: number) => void;
+
+  reset: () => void;
 }
 
 export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
@@ -44,5 +51,29 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
     set((state) => ({
       correctNotesPlayed: state.correctNotesPlayed + 1
     }));
+  },
+
+  isDrillTimerRunning: true,
+  drillTime: 0,
+  decrementDrillTime: () => {
+    if (get().drillTime < 1) {
+      set({ isDrillTimerRunning: false })
+    }
+    else {
+      set((state) => ({
+        drillTime: Math.max(0, state.drillTime - 1)
+      }));
+    }
+  },
+  setDrillTime: (time: number) => {
+    set({ drillTime: Math.max(0, time) });
+  },
+
+  reset: () => {
+    set({ playedNote: null });
+    set({ totalNotesPlayed: 0 });
+    set({ correctNotesPlayed: 0 });
+    set({ isDrillTimerRunning: true });
+    get().setDrillTime(0);
   }
 }));

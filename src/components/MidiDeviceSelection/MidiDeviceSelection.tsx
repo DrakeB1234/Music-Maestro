@@ -4,8 +4,8 @@ import styles from './MidiDeviceSelection.module.css';
 import Button from "../UIComponents/Button";
 import { GenericNote, PrintGenericNote } from "@/helpers/NoteHelpers";
 import { useNoteInputStore } from '@/store/noteInputStore';
-import { useEffect } from 'react';
 import { useNoteDrillStore } from '@/store/noteDrillStore';
+import { useEffect, useState } from 'react';
 
 export default function MidiDeviceSelection() {
   const midiDeviceErrorMessage = useNoteInputStore((state) => state.midiDeviceErrorMessage);
@@ -43,6 +43,19 @@ export default function MidiDeviceSelection() {
 }
 
 function PlayedNoteText() {
-  const playedNote = useNoteDrillStore((state) => state.playedNote);
+  const [playedNote, setPlayedNote] = useState<GenericNote | null>(null);
+  const addMidiListener = useNoteInputStore((state) => state.addMidiListener);
+  const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
+
+  useEffect(() => {
+    const handleMidiEvent = (note: GenericNote) => {
+      setPlayedNote(note);
+    }
+
+    addMidiListener(handleMidiEvent);
+
+    return () => removeMidiListener(handleMidiEvent);
+  }, [addMidiListener, removeMidiListener]);
+
   return <p>{playedNote && PrintGenericNote(playedNote)}</p>
 }

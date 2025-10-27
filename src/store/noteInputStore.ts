@@ -58,8 +58,7 @@ export const useNoteInputStore = create<NoteInputState>((set, get) => ({
         WebMidi.inputs.forEach((input) => {
           console.log(`MIDI connected: ${input.name}`);
           input.addListener("noteon", (event) => {
-            const note = ConvertMidiNoteToGenericNote(event.note);
-            get().triggerMidiInput(note);
+            get().triggerMidiInput(ConvertMidiNoteToGenericNote(event.note));
           });
         });
 
