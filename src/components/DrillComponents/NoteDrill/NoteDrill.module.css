@@ -1,10 +1,39 @@
-.headingContainer {
+.TopBarWrapper {
   display: flex;
   align-items: center;
   gap: var(--spacing-xsmall);
-  padding: var(--spacing-xsmall);
+  padding: var(--spacing-small) var(--spacing-xsmall);
   padding-left: var(--spacing-large);
   background-color: var(--color-primary);
+
+  & p {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    color: var(--color-onprimary);
+  }
+}
+
+.StatusBarContainer {
+  height: var(--spacing-2xsmall);
+  transition: var(--transition);
+
+  &.StatusBarError {
+    background-color: var(--color-error);
+  }
+
+  &.StatusBarSuccess {
+    background-color: var(--color-success);
+  }
+}
+
+.CurrentNoteContainer {
+  text-align: center;
+  width: 4rem;
+  padding: var(--spacing-2xsmall) var(--spacing-base);
+  margin: var(--spacing-xsmall);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
 }
 
 .InfoContainer {
@@ -22,5 +51,5 @@
 
 .ButtonInputWrapper {
   border-top: 1px solid var(--color-border);
-  padding: var(--spacing-base) 0;
+  padding: var(--spacing-base) var(--spacing-xsmall);
 }

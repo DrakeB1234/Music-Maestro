@@ -1,12 +1,12 @@
 import StaffGeneration from "@components/StaffGeneration/StaffGeneration";
 import styles from './NoteDrill.module.css';
-import Button from "@components/UIComponents/Button";
 import Card from "@/components/UIComponents/Card";
 import { CheckValidButtonNotePlayed, CheckValidMidiNotePlayed, GenerateRandomInclusiveNote, GenerateRandomNote, GenericNote, PrintGenericNote } from "@/helpers/NoteHelpers";
 import { useNoteDrillStore } from "@/store/noteDrillStore";
 import NoteButtonInput from "@/components/NoteButtonInput/NoteButtonInput";
 import { useEffect } from "react";
 import { useNoteInputStore } from "@/store/noteInputStore";
+import { formatSeconds } from "@/helpers/helpers";
 
 export default function NoteDrill() {
   // Store states
@@ -14,14 +14,13 @@ export default function NoteDrill() {
   const incrementTotalNotesPlayed = useNoteDrillStore((state) => state.incrementTotalNotesPlayed);
   const incrementCorrectNotesPlayed = useNoteDrillStore((state) => state.incrementCorrectNotesPlayed);
   const setPlayedNote = useNoteDrillStore((state) => state.setPlayedNote);
+  const setPlayedNoteStatus = useNoteDrillStore((state) => state.setPlayedNoteStatus);
 
   const setButtonInputListener = useNoteInputStore(
     (s) => s.setButtonInputListener
   );
   const addMidiListener = useNoteInputStore((state) => state.addMidiListener);
   const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
-  const forceMidiInput = useNoteInputStore((state) => state.forceMidiInput);
-  const connectMidiDevice = useNoteInputStore((state) => state.connectMidiDevice);
 
   function handleGenerateNote() {
     const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
@@ -80,24 +79,14 @@ export default function NoteDrill() {
 
   function handleIncorrectNotePlayed() {
     incrementTotalNotesPlayed();
+    setPlayedNoteStatus("wrong");
   }
 
   function handleCorrectNotePlayed() {
     handleGenerateNote();
     incrementCorrectNotesPlayed();
     incrementTotalNotesPlayed();
-  }
-
-  function handleForceMidiInput() {
-    const drillOptions = useNoteDrillStore.getState().drillOptions;
-
-    const newNote = GenerateRandomNote(
-      null,
-      drillOptions.allowedAccidentals,
-      drillOptions.minOctave,
-      drillOptions.maxOctave,
-    );
-    forceMidiInput(newNote);
+    setPlayedNoteStatus("correct");
   }
 
   function handleDrillTimeout() {
@@ -124,35 +113,50 @@ export default function NoteDrill() {
   return (
     <div className={styles.NoteDrillWrapper}>
       <Card padding="none">
+        <div className={styles.TopBarWrapper}>
+          <DrillTimer handleTimeOut={handleDrillTimeout} />
+          <Stats />
+        </div>
+        <StatusBar />
         <StaffGeneration />
         <Info />
-        <Stats />
-        <DrillTimer handleTimeOut={handleDrillTimeout} />
-        <Button text="Connect Midi" onClick={connectMidiDevice} />
-        <Button text="Force Midi" onClick={handleForceMidiInput} />
-        <Button text="Generate Note" onClick={handleGenerateNote} />
-        <NoteButtonInput />
+        <div className={styles.ButtonInputWrapper}>
+          <NoteButtonInput />
+        </div>
       </Card>
     </div>
   );
 };
 
-function Info() {
-  const currentNote = useNoteDrillStore((state) => state.currentNote);
-  const playedNote = useNoteDrillStore((state) => state.playedNote);
+function StatusBar() {
+  const playedNoteStatus = useNoteDrillStore((state) => state.playedNoteStatus);
+  const determineClassNameStatus = playedNoteStatus == "correct" ? styles.StatusBarSuccess : playedNoteStatus == "wrong" ? styles.StatusBarError : '';
 
   return (
-    <h1>{playedNote ? PrintGenericNote(playedNote) : '-'}/{currentNote && PrintGenericNote(currentNote)}</h1>
+    <div className={`${styles.StatusBarContainer} ${determineClassNameStatus}`} />
+  )
+}
+
+function Info() {
+  const currentNote = useNoteDrillStore((state) => state.currentNote);
+  // const playedNote = useNoteDrillStore((state) => state.playedNote);
+
+  return (
+    <p className={styles.CurrentNoteContainer}>{currentNote && PrintGenericNote(currentNote)}</p>
   )
 }
 
 function Stats() {
   const totalNotesPlayed = useNoteDrillStore((state) => state.totalNotesPlayed);
   const correctNotesPlayed = useNoteDrillStore((state) => state.correctNotesPlayed);
-  const correctPercentage = `${Math.ceil((correctNotesPlayed / totalNotesPlayed) * 100)}%`
+  const calculatePercentage = Math.ceil((correctNotesPlayed / totalNotesPlayed) * 100);
+  const correctPercentage = !isNaN(calculatePercentage) ? calculatePercentage + "%" : "0%"
 
   return (
-    <h1>{correctNotesPlayed}/{totalNotesPlayed} {correctPercentage}</h1>
+    <>
+      <p>{correctPercentage}</p>
+      <p>{correctNotesPlayed}/{totalNotesPlayed}</p>
+    </>
   )
 }
 
@@ -181,7 +185,7 @@ function DrillTimer({ handleTimeOut }: DrillTimerProps) {
   }, [isDrillTimerRunning, decrementDrillTime]);
 
   return (
-    <p>Time Left: {drillTime}</p>
+    <p>{formatSeconds(drillTime)}</p>
   )
 
 }

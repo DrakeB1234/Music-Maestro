@@ -1,8 +1,9 @@
-.DrillStartWrapper {
+div.DrillStartWrapper {
   display: flex;
   justify-content: center;
 
   &>div {
-    padding: var(--spacing-2xsmall);
+    padding: var(--spacing-xsmall);
+    max-width: 700px;
   }
 }

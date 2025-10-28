@@ -7,6 +7,7 @@ import Button from '@/components/UIComponents/Button';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
 import { type DrillClefTypes, type DrillOptions, clefOctaveLimits } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
+import { defaultDrillOptions } from '@/helpers/DrillHelpers';
 
 interface Props {
   onBack: () => void;
@@ -107,6 +108,10 @@ export default function CustomDrills({ onBack }: Props) {
     navigate("/drills/start", { state: { type: "custom", options: newOptions } });
   };
 
+  function handleDefaultOptionsPressed() {
+    navigate("/drills/start", { state: { type: "custom", options: defaultDrillOptions } });
+  }
+
   return (
     <div className={styles.CustomDrillsWrapper}>
       <div className={styles.ContentWrapper}>
@@ -158,6 +163,7 @@ export default function CustomDrills({ onBack }: Props) {
           </div>
           <div className={styles.SubmitButtonContainer}>
             <Button onClick={handleSubmit} variant="contained" text="Start Drill" fullWidth={true} />
+            <Button onClick={handleDefaultOptionsPressed} variant="outlined" text="Use Default Options" fullWidth={true} />
           </div>
         </Card>
       </div>

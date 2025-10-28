@@ -27,12 +27,7 @@ export default function MidiDeviceSelection() {
           :
           <h2 className="body-secondary">Plug in your keyboard or controller to practice!</h2>
         }
-        {midiDeviceErrorMessage
-          ?
-          <p className={styles.errorText}>Error: {midiDeviceErrorMessage}</p>
-          :
-          <div></div>
-        }
+        <p className={styles.errorText}>{midiDeviceErrorMessage && `Error: ${midiDeviceErrorMessage}`}</p>
 
         <div className={styles.ButtonContainer}>
           <Button text="Connect Device" onClick={connectMidiDevice} />

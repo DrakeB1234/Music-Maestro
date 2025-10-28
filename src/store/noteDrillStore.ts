@@ -3,6 +3,8 @@ import type { GenericNote } from '@/helpers/NoteHelpers';
 import type { DrillOptions } from '@/types/DrillTypes';
 import { defaultDrillOptions } from '@/helpers/DrillHelpers';
 
+type PlayedNoteStatus = "correct" | "wrong" | null;
+
 interface NoteDrillState {
   currentNote: GenericNote | null;
   setCurrentNote: (note: GenericNote) => void;
@@ -17,6 +19,9 @@ interface NoteDrillState {
   incrementTotalNotesPlayed: () => void;
   correctNotesPlayed: number;
   incrementCorrectNotesPlayed: () => void;
+
+  playedNoteStatus: PlayedNoteStatus;
+  setPlayedNoteStatus: (status: PlayedNoteStatus) => void;
 
   isDrillTimerRunning: boolean;
   drillTime: number;
@@ -53,6 +58,11 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
     }));
   },
 
+  playedNoteStatus: null,
+  setPlayedNoteStatus: (status) => {
+    set({ playedNoteStatus: status });
+  },
+
   isDrillTimerRunning: true,
   drillTime: 0,
   decrementDrillTime: () => {
@@ -70,10 +80,12 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
   },
 
   reset: () => {
-    set({ playedNote: null });
-    set({ totalNotesPlayed: 0 });
-    set({ correctNotesPlayed: 0 });
-    set({ isDrillTimerRunning: true });
+    set({
+      playedNote: null,
+      totalNotesPlayed: 0,
+      correctNotesPlayed: 0,
+      isDrillTimerRunning: true
+    });
     get().setDrillTime(0);
   }
 }));

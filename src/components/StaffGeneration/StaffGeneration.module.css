@@ -6,5 +6,7 @@
 
 .StaffContainer {
   display: flex;
-  overflow: visible;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
 }

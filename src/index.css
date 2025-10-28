@@ -91,6 +91,8 @@ img {
 
   --palette-red-500: #CA4848;
 
+  --palette-green-500: #53ca48;
+
   /* application vars */
   --max-app-width: 1000px;
   --min-button-size: 40px;
@@ -121,6 +123,7 @@ img {
   --color-border: var(--palette-grey-300);
 
   --color-error: var(--palette-red-500);
+  --color-success: var(--palette-green-500);
 
   --color-modal-background: #00000070;
 

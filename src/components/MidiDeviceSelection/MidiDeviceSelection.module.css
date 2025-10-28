@@ -5,6 +5,7 @@
 .errorText {
   color: var(--color-error);
   margin-top: var(--spacing-xsmall);
+  min-height: 1.4em;
 }
 
 .ButtonContainer {
