@@ -12,10 +12,6 @@
   cursor: pointer;
 }
 
-.padding-none {
-  padding: 0;
-}
-
 .padding-base {
   padding: var(--spacing-base);
 }

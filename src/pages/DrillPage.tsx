@@ -49,7 +49,7 @@ function MainComponent({
         <h1>Drill Practice</h1>
       </div>
       <div className={styles.CardContainer}>
-        <Card onClick={togglePresetComponent} padding="none">
+        <Card onClick={togglePresetComponent}>
           <div className={styles.CardContent}>
             <div className={styles.IconContainer}>
               <IconWrapper icon={<QueueMusicIcon />} />
@@ -63,7 +63,7 @@ function MainComponent({
             </div>
           </div>
         </Card>
-        <Card onClick={toggleCustomComponent} padding="none">
+        <Card onClick={toggleCustomComponent}>
           <div className={styles.CardContent}>
             <div className={styles.IconContainer}>
               <IconWrapper icon={<TuneIcon />} />

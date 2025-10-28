@@ -18,7 +18,7 @@ interface NoteInputState {
   isMidiDeviceConnected: boolean;
   setIsMidiDeviceConnected: (value: boolean) => void;
   midiDeviceErrorMessage: string | null;
-  setMidiDeviceErrorMessage: (value: string) => void;
+  setMidiDeviceErrorMessage: (value: string | null) => void;
 }
 
 export const useNoteInputStore = create<NoteInputState>((set, get) => ({
@@ -62,6 +62,7 @@ export const useNoteInputStore = create<NoteInputState>((set, get) => ({
           });
         });
 
+        setMidiDeviceErrorMessage(null);
         setIsMidiDeviceConnected(true);
       })
       .catch((err) => {

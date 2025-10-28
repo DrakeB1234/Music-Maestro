@@ -99,6 +99,30 @@ export function SharpIcon({ size = 24, color = DEFAULT_COLOR }) {
     </svg>
   );
 }
+export function ArrowUpIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path color={color} d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
+    </svg>
+  );
+}
+export function ArrowDownIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path color={color} d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+    </svg>
+  );
+}
 export function SettingsIcon({ size = 24, color = DEFAULT_COLOR }) {
   return (
     <svg

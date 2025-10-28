@@ -1,9 +1,9 @@
 import { useModal } from '@/context/ModalProvider';
 import styles from './Navbar.module.css';
-import MidiDeviceSelection from '../MidiDeviceSelection/MidiDeviceSelection';
-import { MenuIcon, MusicNoteIcon } from '../Icons/Icons';
-import Button from '../UIComponents/Button';
-import IconWrapper from '../UIComponents/IconWrapper';
+import MidiDeviceSelection from '@components/ModalComponents/MidiDeviceSelection/MidiDeviceSelection';
+import { MenuIcon, MusicNoteIcon } from '@components/Icons/Icons';
+import Button from '@components/UIComponents/Button';
+import IconWrapper from '@components/UIComponents/IconWrapper';
 import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {

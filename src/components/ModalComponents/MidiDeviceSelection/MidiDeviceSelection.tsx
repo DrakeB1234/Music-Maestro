@@ -1,10 +1,9 @@
-import Modal from '../UIComponents/Modal';
-import { LinkIcon, MusicNoteIcon } from "../Icons/Icons";
+import Modal from '@components/UIComponents/Modal';
+import { LinkIcon, MusicNoteIcon } from "@components/Icons/Icons";
 import styles from './MidiDeviceSelection.module.css';
-import Button from "../UIComponents/Button";
+import Button from "@components/UIComponents/Button";
 import { GenericNote, PrintGenericNote } from "@/helpers/NoteHelpers";
 import { useNoteInputStore } from '@/store/noteInputStore';
-import { useNoteDrillStore } from '@/store/noteDrillStore';
 import { useEffect, useState } from 'react';
 
 export default function MidiDeviceSelection() {

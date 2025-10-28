@@ -8,6 +8,8 @@ import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
 import { type DrillClefTypes, type DrillOptions, clefOctaveLimits } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
 import { defaultDrillOptions } from '@/helpers/DrillHelpers';
+import { useModal } from '@/context/ModalProvider';
+import OctaveSelector from '@/components/ModalComponents/OctaveSelector/OctaveSelector';
 
 interface Props {
   onBack: () => void;
@@ -29,6 +31,7 @@ interface AccidentalToggles {
 }
 
 export default function CustomDrills({ onBack }: Props) {
+  const { openModal } = useModal();
   const navigate = useNavigate();
 
   // Handle Form Input
@@ -112,11 +115,18 @@ export default function CustomDrills({ onBack }: Props) {
     navigate("/drills/start", { state: { type: "custom", options: defaultDrillOptions } });
   }
 
+
+  const handleOpenModal = () => {
+    openModal(
+      <OctaveSelector />
+    );
+  };
+
   return (
     <div className={styles.CustomDrillsWrapper}>
       <div className={styles.ContentWrapper}>
         <BackButtonContainer onBack={onBack} />
-        <Card padding='none'>
+        <Card>
           <div className={styles.CardHeaderContainer}>
             <h1>Custom Drill Options</h1>
           </div>
@@ -134,7 +144,7 @@ export default function CustomDrills({ onBack }: Props) {
             />
 
             <h2>Octave Range</h2>
-            <div className={styles.FlexInputsContainer}>
+            {/* <div className={styles.FlexInputsContainer}>
               <SelectInput
                 htmlName='minOctave'
                 label='Min'
@@ -149,7 +159,8 @@ export default function CustomDrills({ onBack }: Props) {
                 defaultValue={octaveOptions[octaveOptions.length - 1].value}
                 ref={maxOctaveRef}
               />
-            </div>
+            </div> */}
+            <Button text='Choose Octave Range' variant='outlined' size='medium' onClick={handleOpenModal} />
 
             <h2>Timer</h2>
             <Input htmlName='timer' label='Time' placeholder='30' type='number' error={errors?.timer} ref={timerRef} defaultValue='60' min={0} max={999} />

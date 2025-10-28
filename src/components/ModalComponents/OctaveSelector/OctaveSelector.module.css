@@ -1,0 +1,48 @@
+.ModalContentContainer {
+  padding: var(--spacing-small) var(--spacing-base);
+}
+
+.ModalFlexContainer {
+  display: flex;
+}
+
+.OctaveButtonsContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.StaffContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.RangeContainer {
+  padding: var(--spacing-base);
+  margin-top: var(--spacing-small);
+  text-align: center;
+}
+
+.SelectedRangeContainer {
+  margin: 0 auto;
+  margin-top: var(--spacing-xsmall);
+  text-align: center;
+  width: clamp(3rem, 100%, 7.5rem);
+  padding: var(--spacing-base);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-base);
+
+  & p {
+    color: var(--color-onprimary);
+  }
+}
+
+.ModalActionButtonsContainer {
+  display: flex;
+  gap: var(--spacing-small);
+  padding: var(--spacing-base);
+  border-top: 1px solid var(--color-border);
+}

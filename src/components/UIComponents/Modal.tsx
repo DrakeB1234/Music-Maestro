@@ -1,5 +1,5 @@
 import { useModal } from "@/context/ModalProvider";
-import { CloseIcon } from "../Icons/Icons";
+import { CloseIcon } from "@components/Icons/Icons";
 import Button from "./Button";
 import Card from "./Card";
 import styles from './Modal.module.css';
@@ -19,7 +19,7 @@ export default function Modal({
   const { closeModal } = useModal();
 
   return (
-    <Card padding="none">
+    <Card>
       <div className={styles.headerContainer}>
         {icon}
         <h1 className="truncate-overflow-text">{headerText}</h1>

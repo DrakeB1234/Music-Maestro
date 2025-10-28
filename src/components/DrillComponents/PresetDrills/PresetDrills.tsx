@@ -53,7 +53,7 @@ function PresetCard({
   handleNavigate
 }: CardProps) {
   return (
-    <Card padding="none">
+    <Card>
       <div className={styles.TextContainer}>
         <div className={styles.HeaderContainer}>
           <PlaylistIcon color='var(--color-primary)' />

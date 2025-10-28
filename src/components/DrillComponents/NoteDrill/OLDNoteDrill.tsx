@@ -139,7 +139,7 @@ export default function NoteDrill({ drillOptions, HandleQuit, forceTimerStop }: 
 
   return (
     <div className={styles.NoteDrillWrapper}>
-      <Card padding="none">
+      <Card>
         <div className={styles.headingContainer}>
           <div className={styles.InfoContainer}>
             <p>Correct: {DisplayCorrectNotes()}</p>

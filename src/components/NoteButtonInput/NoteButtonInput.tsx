@@ -1,8 +1,8 @@
 import { GenericNote, NOTE_NAMES } from "@/helpers/NoteHelpers";
-import Button from "../UIComponents/Button";
+import Button from "@components/UIComponents/Button";
 import styles from './NoteButtonInput.module.css';
 import { useRef, useState } from "react";
-import { FlatIcon, SharpIcon } from "../Icons/Icons";
+import { FlatIcon, SharpIcon } from "@components/Icons/Icons";
 import { useNoteInputStore } from "@/store/noteInputStore";
 
 type ActiveAccidental = "#" | "b" | null

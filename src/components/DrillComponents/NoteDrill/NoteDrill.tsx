@@ -112,7 +112,7 @@ export default function NoteDrill() {
 
   return (
     <div className={styles.NoteDrillWrapper}>
-      <Card padding="none">
+      <Card>
         <div className={styles.TopBarWrapper}>
           <DrillTimer handleTimeOut={handleDrillTimeout} />
           <Stats />
