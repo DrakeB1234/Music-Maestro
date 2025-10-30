@@ -2,9 +2,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-app-surface);
+  background-color: var(--color-surface-light-1);
   padding: var(--spacing-2xsmall) 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-surface-border);
 }
 
 .SizeWrapper {

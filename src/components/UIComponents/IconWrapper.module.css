@@ -5,11 +5,11 @@
 
   height: var(--min-button-size);
   width: var(--min-button-size);
-  background-color: var(--color-primary-surface);
+  background-color: var(--color-main-1);
   border-radius: var(--radius-full);
 
   &>svg {
-    fill: var(--color-primary);
+    fill: var(--color-main-2);
     flex-shrink: 0;
   }
 }

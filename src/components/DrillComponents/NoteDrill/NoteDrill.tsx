@@ -15,6 +15,7 @@ export default function NoteDrill() {
   const incrementCorrectNotesPlayed = useNoteDrillStore((state) => state.incrementCorrectNotesPlayed);
   const setPlayedNote = useNoteDrillStore((state) => state.setPlayedNote);
   const setPlayedNoteStatus = useNoteDrillStore((state) => state.setPlayedNoteStatus);
+  const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
 
   const setButtonInputListener = useNoteInputStore(
     (s) => s.setButtonInputListener
@@ -89,6 +90,7 @@ export default function NoteDrill() {
   }
 
   function handleDrillTimeout() {
+    resetDrillOptions();
     console.log("OVER");
   }
 

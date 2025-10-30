@@ -4,13 +4,13 @@
   gap: var(--spacing-xsmall);
   padding: var(--spacing-small) var(--spacing-xsmall);
   padding-left: var(--spacing-large);
-  background-color: var(--color-primary);
+  background-color: var(--color-main-2);
 
   & p {
     flex: 1;
     display: flex;
     justify-content: center;
-    color: var(--color-onprimary);
+    color: var(--color-text-main-1);
   }
 }
 
@@ -33,7 +33,7 @@
   padding: var(--spacing-2xsmall) var(--spacing-base);
   margin: var(--spacing-xsmall);
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-surface-border);
 }
 
 .InfoContainer {
@@ -45,11 +45,11 @@
   &>p {
     flex: 1;
     text-align: center;
-    color: var(--color-onprimary);
+    color: var(--color-text-main-1);
   }
 }
 
 .ButtonInputWrapper {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-surface-border);
   padding: var(--spacing-base) var(--spacing-xsmall);
 }

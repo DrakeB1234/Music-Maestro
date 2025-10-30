@@ -41,5 +41,5 @@
   flex-direction: column;
   gap: var(--spacing-small);
   padding: var(--spacing-base);
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-surface-border);
 }

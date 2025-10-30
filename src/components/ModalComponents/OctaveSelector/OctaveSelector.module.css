@@ -33,11 +33,11 @@
   text-align: center;
   width: clamp(3rem, 100%, 7.5rem);
   padding: var(--spacing-base);
-  background-color: var(--color-primary);
+  background-color: var(--color-main-2);
   border-radius: var(--radius-base);
 
   & p {
-    color: var(--color-onprimary);
+    color: var(--color-text-main-1);
   }
 }
 
@@ -45,5 +45,5 @@
   display: flex;
   gap: var(--spacing-small);
   padding: var(--spacing-base);
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-surface-border);
 }

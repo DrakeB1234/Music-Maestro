@@ -148,13 +148,13 @@ function StaveWithButtons({ children, handleButtonPress }: StaveWithButtonsProps
   return (
     <div className={styles.ModalFlexContainer}>
       <div className={styles.OctaveButtonsContainer}>
-        <Button icon={<ArrowUpIcon />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.LEFT_INCREASE_OCTAVE)} />
-        <Button icon={<ArrowDownIcon />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.LEFT_DECREASE_OCTAVE)} />
+        <Button icon={<ArrowUpIcon color="var(--color-dark-2)" />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.LEFT_INCREASE_OCTAVE)} />
+        <Button icon={<ArrowDownIcon color="var(--color-dark-2)" />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.LEFT_DECREASE_OCTAVE)} />
       </div>
       {children}
       <div className={styles.OctaveButtonsContainer}>
-        <Button icon={<ArrowUpIcon />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.RIGHT_INCREASE_OCTAVE)} />
-        <Button icon={<ArrowDownIcon />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.RIGHT_DECREASE_OCTAVE)} />
+        <Button icon={<ArrowUpIcon color="var(--color-dark-2)" />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.RIGHT_INCREASE_OCTAVE)} />
+        <Button icon={<ArrowDownIcon color="var(--color-dark-2)" />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.RIGHT_DECREASE_OCTAVE)} />
       </div>
     </div>
   );

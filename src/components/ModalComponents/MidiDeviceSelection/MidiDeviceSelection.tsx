@@ -19,7 +19,7 @@ export default function MidiDeviceSelection() {
           <>
             <h2 className="body-secondary">Play a note to test!</h2>
             <div className={styles.NoteContainer}>
-              <MusicNoteIcon color="var(--color-primary)" />
+              <MusicNoteIcon color="var(--color-main-2)" />
               <PlayedNoteText />
             </div>
           </>

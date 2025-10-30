@@ -63,14 +63,14 @@ function PresetCard({
     <Card>
       <div className={styles.TextContainer}>
         <div className={styles.HeaderContainer}>
-          <PlaylistIcon color='var(--color-primary)' />
+          <PlaylistIcon color='var(--color-main-2)' />
           <h2 className='heading truncate-overflow-text'>{headerText}</h2>
         </div>
         <p className='caption'>{descriptionText}</p>
       </div>
       <div className={styles.PracticeButtonContainer}>
         <Button text='Progress' variant='outlined' fullWidth={true} />
-        <Button onClick={() => handleNavigate(drillId)} icon={<PlayIcon color='var(--color-app-surface)' />} text='Practice' fullWidth={true} />
+        <Button onClick={() => handleNavigate(drillId)} icon={<PlayIcon color='var(--color-text-main-1)' />} text='Practice' fullWidth={true} />
       </div>
     </Card>
   )

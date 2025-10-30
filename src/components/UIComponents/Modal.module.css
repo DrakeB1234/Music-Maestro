@@ -4,7 +4,7 @@
   gap: var(--spacing-2xsmall);
   padding: var(--spacing-xsmall) var(--spacing-small);
   padding-right: var(--spacing-2xsmall);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-surface-border);
 
   &>h1 {
     flex: 1;

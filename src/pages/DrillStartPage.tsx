@@ -8,10 +8,12 @@ import { useNavigate } from "react-router-dom";
 export default function DrillStartPage() {
   const drillOptions = useNoteDrillStore((state) => state.drillOptions);
   const setDrillTime = useNoteDrillStore((state) => state.setDrillTime);
-  const resetDrill = useNoteDrillStore((state) => state.reset);
+  const resetDrill = useNoteDrillStore((state) => state.resetDrill);
+  const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
   const navigate = useNavigate();
 
   function handleBackButtonPressed() {
+    resetDrillOptions();
     navigate("/");
     return;
   }
@@ -24,6 +26,7 @@ export default function DrillStartPage() {
 
     resetDrill();
     setDrillTime(drillOptions.timer ? drillOptions.timer : 10);
+
   }, []);
 
   if (!drillOptions) {

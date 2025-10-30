@@ -1,4 +1,4 @@
-const DEFAULT_COLOR: string = "var(--color-text)"
+const DEFAULT_COLOR: string = "var(--color-text-body-1)"
 
 export function MenuIcon({ size = 24, color = DEFAULT_COLOR }) {
   return (

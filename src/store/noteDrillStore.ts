@@ -27,7 +27,8 @@ interface NoteDrillState {
   decrementDrillTime: () => void;
   setDrillTime: (time: number) => void;
 
-  reset: () => void;
+  resetDrill: () => void;
+  resetDrillOptions: () => void;
 }
 
 export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
@@ -78,12 +79,17 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
     set({ drillTime: Math.max(0, time) });
   },
 
-  reset: () => {
+  resetDrill: () => {
     set({
       playedNote: null,
       totalNotesPlayed: 0,
       correctNotesPlayed: 0,
       isDrillTimerRunning: true
+    });
+  },
+  resetDrillOptions: () => {
+    set({
+      drillOptions: null
     });
   }
 }));

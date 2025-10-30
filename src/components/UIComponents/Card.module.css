@@ -1,8 +1,8 @@
 .cardWrapper {
   align-items: stretch;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-base);
-  background-color: var(--color-app-surface);
+  background-color: var(--color-surface-light-1);
   width: 100%;
   box-shadow: var(--elevation-medium);
   overflow: hidden;

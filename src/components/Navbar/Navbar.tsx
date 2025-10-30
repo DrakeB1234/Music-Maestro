@@ -31,7 +31,7 @@ export default function Navbar() {
             <h1 className='body mobile-hide'>Sightreading</h1>
           </div>
         </div>
-        <Button onClick={handleOpenModal} icon={<MenuIcon />} variant='outlined' />
+        <Button onClick={handleOpenModal} icon={<MenuIcon color='var(--color-dark-2)' />} variant='outlined' />
       </div>
 
     </div>
