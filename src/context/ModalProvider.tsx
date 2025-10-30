@@ -4,6 +4,7 @@ import {
   useState,
   type ReactNode,
   useCallback,
+  useEffect,
 } from "react";
 import { createPortal } from "react-dom";
 import styles from "./ModalProvider.module.css";

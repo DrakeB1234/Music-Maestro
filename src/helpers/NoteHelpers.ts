@@ -1,11 +1,8 @@
-import type { AllowedAccidentals } from "@/types/DrillTypes";
+import type { Accidental, AllowedAccidentals, NOTE_NAME_TYPES, OctaveRange } from "@/types/DrillTypes";
 import { Note } from "webmidi";
 
-const MIN_OCTAVE_RANGE = 0;
-const MAX_OCTAVE_RANGE = 7;
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-export type NOTE_NAME_TYPES = "C" | "D" | "E" | "F" | "G" | "A" | "B";
-
+export const NOTE_SEMITONE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const NOTE_SEMITONES: Record<string, number> = {
   C: 0,
@@ -17,7 +14,6 @@ const NOTE_SEMITONES: Record<string, number> = {
   B: 11,
 };
 
-type Accidental = "#" | "b" | "n";
 export const ACCIDENTALS = {
   Sharp: "#" as Accidental,
   Flat: "b" as Accidental,
@@ -42,38 +38,42 @@ export class GenericNote {
 
 export function GenerateRandomNote(
   exclusiveNote: GenericNote | null,
-  allowedAccidentals: AllowedAccidentals,
-  minOctave: number = 2,
-  maxOctave: number = 6,
+  octaveRange: OctaveRange,
+  allowedAccidentals?: AllowedAccidentals,
 ) {
-  let noteName = NOTE_NAMES[Math.floor(Math.random() * NOTE_NAMES.length)];
+  const MIN_OCTAVE_SEMITONE = NoteToAbsoluteSemitone(octaveRange.minOctave);
+  const MAX_OCTAVE_SEMITONE = NoteToAbsoluteSemitone(octaveRange.maxOctave);
+  const SEMITONE_ACCIDENTAL_OFFSET = 1;
 
-  if (maxOctave > MAX_OCTAVE_RANGE) maxOctave = MAX_OCTAVE_RANGE;
-  if (minOctave < MIN_OCTAVE_RANGE) minOctave = MIN_OCTAVE_RANGE;
+  // Handle edgecase of min > max, or the inverse
+  const minOctaveSemitone = Math.min(MIN_OCTAVE_SEMITONE, MAX_OCTAVE_SEMITONE);
+  const maxOctaveSemitone = Math.max(MIN_OCTAVE_SEMITONE, MAX_OCTAVE_SEMITONE);
 
-  let octave = Math.floor(Math.random() * (maxOctave + 1));
-  if (octave < minOctave) {
-    octave = minOctave;
-  }
-
-  const accidentalPool: string[] = [];
-  if (allowedAccidentals.naturals) accidentalPool.push("n");
-  if (allowedAccidentals.sharps) accidentalPool.push("#");
-  if (allowedAccidentals.flats) accidentalPool.push("b");
+  const randomSemitone = minOctaveSemitone + Math.floor(Math.random() * (maxOctaveSemitone - minOctaveSemitone + SEMITONE_ACCIDENTAL_OFFSET));
+  const randomNote = AbsoluteSemitoneToNote(randomSemitone);
 
   let accidental: string | null = null;
-  if (accidentalPool.length > 0) {
-    accidental = accidentalPool[Math.floor(Math.random() * accidentalPool.length)];
-    if (accidental === "n") accidental = null;
+  if (allowedAccidentals) {
+    const accidentalPool: string[] = [];
+    if (allowedAccidentals.naturals) accidentalPool.push("n");
+    if (allowedAccidentals.sharps) accidentalPool.push("#");
+    if (allowedAccidentals.flats) accidentalPool.push("b");
+
+    if (accidentalPool.length > 0) {
+      accidental = accidentalPool[Math.floor(Math.random() * accidentalPool.length)];
+      if (accidental === "n") accidental = null;
+    }
   }
 
-  // Generate new note name if duplicate was found
-  if (exclusiveNote && noteName === exclusiveNote.name && octave === exclusiveNote.octave) {
+  randomNote.accidental = accidental as Accidental;
+
+  // Generate new note name if duplicate was found, ignore if min / max octave ranges are the same
+  if (!(MIN_OCTAVE_SEMITONE === MAX_OCTAVE_SEMITONE) && exclusiveNote && randomNote.name === exclusiveNote.name && randomNote.octave === exclusiveNote.octave) {
     const nameIdx = NOTE_NAMES.findIndex(name => name == exclusiveNote.name);
-    noteName = NOTE_NAMES[(nameIdx + 1) % NOTE_NAMES.length];
+    randomNote.name = NOTE_NAMES[(nameIdx + 1) % NOTE_NAMES.length] as NOTE_NAME_TYPES;
   }
 
-  return { name: noteName, accidental: accidental, octave: octave } as GenericNote;
+  return randomNote;
 };
 
 export function GenerateRandomInclusiveNote(inclusiveNotes: GenericNote[], exclusiveNote: GenericNote | null): GenericNote {
@@ -124,21 +124,56 @@ export function CheckValidMidiNotePlayed(playedNote: GenericNote, targetNote: Ge
 }
 
 // Returns TOTAL number of semitones from C0
-function NoteToAbsoluteSemitone(note: GenericNote): number {
-  if (!note.octave) return 0;
-
+export function NoteToAbsoluteSemitone(note: GenericNote): number {
   const naturalSemitone = NOTE_SEMITONES[note.name];
-  const accidentalOffset = parseAccidental(note.accidental);
+  let accidentalOffset = 0;
+  if (note.accidental === ACCIDENTALS.Sharp) accidentalOffset = 1;
+  if (note.accidental === ACCIDENTALS.Flat) accidentalOffset = -1;
 
-  return naturalSemitone + accidentalOffset + note.octave * 12;
+  const octave = note.octave ? note.octave : 0;
+
+  return naturalSemitone + accidentalOffset + octave * 12;
 }
 
-function parseAccidental(accidental: string | null): number {
-  if (!accidental) return 0;
-  if (accidental === ACCIDENTALS.Sharp) return 1;
-  if (accidental === ACCIDENTALS.Flat) return -1;
-  return 0;
+export function AbsoluteSemitoneToNote(semitone: number): GenericNote {
+  const octave = Math.floor(semitone / 12);
+  const noteName = NOTE_SEMITONE_NAMES[semitone % 12];
+
+  let name: NOTE_NAME_TYPES;
+  let accidental: Accidental | null = null;
+
+  if (noteName.includes("#")) {
+    name = noteName[0] as NOTE_NAME_TYPES;
+    accidental = "#";
+  } else {
+    name = noteName as NOTE_NAME_TYPES;
+  }
+
+  return { name, accidental, octave };
 }
+
+export function ShiftNoteByName(note: GenericNote, shift: number): GenericNote {
+  const newNoteIdx: number = NOTE_NAMES.findIndex((e) => e === note.name);
+
+  const length = NOTE_NAMES.length;
+  const shiftedIdx = ((newNoteIdx + shift) % length + length) % length;
+
+  let shiftedOctave: number = 0;
+  if (newNoteIdx + shift > length - 1) {
+    shiftedOctave = 1;
+  }
+  else if (newNoteIdx + shift < 0) {
+    shiftedOctave = -1;
+  }
+
+  const newNote = {
+    ...note,
+    name: NOTE_NAMES[shiftedIdx] as NOTE_NAME_TYPES,
+    octave: note.octave ? note.octave + shiftedOctave : null
+  };
+
+  return newNote;
+};
 
 export function ConvertGenericNoteToVexNote(genericNote: GenericNote): string {
   return `${genericNote.name}/${genericNote.octave}` as string;

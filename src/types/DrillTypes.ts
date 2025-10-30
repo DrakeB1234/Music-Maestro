@@ -1,12 +1,21 @@
 import type { GenericNote } from "@/helpers/NoteHelpers"
 
+
 export type DrillKind = "custom" | "preset";
 export type DrillClefTypes = "treble" | "bass";
 export type DrillDifficultyTypes = "easy" | "medium" | "hard";
-export const clefOctaveLimits: Record<DrillClefTypes, { minOctave: number; maxOctave: number }> = {
-  treble: { minOctave: 4, maxOctave: 7 },
-  bass: { minOctave: 1, maxOctave: 5 },
-};
+export type NOTE_NAME_TYPES = "C" | "D" | "E" | "F" | "G" | "A" | "B";
+export type Accidental = "#" | "b" | "n";
+
+export type OctaveRangeSet = {
+  clef: DrillClefTypes,
+  range: OctaveRange
+}
+
+export type OctaveRange = {
+  minOctave: GenericNote;
+  maxOctave: GenericNote;
+}
 
 export type DrillPreset = {
   name: string;
@@ -21,23 +30,18 @@ export type DrillCustomOptions = {
 }
 
 export type AllowedAccidentals = {
-  naturals: boolean;
+  naturals?: boolean;
   sharps?: boolean;
   flats?: boolean;
 }
 
 export type DrillOptions = {
-  minOctave?: number;
-  maxOctave?: number;
+  octaveRange?: OctaveRange;
   timer?: number;
-  allowedAccidentals: AllowedAccidentals,
+  allowedAccidentals?: AllowedAccidentals,
   // Will prevent note names from appearing in drill
   excludedNoteNames?: string[]
   // Will ONLY include notes provided in arr
   inclusiveNotes?: GenericNote[]
-  staffOptions: StaffOptions
-}
-
-export type StaffOptions = {
   clef?: DrillClefTypes;
 }

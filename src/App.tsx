@@ -7,15 +7,15 @@ import OctaveSelector from "./components/ModalComponents/OctaveSelector/OctaveSe
 
 function App() {
 
-  const { openModal } = useModal();
+  // const { openModal } = useModal();
 
-  useEffect(() => {
-    openModal(<OctaveSelector />)
-  }, [])
+  // useEffect(() => {
+  //   openModal(<OctaveSelector />)
+  // }, [])
 
   return (
     <BrowserRouter>
-      {/* <Suspense fallback={<LoadingPage />}>
+      <Suspense fallback={<LoadingPage />}>
         <Routes>
           {routes.map((route) => (
             <Route key={route.path} path={route.path} element={route.element}>
@@ -25,7 +25,7 @@ function App() {
             </Route>
           ))}
         </Routes>
-      </Suspense> */}
+      </Suspense>
     </BrowserRouter>
   );
 }

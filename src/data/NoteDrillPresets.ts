@@ -8,17 +8,12 @@ export const defaultDrillPresetsData: DrillPreset[] = [
     description: "C/G notes for learning landmark system",
     drillOptions: {
       timer: 60,
-      allowedAccidentals: {
-        naturals: true
-      },
       inclusiveNotes: [
         { name: "C", accidental: null, octave: 4 },
         { name: "G", accidental: null, octave: 4 },
         { name: "C", accidental: null, octave: 5 }
       ],
-      staffOptions: {
-        clef: "treble"
-      }
+      clef: "treble"
     }
   },
   {
@@ -28,17 +23,12 @@ export const defaultDrillPresetsData: DrillPreset[] = [
     description: "C/F notes for learning landmark system",
     drillOptions: {
       timer: 60,
-      allowedAccidentals: {
-        naturals: true
-      },
       inclusiveNotes: [
         { name: "C", accidental: null, octave: 4 },
         { name: "F", accidental: null, octave: 3 },
         { name: "C", accidental: null, octave: 3 }
       ],
-      staffOptions: {
-        clef: "bass"
-      }
+      clef: "bass"
     }
   }
 ];

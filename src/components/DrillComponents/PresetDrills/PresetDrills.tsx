@@ -6,16 +6,23 @@ import Button from '@/components/UIComponents/Button';
 import { defaultDrillPresetsData } from '@/data/NoteDrillPresets';
 import type { DrillPreset } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
+import { useNoteDrillStore } from '@/store/noteDrillStore';
+import { defaultDrillOptions } from '@/helpers/DrillHelpers';
 
 interface Props {
   onBack: () => void;
 }
 
 export default function PresetDrills({ onBack }: Props) {
+  const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
   const navigate = useNavigate();
 
   const startPresetDrill = (id: string) => {
-    navigate("/drills/start", { state: { type: "preset", id } });
+    const drillOptions = defaultDrillPresetsData.find((e) => e.id === id)?.drillOptions
+    if (drillOptions) setDrillOptions(drillOptions);
+    if (!drillOptions) setDrillOptions(defaultDrillOptions);
+
+    navigate("/drills/start");
   };
 
   return (

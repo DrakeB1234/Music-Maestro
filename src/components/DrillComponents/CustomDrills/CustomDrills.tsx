@@ -2,22 +2,19 @@ import BackButtonContainer from '@/components/BackButtonContainer/BackButtonCont
 import styles from './CustomDrills.module.css';
 import Card from '@/components/UIComponents/Card';
 import Input from '@/components/UIComponents/Inputs/Input';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ChangeEvent } from 'react';
 import Button from '@/components/UIComponents/Button';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
-import { type DrillClefTypes, type DrillOptions, clefOctaveLimits } from '@/types/DrillTypes';
+import { type DrillClefTypes, type DrillOptions, type OctaveRangeSet, type OctaveRange } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
-import { defaultDrillOptions } from '@/helpers/DrillHelpers';
+import { defaultDrillOptions, OCTAVE_RANGE_LIMITS } from '@/helpers/DrillHelpers';
 import { useModal } from '@/context/ModalProvider';
-import OctaveSelector from '@/components/ModalComponents/OctaveSelector/OctaveSelector';
+import OctaveSelector, { type OctaveRangeSides } from '@/components/ModalComponents/OctaveSelector/OctaveSelector';
+import { useNoteDrillStore } from '@/store/noteDrillStore';
+import { PrintGenericNote } from '@/helpers/NoteHelpers';
 
 interface Props {
   onBack: () => void;
-}
-
-interface SelectOption {
-  label: string
-  value: string
 }
 
 interface FormErrors {
@@ -31,17 +28,21 @@ interface AccidentalToggles {
 }
 
 export default function CustomDrills({ onBack }: Props) {
+  const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
   const { openModal } = useModal();
   const navigate = useNavigate();
 
   // Handle Form Input
-  const clefRef = useRef<HTMLSelectElement>(null);
-  const minOctaveRef = useRef<HTMLSelectElement>(null);
-  const maxOctaveRef = useRef<HTMLSelectElement>(null);
-  const timerRef = useRef<HTMLInputElement>(null);
-
   const [errors, setErrors] = useState<FormErrors>();
-  const [octaveOptions, setOctaveOptions] = useState<SelectOption[]>(generateOctaveOptions('treble'));
+  const [currentOctaveRange, setCurrentOctaveRange] = useState<OctaveRange>({
+    minOctave: { name: "C", accidental: null, octave: 4 },
+    maxOctave: { name: "C", accidental: null, octave: 5 },
+  });
+
+  const timerRef = useRef<HTMLInputElement>(null);
+  const clefRef = useRef<DrillClefTypes>("treble");
+  const octaveRangeLimit = useRef<OctaveRangeSet>(OCTAVE_RANGE_LIMITS.filter((e) => e.clef === 'treble')[0]);
+
   const [accidentalToggles, setAccidentalToggles] = useState<AccidentalToggles>({
     Naturals: true,
     Sharps: false,
@@ -49,10 +50,8 @@ export default function CustomDrills({ onBack }: Props) {
   });
 
   // When clef is changed, min / max octave ranges must change aswell. 
-  function handleClefChange() {
-    const clef = clefRef.current?.value.trim();
-    if (!clef) return;
-    setOctaveOptions(generateOctaveOptions(clef as DrillClefTypes));
+  function handleClefChange(event: ChangeEvent<HTMLSelectElement>) {
+    clefRef.current == event.target.value;
   }
 
   function handleAccidentalToggle(accidental: keyof AccidentalToggles) {
@@ -62,24 +61,15 @@ export default function CustomDrills({ onBack }: Props) {
     }));
   }
 
-  function generateOctaveOptions(clef: DrillClefTypes): SelectOption[] {
-    const { minOctave, maxOctave } = clefOctaveLimits[clef];
-    return Array.from({ length: maxOctave - minOctave + 1 }, (_, i) => {
-      const octave = minOctave + i;
-      return { label: octave.toString(), value: octave.toString() };
-    });
-  }
-
   function handleSubmit() {
-    const clef = clefRef.current?.value.trim() as DrillClefTypes;
-    const minOctave = Number(minOctaveRef.current?.value.trim());
-    const maxOctave = Number(maxOctaveRef.current?.value.trim());
+    const minOctave = 4;
+    const maxOctave = 4;
     const time = Number(timerRef.current?.value.trim());
 
     let newErrors = { timer: "" } as FormErrors;
     let hasErrors = false;
 
-    if (!clef || !minOctave || !maxOctave || time === undefined) {
+    if (!clefRef.current || !minOctave || !maxOctave || time === undefined) {
       return;
     }
 
@@ -95,30 +85,48 @@ export default function CustomDrills({ onBack }: Props) {
 
 
     const newOptions = {
+      clef: clefRef.current,
       timer: time,
-      minOctave: minOctave,
-      maxOctave: maxOctave,
+      octaveRange: currentOctaveRange,
       allowedAccidentals: {
         naturals: accidentalToggles.Naturals,
         sharps: accidentalToggles.Sharps,
         flats: accidentalToggles.Flats,
       },
-      staffOptions: {
-        clef: clef
-      }
     } as DrillOptions;
 
-    navigate("/drills/start", { state: { type: "custom", options: newOptions } });
+    setDrillOptions(newOptions);
+    navigate("/drills/start");
   };
 
   function handleDefaultOptionsPressed() {
-    navigate("/drills/start", { state: { type: "custom", options: defaultDrillOptions } });
-  }
+    setDrillOptions(defaultDrillOptions);
+    navigate("/drills/start");
+  };
 
+  function handleOctaveSet(newRange: OctaveRangeSides) {
+    setCurrentOctaveRange({
+      minOctave: newRange.leftNote,
+      maxOctave: newRange.rightNote
+    });
+  };
+
+  function PrintOctaveRange(): string {
+    if (!currentOctaveRange) return " - ";
+
+    let min = currentOctaveRange.minOctave
+      ? PrintGenericNote(currentOctaveRange.minOctave)
+      : "";
+    let max = currentOctaveRange.minOctave
+      ? PrintGenericNote(currentOctaveRange.maxOctave)
+      : "";
+
+    return `${min} - ${max}`;
+  };
 
   const handleOpenModal = () => {
     openModal(
-      <OctaveSelector />
+      <OctaveSelector octaveRangeLimit={octaveRangeLimit.current.range} setOctaveRange={handleOctaveSet} prevOctaveRange={currentOctaveRange} />
     );
   };
 
@@ -139,28 +147,12 @@ export default function CustomDrills({ onBack }: Props) {
                 { label: "Bass", value: "bass" as DrillClefTypes },
               ]}
               defaultValue={"treble" as DrillClefTypes}
-              ref={clefRef}
               handleChange={handleClefChange}
             />
 
             <h2>Octave Range</h2>
-            {/* <div className={styles.FlexInputsContainer}>
-              <SelectInput
-                htmlName='minOctave'
-                label='Min'
-                options={octaveOptions}
-                defaultValue={octaveOptions[0].value}
-                ref={minOctaveRef}
-              />
-              <SelectInput
-                htmlName='maxOctave'
-                label='Max'
-                options={octaveOptions}
-                defaultValue={octaveOptions[octaveOptions.length - 1].value}
-                ref={maxOctaveRef}
-              />
-            </div> */}
             <Button text='Choose Octave Range' variant='outlined' size='medium' onClick={handleOpenModal} />
+            <p>{PrintOctaveRange()}</p>
 
             <h2>Timer</h2>
             <Input htmlName='timer' label='Time' placeholder='30' type='number' error={errors?.timer} ref={timerRef} defaultValue='60' min={0} max={999} />

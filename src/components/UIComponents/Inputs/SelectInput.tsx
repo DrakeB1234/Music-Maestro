@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import styles from "./Input.module.css";
 
 interface Option {
@@ -11,7 +12,7 @@ interface Props {
   options: Option[];
   defaultValue?: string;
   ref?: React.Ref<HTMLSelectElement>;
-  handleChange?: () => void;
+  handleChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export default function SelectInput({

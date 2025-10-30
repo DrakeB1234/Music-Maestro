@@ -5,6 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  overflow-y: auto;
+  padding: var(--spacing-small);
 
   opacity: 0;
   pointer-events: none;
@@ -17,13 +19,13 @@
 }
 
 .modal {
-  padding: var(--spacing-small);
   width: 100%;
   max-width: 31rem;
   border-radius: 0.5rem;
   transform: scale(0.8);
   opacity: 0;
   transition: transform 0.2s ease-out, opacity 0.20s ease-out;
+
 }
 
 .modal.open {

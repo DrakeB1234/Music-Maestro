@@ -194,6 +194,14 @@ p {
   color: var(--color-text-light);
 }
 
+/* Special classes */
+svg.stave-scalable {
+  width: 100% !important;
+  height: auto !important;
+
+  max-width: 250px;
+}
+
 @media (max-width: 600px) {
   .mobile-hide {
     display: none;

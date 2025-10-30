@@ -24,12 +24,12 @@ export default function NoteDrill() {
 
   function handleGenerateNote() {
     const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
-    if (!isDrillTimerRunning) return;
+    const drillOptions = useNoteDrillStore.getState().drillOptions;
+    if (!isDrillTimerRunning || !drillOptions) return;
 
     const currentNote = useNoteDrillStore.getState().currentNote;
-    const drillOptions = useNoteDrillStore.getState().drillOptions;
 
-    let newNote: GenericNote;
+    let newNote: GenericNote | null = null;
 
     if (drillOptions.inclusiveNotes && drillOptions.inclusiveNotes?.length > 1) {
       newNote = GenerateRandomInclusiveNote(
@@ -37,16 +37,15 @@ export default function NoteDrill() {
         currentNote ? currentNote : null,
       );
     }
-    else {
+    else if (drillOptions.octaveRange) {
       newNote = GenerateRandomNote(
         currentNote ? currentNote : null,
-        drillOptions.allowedAccidentals,
-        drillOptions.minOctave,
-        drillOptions.maxOctave,
+        drillOptions.octaveRange,
+        drillOptions.allowedAccidentals
       );
     }
 
-    setCurrentNote(newNote);
+    if (newNote) setCurrentNote(newNote);
   }
 
   function handleButtonPlayed(note: GenericNote) {
