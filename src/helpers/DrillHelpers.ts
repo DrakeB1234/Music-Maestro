@@ -7,6 +7,13 @@ export const OCTAVE_RANGE_LIMITS: OctaveRangeSet[] = [
       minOctave: { name: "D", accidental: null, octave: 3 },
       maxOctave: { name: "F", accidental: null, octave: 7 }
     }
+  },
+  {
+    clef: "bass",
+    range: {
+      minOctave: { name: "F", accidental: null, octave: 1 },
+      maxOctave: { name: "A", accidental: null, octave: 5 }
+    }
   }
 ];
 export const defaultDrillOptions: DrillOptions = {

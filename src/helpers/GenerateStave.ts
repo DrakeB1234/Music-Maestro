@@ -85,6 +85,10 @@ export default class GenerateStave {
     voice.draw(this.#context, this.#stave);
   }
 
+  changeClef(clef: DrillClefTypes) {
+    this.#stave.setClef(clef);
+  }
+
   clearStave() {
     this.#context.clearRect(-this.#svgContext.width / 2, -this.#svgContext.height / 2, this.#svgContext.width * 2, this.#svgContext.height * 2);
     this.#stave.draw();

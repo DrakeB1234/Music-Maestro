@@ -1,4 +1,4 @@
-import StaffGeneration from "@components/StaffGeneration/StaffGeneration";
+import DrillStaff from "@/components/DrillComponents/DrillStaff/DrillStaff";
 import styles from './NoteDrill.module.css';
 import Card from "@/components/UIComponents/Card";
 import { CheckValidButtonNotePlayed, CheckValidMidiNotePlayed, GenerateRandomInclusiveNote, GenerateRandomNote, GenericNote, PrintGenericNote } from "@/helpers/NoteHelpers";
@@ -117,7 +117,7 @@ export default function NoteDrill() {
           <Stats />
         </div>
         <StatusBar />
-        <StaffGeneration />
+        <DrillStaff />
         <Info />
         <div className={styles.ButtonInputWrapper}>
           <NoteButtonInput />

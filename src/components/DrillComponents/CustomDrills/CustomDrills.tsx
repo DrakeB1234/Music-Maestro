@@ -11,7 +11,7 @@ import { defaultDrillOptions, OCTAVE_RANGE_LIMITS } from '@/helpers/DrillHelpers
 import { useModal } from '@/context/ModalProvider';
 import OctaveSelector, { type OctaveRangeSides } from '@/components/ModalComponents/OctaveSelector/OctaveSelector';
 import { useNoteDrillStore } from '@/store/noteDrillStore';
-import { PrintGenericNote } from '@/helpers/NoteHelpers';
+import { AbsoluteSemitoneToNote, NoteToAbsoluteSemitone, PrintGenericNote } from '@/helpers/NoteHelpers';
 
 interface Props {
   onBack: () => void;
@@ -41,7 +41,7 @@ export default function CustomDrills({ onBack }: Props) {
 
   const timerRef = useRef<HTMLInputElement>(null);
   const clefRef = useRef<DrillClefTypes>("treble");
-  const octaveRangeLimit = useRef<OctaveRangeSet>(OCTAVE_RANGE_LIMITS.filter((e) => e.clef === 'treble')[0]);
+  const octaveRangeLimit = useRef<OctaveRange>(OCTAVE_RANGE_LIMITS.filter((e) => e.clef === "treble")[0].range);
 
   const [accidentalToggles, setAccidentalToggles] = useState<AccidentalToggles>({
     Naturals: true,
@@ -51,7 +51,27 @@ export default function CustomDrills({ onBack }: Props) {
 
   // When clef is changed, min / max octave ranges must change aswell. 
   function handleClefChange(event: ChangeEvent<HTMLSelectElement>) {
-    clefRef.current == event.target.value;
+    const newClef = event.target.value as DrillClefTypes;
+    clefRef.current = newClef;
+    const newOctaveRange = OCTAVE_RANGE_LIMITS.filter((e) => e.clef === newClef)[0].range;
+
+    const currentMinOctaveSemitone = NoteToAbsoluteSemitone(currentOctaveRange.minOctave);
+    const currentMaxOctaveSemitone = NoteToAbsoluteSemitone(currentOctaveRange.maxOctave);
+    const newMinOctaveRangeSemitone = NoteToAbsoluteSemitone(newOctaveRange.minOctave);
+    const newMaxOctaveRangeSemitone = NoteToAbsoluteSemitone(newOctaveRange.maxOctave);
+
+    const newCurrentRange = { ...currentOctaveRange };
+
+    // Handles edgecase if current octave range min/max is less/greater than new octave range limits
+    if (currentMinOctaveSemitone < newMinOctaveRangeSemitone) {
+      newCurrentRange.minOctave = AbsoluteSemitoneToNote(newMinOctaveRangeSemitone);
+    };
+    if (currentMaxOctaveSemitone > newMaxOctaveRangeSemitone) {
+      newCurrentRange.maxOctave = AbsoluteSemitoneToNote(newMaxOctaveRangeSemitone);
+    };
+
+    setCurrentOctaveRange(newCurrentRange);
+    octaveRangeLimit.current = newOctaveRange;
   }
 
   function handleAccidentalToggle(accidental: keyof AccidentalToggles) {
@@ -62,14 +82,12 @@ export default function CustomDrills({ onBack }: Props) {
   }
 
   function handleSubmit() {
-    const minOctave = 4;
-    const maxOctave = 4;
     const time = Number(timerRef.current?.value.trim());
 
     let newErrors = { timer: "" } as FormErrors;
     let hasErrors = false;
 
-    if (!clefRef.current || !minOctave || !maxOctave || time === undefined) {
+    if (!clefRef.current || time === undefined) {
       return;
     }
 
@@ -83,13 +101,17 @@ export default function CustomDrills({ onBack }: Props) {
       return;
     }
 
+    let noAccidentalsSelected = false;
+    if (!accidentalToggles.Naturals && !accidentalToggles.Sharps && !accidentalToggles.Flats) {
+      noAccidentalsSelected = true;
+    }
 
     const newOptions = {
       clef: clefRef.current,
       timer: time,
       octaveRange: currentOctaveRange,
       allowedAccidentals: {
-        naturals: accidentalToggles.Naturals,
+        naturals: accidentalToggles.Naturals || noAccidentalsSelected,
         sharps: accidentalToggles.Sharps,
         flats: accidentalToggles.Flats,
       },
@@ -126,7 +148,7 @@ export default function CustomDrills({ onBack }: Props) {
 
   const handleOpenModal = () => {
     openModal(
-      <OctaveSelector octaveRangeLimit={octaveRangeLimit.current.range} setOctaveRange={handleOctaveSet} prevOctaveRange={currentOctaveRange} />
+      <OctaveSelector octaveRangeLimit={octaveRangeLimit.current} prevOctaveRange={currentOctaveRange} clef={clefRef.current} setOctaveRange={handleOctaveSet} />
     );
   };
 

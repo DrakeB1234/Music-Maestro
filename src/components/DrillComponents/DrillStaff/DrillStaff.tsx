@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import styles from './StaffGeneration.module.css';
+import styles from './DrillStaff.module.css';
 import { useNoteDrillStore } from "@/store/noteDrillStore";
 import GenerateStave from "@/helpers/GenerateStave";
 
-export default function StaffGeneration() {
+export default function DrillStaff() {
   const currentNote = useNoteDrillStore((state) => state.currentNote);
 
   const containerRef = useRef<HTMLDivElement>(null);

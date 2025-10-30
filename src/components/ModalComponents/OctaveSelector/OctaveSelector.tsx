@@ -6,7 +6,7 @@ import { useModal } from "@/context/ModalProvider";
 import { useEffect, useRef, useState } from "react";
 import GenerateStave from "@/helpers/GenerateStave";
 import { NoteToAbsoluteSemitone, PrintGenericNote, ShiftNoteByName, type GenericNote } from "@/helpers/NoteHelpers";
-import type { OctaveRange } from "@/types/DrillTypes";
+import type { DrillClefTypes, OctaveRange } from "@/types/DrillTypes";
 
 export const StaveButtonPressAction = {
   LEFT_INCREASE_OCTAVE: 0,
@@ -24,14 +24,16 @@ export type OctaveRangeSides = {
 
 interface OctaveSelectorProps {
   octaveRangeLimit: OctaveRange;
-  setOctaveRange: (range: OctaveRangeSides) => void;
   prevOctaveRange: OctaveRange
+  clef: DrillClefTypes
+  setOctaveRange: (range: OctaveRangeSides) => void;
 }
 
 export default function OctaveSelector({
   octaveRangeLimit,
+  prevOctaveRange,
+  clef,
   setOctaveRange,
-  prevOctaveRange
 }: OctaveSelectorProps) {
   const [currentOctaveRange, setCurrentOctaveRange] = useState<OctaveRangeSides>({
     leftNote: prevOctaveRange.minOctave ? prevOctaveRange.minOctave : { name: "C", accidental: null, octave: 4 },
@@ -99,7 +101,7 @@ export default function OctaveSelector({
     return `${left} - ${right}`;
   };
 
-  function handleSetPressed() {
+  function handleOctaveSetPressed() {
     setOctaveRange(currentOctaveRange);
     closeModal();
   }
@@ -107,7 +109,7 @@ export default function OctaveSelector({
   useEffect(() => {
     if (!svgRef.current) return;
 
-    const newStaveObj = new GenerateStave(svgRef.current, "treble", 240, undefined, 1.5);
+    const newStaveObj = new GenerateStave(svgRef.current, clef, 240, undefined, 1.5);
     if (!newStaveObj) return;
     staveRef.current = newStaveObj;
 
@@ -130,7 +132,7 @@ export default function OctaveSelector({
       </div>
       <div className={styles.ModalActionButtonsContainer}>
         <Button onClick={closeModal} text="Cancel" variant="outlined" fullWidth={true} />
-        <Button text="Set" variant="contained" fullWidth={true} onClick={handleSetPressed} />
+        <Button text="Set" variant="contained" fullWidth={true} onClick={handleOctaveSetPressed} />
       </div>
     </Modal>
   )
