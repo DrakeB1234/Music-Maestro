@@ -6,6 +6,7 @@ import { GetSpacesAboveStaff, GetSpacesBelowStaff } from "@/helpers/NoteHelpers"
 
 export default function DrillStaff() {
   const currentNote = useNoteDrillStore((state) => state.currentNote);
+  const playedStatusNote = useNoteDrillStore((state) => state.playedStatusNote);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const staveRef = useRef<GenerateStave>(null);
@@ -30,6 +31,17 @@ export default function DrillStaff() {
     };
 
   }, [currentNote]);
+
+  useEffect(() => {
+    const playedNote = useNoteDrillStore.getState().playedNote;
+    const playedNoteStatus = useNoteDrillStore.getState().playedNoteStatus;
+    const playedStatusNote = useNoteDrillStore.getState().playedStatusNote;
+
+    if (!playedStatusNote || !playedNote || !currentNote || playedNoteStatus === "correct") return;
+
+    staveRef.current?.drawWrongNote(currentNote, playedStatusNote);
+
+  }, [playedStatusNote]);
 
   return (
     <div className={styles.StaffContainer} ref={containerRef} />

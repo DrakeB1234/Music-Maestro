@@ -57,10 +57,12 @@ export default function NoteDrill() {
     setPlayedNote(note);
 
     if (currentNote && CheckValidButtonNotePlayed(note, currentNote)) {
-      handleCorrectNotePlayed();
+      handleCorrectNotePlayed(note);
       return;
     };
-    handleIncorrectNotePlayed();
+
+    note.octave = currentNote?.octave || null;
+    handleIncorrectNotePlayed(note);
   }
 
   function handleMidiPlayed(note: GenericNote) {
@@ -71,26 +73,26 @@ export default function NoteDrill() {
     setPlayedNote(note);
 
     if (currentNote && CheckValidMidiNotePlayed(note, currentNote)) {
-      handleCorrectNotePlayed();
+      handleCorrectNotePlayed(note);
       return;
     };
-    handleIncorrectNotePlayed();
+    handleIncorrectNotePlayed(note);
   };
 
-  function handleIncorrectNotePlayed() {
+  function handleIncorrectNotePlayed(note: GenericNote) {
     incrementTotalNotesPlayed();
-    setPlayedNoteStatus("wrong");
+    setPlayedNoteStatus("wrong", note);
   }
 
-  function handleCorrectNotePlayed() {
+  function handleCorrectNotePlayed(note: GenericNote) {
     handleGenerateNote();
     incrementCorrectNotesPlayed();
     incrementTotalNotesPlayed();
-    setPlayedNoteStatus("correct");
+    setPlayedNoteStatus("correct", note);
   }
 
   function handleDrillTimeout() {
-    resetDrillOptions();
+    // resetDrillOptions();
     console.log("OVER");
   }
 
@@ -130,6 +132,7 @@ export default function NoteDrill() {
 };
 
 function StatusBar() {
+  const playedStatusNote = useNoteDrillStore((state) => state.playedStatusNote);
   const playedNoteStatus = useNoteDrillStore((state) => state.playedNoteStatus);
   const determineClassNameStatus = playedNoteStatus == "correct" ? styles.StatusBarSuccess : playedNoteStatus == "wrong" ? styles.StatusBarError : '';
 

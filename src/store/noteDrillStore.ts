@@ -20,7 +20,8 @@ interface NoteDrillState {
   incrementCorrectNotesPlayed: () => void;
 
   playedNoteStatus: PlayedNoteStatus;
-  setPlayedNoteStatus: (status: PlayedNoteStatus) => void;
+  playedStatusNote: GenericNote | null;
+  setPlayedNoteStatus: (status: PlayedNoteStatus, note: GenericNote) => void;
 
   isDrillTimerRunning: boolean;
   drillTime: number;
@@ -59,9 +60,12 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
   },
 
   playedNoteStatus: null,
-  setPlayedNoteStatus: (status) => {
-    set({ playedNoteStatus: status });
-  },
+  playedStatusNote: null,
+  setPlayedNoteStatus: (status, note) =>
+    set({
+      playedNoteStatus: status,
+      playedStatusNote: note
+    }),
 
   isDrillTimerRunning: true,
   drillTime: 0,

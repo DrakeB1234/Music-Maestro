@@ -1,4 +1,4 @@
-import { Accidental, Barline, Formatter, RenderContext, Renderer, Stave, StaveNote, SVGContext, Voice } from "vexflow";
+import { Accidental, Barline, Formatter, Modifier, RenderContext, Renderer, Stave, StaveNote, SVGContext, Voice } from "vexflow";
 import { ConvertGenericNoteToVexNote, type GenericNote } from "./NoteHelpers";
 import type { DrillClefTypes } from "@/types/DrillTypes";
 
@@ -15,6 +15,7 @@ export default class GenerateStave {
   #renderer: Renderer;
   #svgContext: SVGContext;
   #clef: DrillClefTypes;
+  #wrongNoteTimeout: number | undefined;
 
   constructor(
     svgRef: HTMLDivElement,
@@ -46,7 +47,7 @@ export default class GenerateStave {
 
     if (scalableWidth) {
       this.#svgContext.parent.classList.add("stave-scalable");
-    }
+    };
 
     this.#stave = new Stave(0, 0, (staveWidth / scale) - 1, {
       spaceAboveStaffLn: newSpacesAbove,
@@ -59,7 +60,7 @@ export default class GenerateStave {
     this.#stave.addClef(clef, undefined, undefined);
 
     this.#stave.setContext(this.#context).draw();
-  }
+  };
 
   drawNote(note: GenericNote) {
     this.clearStave();
@@ -77,7 +78,7 @@ export default class GenerateStave {
 
     Formatter.FormatAndDraw(this.#context, this.#stave, [staveNote]);
 
-  }
+  };
 
   drawListNotes(notes: GenericNote[]) {
     this.clearStave();
@@ -98,14 +99,62 @@ export default class GenerateStave {
 
     new Formatter().joinVoices([voice]).format([voice], this.#svgContext.width - 40);
     voice.draw(this.#context, this.#stave);
-  }
+  };
 
   changeClef(clef: DrillClefTypes) {
     this.#stave.setClef(clef);
-  }
+  };
+
+  drawWrongNote(prevNote: GenericNote, wrongNote: GenericNote) {
+    this.clearStave();
+
+    if (this.#wrongNoteTimeout) {
+      clearTimeout(this.#wrongNoteTimeout);
+      this.#wrongNoteTimeout = undefined;
+    };
+
+    const prevStaveNote = new StaveNote({
+      keys: [ConvertGenericNoteToVexNote(prevNote)],
+      duration: "w",
+      clef: this.#clef,
+      alignCenter: true
+    });
+    if (prevNote.accidental) {
+      prevStaveNote.addModifier(new Accidental(prevNote.accidental));
+    };
+    const wrongStaveNote = new StaveNote({
+      keys: [ConvertGenericNoteToVexNote(wrongNote)],
+      duration: "w",
+      clef: this.#clef,
+      alignCenter: true
+    });
+    if (wrongNote.accidental) {
+      wrongStaveNote.addModifier(new Accidental(wrongNote.accidental));
+    };
+    wrongStaveNote.setStyle({ fillStyle: "var(--color-error)" });
+    wrongStaveNote.setLedgerLineStyle({ fillStyle: "var(--color-error)", strokeStyle: "var(--color-error)" });
+
+    Formatter.FormatAndDraw(this.#context, this.#stave, [prevStaveNote, wrongStaveNote]);
+    let svg = wrongStaveNote.getSVGElement();
+
+    svg?.classList.add("stave-show-wrong-note");
+
+    this.#wrongNoteTimeout = setTimeout(() => {
+      svg?.classList.remove("stave-show-wrong-note");
+      svg?.classList.add("stave-hide-wrong-note");
+
+    }, 2000);
+  };
 
   clearStave() {
-    this.#context.clearRect(-this.#svgContext.width / 2, -this.#svgContext.height / 2, this.#svgContext.width * 2, this.#svgContext.height * 2);
-    this.#stave.draw();
+    const svg = this.#svgContext.svg;
+    if (!svg) return;
+
+    // Select all SVG elements except the stave, barlines, and clef
+    const elementsToRemove = svg.querySelectorAll(
+      ':scope > :not(.vf-stave):not(.vf-stavebarline):not(.vf-clef)'
+    );
+
+    elementsToRemove.forEach((el) => el.remove());
   }
-}
+};

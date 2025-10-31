@@ -267,6 +267,47 @@ svg.stave-scalable {
   max-width: 230px;
 }
 
+.stave-show-wrong-note {
+  animation: fadeInWrongNote 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+
+  &>path {
+    animation: fadeInWrongNote 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+}
+
+.stave-hide-wrong-note {
+  animation: fadeOutWrongNote 0.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+
+  &>path {
+    animation: fadeOutWrongNote 0.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+}
+
+@keyframes fadeInWrongNote {
+  0% {
+    fill: transparent;
+    stroke: transparent;
+  }
+
+  100% {
+    fill: var(--color-error);
+    stroke: var(--color-error);
+  }
+}
+
+@keyframes fadeOutWrongNote {
+  0% {
+    fill: var(--color-error);
+    stroke: var(--color-error);
+  }
+
+  100% {
+    fill: transparent;
+    stroke: transparent;
+  }
+}
+
+
 @media (max-width: 600px) {
   .mobile-hide {
     display: none;
