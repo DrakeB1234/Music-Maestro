@@ -1,5 +1,45 @@
 const DEFAULT_COLOR: string = "var(--color-text-body-1)"
 
+export function LoadingSpininer({ size = 40, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
+      style={{ display: "block" }}
+    >
+      <circle cx="20" cy="20" r="15" stroke={color || "currentColor"} strokeOpacity=".1" strokeWidth="6" fill="none" />
+      <circle
+        cx="20"
+        cy="20"
+        r="15"
+        stroke="#2B80FF"
+        strokeWidth="6"
+        strokeLinecap="round"
+        fill="none"
+        strokeDasharray="70 100"
+        strokeDashoffset="0"
+        transform="rotate(-90 20 20)"
+      >
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          from="0 20 20"
+          to="360 20 20"
+          dur="1s"
+          repeatCount="indefinite"
+          calcMode="cubic"
+        />
+        <animate
+          attributeName="stroke-dasharray"
+          values="10 100;50 100;10 100"
+          dur="1.5s"
+          repeatCount="indefinite"
+        />
+      </circle>
+    </svg>
+  );
+}
 export function MenuIcon({ size = 24, color = DEFAULT_COLOR }) {
   return (
     <svg

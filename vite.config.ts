@@ -21,4 +21,17 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "./src/pages"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('vexflow')) return 'vexflow';
+            if (id.includes('react')) return 'react';
+            return 'vendor';
+          }
+        }
+      },
+    },
+  },
 })

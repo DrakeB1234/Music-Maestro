@@ -5,7 +5,7 @@ import Input from '@/components/UIComponents/Inputs/Input';
 import { useRef, useState, type ChangeEvent } from 'react';
 import Button from '@/components/UIComponents/Button';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
-import { type DrillClefTypes, type DrillOptions, type OctaveRangeSet, type OctaveRange } from '@/types/DrillTypes';
+import { type DrillClefTypes, type DrillOptions, type OctaveRange } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
 import { defaultDrillOptions, OCTAVE_RANGE_LIMITS } from '@/helpers/DrillHelpers';
 import { useModal } from '@/context/ModalProvider';

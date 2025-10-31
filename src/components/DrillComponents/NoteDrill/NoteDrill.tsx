@@ -15,7 +15,7 @@ export default function NoteDrill() {
   const incrementCorrectNotesPlayed = useNoteDrillStore((state) => state.incrementCorrectNotesPlayed);
   const setPlayedNote = useNoteDrillStore((state) => state.setPlayedNote);
   const setPlayedNoteStatus = useNoteDrillStore((state) => state.setPlayedNoteStatus);
-  const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
+  // const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
 
   const setButtonInputListener = useNoteInputStore(
     (s) => s.setButtonInputListener
@@ -132,7 +132,6 @@ export default function NoteDrill() {
 };
 
 function StatusBar() {
-  const playedStatusNote = useNoteDrillStore((state) => state.playedStatusNote);
   const playedNoteStatus = useNoteDrillStore((state) => state.playedNoteStatus);
   const determineClassNameStatus = playedNoteStatus == "correct" ? styles.StatusBarSuccess : playedNoteStatus == "wrong" ? styles.StatusBarError : '';
 
@@ -143,7 +142,6 @@ function StatusBar() {
 
 function Info() {
   const currentNote = useNoteDrillStore((state) => state.currentNote);
-  // const playedNote = useNoteDrillStore((state) => state.playedNote);
 
   return (
     <p className={styles.CurrentNoteContainer}>{currentNote && PrintGenericNote(currentNote)}</p>

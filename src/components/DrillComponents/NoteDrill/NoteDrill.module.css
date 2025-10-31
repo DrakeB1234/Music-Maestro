@@ -15,7 +15,7 @@
 }
 
 .StatusBarContainer {
-  height: var(--spacing-2xsmall);
+  height: calc(var(--spacing-2xsmall) + 0.12rem);
   transition: var(--transition);
 
   &.StatusBarError {

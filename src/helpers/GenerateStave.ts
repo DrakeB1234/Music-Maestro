@@ -1,4 +1,4 @@
-import { Accidental, Barline, Formatter, Modifier, RenderContext, Renderer, Stave, StaveNote, SVGContext, Voice } from "vexflow";
+import { Accidental, Barline, Formatter, RenderContext, Renderer, Stave, StaveNote, SVGContext, Voice } from '@/lib/vexflow-lite';
 import { ConvertGenericNoteToVexNote, type GenericNote } from "./NoteHelpers";
 import type { DrillClefTypes } from "@/types/DrillTypes";
 
@@ -20,9 +20,8 @@ export default class GenerateStave {
   constructor(
     svgRef: HTMLDivElement,
     clef: DrillClefTypes = "treble",
-    staveWidth: number = 160,
-    staveHeight: number = HEIGHT_BASE_STAVE,
-    scale: number = 1.3,
+    clefSize: string = "default",
+    scale: number = 1,
     spacesAboveStaff: number = MAX_STAVE_SPACES_ABOVE,
     spaceBelowStaff: number = MAX_STAVE_SPACES_BELOW,
     scalableWidth: boolean = true
@@ -39,7 +38,7 @@ export default class GenerateStave {
     newStaveHeight = Math.max(newStaveHeight, MIN_HEIGHT_STAVE);
 
     this.#renderer = new Renderer(svgRef, Renderer.Backends.SVG);
-    this.#renderer.resize(staveWidth, newStaveHeight * scale);
+    this.#renderer.resize(200, newStaveHeight * scale);
 
     this.#context = this.#renderer.getContext();
     this.#svgContext = this.#renderer.getContext() as SVGContext;
@@ -49,7 +48,7 @@ export default class GenerateStave {
       this.#svgContext.parent.classList.add("stave-scalable");
     };
 
-    this.#stave = new Stave(0, 0, (staveWidth / scale) - 1, {
+    this.#stave = new Stave(0, 0, (200 / scale) - 1, {
       spaceAboveStaffLn: newSpacesAbove,
     });
     this.#clef = clef;
@@ -57,7 +56,7 @@ export default class GenerateStave {
     // Draw clef w/ empty staff
     this.#stave.setBegBarType(Barline.type.NONE);
     this.#stave.setEndBarType(Barline.type.NONE);
-    this.#stave.addClef(clef, undefined, undefined);
+    this.#stave.addClef(clef, clefSize, undefined);
 
     this.#stave.setContext(this.#context).draw();
   };

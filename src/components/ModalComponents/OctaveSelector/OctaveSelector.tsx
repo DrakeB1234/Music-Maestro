@@ -109,7 +109,7 @@ export default function OctaveSelector({
   useEffect(() => {
     if (!svgRef.current) return;
 
-    const newStaveObj = new GenerateStave(svgRef.current, clef, 240, undefined, 1.5);
+    const newStaveObj = new GenerateStave(svgRef.current, clef, "small", 1.5);
     if (!newStaveObj) return;
     staveRef.current = newStaveObj;
 

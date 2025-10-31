@@ -21,7 +21,7 @@ export default function DrillStaff() {
       const spacesAboveStaff = maxOctave ? GetSpacesAboveStaff(maxOctave, drillOptions.clef || "treble") : 0;
       const spacesBelowStaff = minOctave ? GetSpacesBelowStaff(minOctave, drillOptions.clef || "treble") : 0;
 
-      const newStaveObj = new GenerateStave(containerRef.current, drillOptions.clef, undefined, undefined, 1, spacesAboveStaff, spacesBelowStaff);
+      const newStaveObj = new GenerateStave(containerRef.current, drillOptions.clef, undefined, undefined, spacesAboveStaff, spacesBelowStaff);
       if (!newStaveObj) return;
 
       staveRef.current = newStaveObj;

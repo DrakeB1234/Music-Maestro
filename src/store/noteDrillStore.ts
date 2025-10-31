@@ -88,7 +88,9 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
       playedNote: null,
       totalNotesPlayed: 0,
       correctNotesPlayed: 0,
-      isDrillTimerRunning: true
+      isDrillTimerRunning: true,
+      playedNoteStatus: null,
+      playedStatusNote: null
     });
   },
   resetDrillOptions: () => {
