@@ -1,17 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { routes } from "./routes";
 import LoadingPage from "./pages/LoadingPage";
-import { useModal } from "./context/ModalProvider";
-import OctaveSelector from "./components/ModalComponents/OctaveSelector/OctaveSelector";
+import GenerateStave from "./helpers/GenerateStave";
+import { OCTAVE_RANGE_LIMITS } from "./helpers/DrillHelpers";
+import { GetSpacesAboveStaff, GetSpacesBelowStaff } from "./helpers/NoteHelpers";
 
 function App() {
-
-  // const { openModal } = useModal();
-
-  // useEffect(() => {
-  //   openModal(<OctaveSelector />)
-  // }, [])
 
   return (
     <BrowserRouter>

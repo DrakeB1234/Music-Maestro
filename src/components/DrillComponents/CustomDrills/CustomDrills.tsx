@@ -172,9 +172,8 @@ export default function CustomDrills({ onBack }: Props) {
               handleChange={handleClefChange}
             />
 
-            <h2>Octave Range</h2>
+            <h2>Octave Range {PrintOctaveRange()}</h2>
             <Button text='Choose Octave Range' variant='outlined' size='medium' onClick={handleOpenModal} />
-            <p>{PrintOctaveRange()}</p>
 
             <h2>Timer</h2>
             <Input htmlName='timer' label='Time' placeholder='30' type='number' error={errors?.timer} ref={timerRef} defaultValue='60' min={0} max={999} />

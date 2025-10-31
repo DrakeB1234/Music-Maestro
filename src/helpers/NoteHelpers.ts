@@ -1,4 +1,4 @@
-import type { Accidental, AllowedAccidentals, NOTE_NAME_TYPES, OctaveRange } from "@/types/DrillTypes";
+import type { Accidental, AllowedAccidentals, DrillClefTypes, NOTE_NAME_TYPES, OctaveRange } from "@/types/DrillTypes";
 import { Note } from "webmidi";
 
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -12,6 +12,16 @@ const NOTE_SEMITONES: Record<string, number> = {
   G: 7,
   A: 9,
   B: 11,
+};
+
+const TOP_LINE_NOTES: Record<DrillClefTypes, GenericNote> = {
+  "treble": { name: "F", accidental: null, octave: 5 },
+  "bass": { name: "A", accidental: null, octave: 3 },
+};
+
+const BOTTOM_LINE_NOTES: Record<DrillClefTypes, GenericNote> = {
+  "treble": { name: "E", accidental: null, octave: 4 },
+  "bass": { name: "G", accidental: null, octave: 2 },
 };
 
 export const ACCIDENTALS = {
@@ -174,6 +184,34 @@ export function ShiftNoteByName(note: GenericNote, shift: number): GenericNote {
 
   return newNote;
 };
+
+export function GetSpacesAboveStaff(targetNote: GenericNote, clef: DrillClefTypes): number {
+  const topLineNote = TOP_LINE_NOTES[clef];
+  if (!targetNote.octave || !topLineNote.octave) return -1;
+
+  const topIdx = NOTE_NAMES.indexOf(topLineNote.name);
+  const targetIdx = NOTE_NAMES.indexOf(targetNote.name);
+
+  const letterSteps = (targetNote.octave - topLineNote.octave) * 7 + (targetIdx - topIdx);
+
+  if (letterSteps <= 0) return 0;
+
+  return Math.ceil(letterSteps / 2);
+}
+
+export function GetSpacesBelowStaff(targetNote: GenericNote, clef: DrillClefTypes): number {
+  const bottomLineNote = BOTTOM_LINE_NOTES[clef];
+  if (!targetNote.octave || !bottomLineNote.octave) return -1;
+
+  const bottomIdx = NOTE_NAMES.indexOf(bottomLineNote.name);
+  const targetIdx = NOTE_NAMES.indexOf(targetNote.name);
+
+  const letterSteps = (bottomLineNote.octave - targetNote.octave) * 7 + (bottomIdx - targetIdx);
+
+  if (letterSteps <= 0) return 0;
+
+  return Math.ceil(letterSteps / 2);
+}
 
 export function ConvertGenericNoteToVexNote(genericNote: GenericNote): string {
   return `${genericNote.name}/${genericNote.octave}` as string;

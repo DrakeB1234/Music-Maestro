@@ -16,7 +16,7 @@
   background-color: var(--color-input-background);
 
   &::placeholder {
-    color: var(--color-text-body-2);
+    color: var(--color-input-placeholder-text);
   }
 
   &:focus {
