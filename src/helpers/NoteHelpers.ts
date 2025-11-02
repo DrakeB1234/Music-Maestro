@@ -4,7 +4,7 @@ import { Note } from "webmidi";
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 export const NOTE_SEMITONE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-const NOTE_SEMITONES: Record<string, number> = {
+const NOTE_SEMITONES: Record<NOTE_NAME_TYPES, number> = {
   C: 0,
   D: 2,
   E: 4,

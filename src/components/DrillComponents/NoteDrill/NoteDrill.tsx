@@ -7,6 +7,10 @@ import NoteButtonInput from "@/components/NoteButtonInput/NoteButtonInput";
 import { useEffect } from "react";
 import { useNoteInputStore } from "@/store/noteInputStore";
 import { formatSeconds } from "@/helpers/helpers";
+import { PianoAudioPlayer } from "@/helpers/PianoAudioPlayer";
+
+const MAX_SCORE: number = 200;
+const SCORE_DECAY_RATE: number = 0.0002;
 
 export default function NoteDrill() {
   // Store states
@@ -15,6 +19,8 @@ export default function NoteDrill() {
   const incrementCorrectNotesPlayed = useNoteDrillStore((state) => state.incrementCorrectNotesPlayed);
   const setPlayedNote = useNoteDrillStore((state) => state.setPlayedNote);
   const setPlayedNoteStatus = useNoteDrillStore((state) => state.setPlayedNoteStatus);
+  const setTimeSinceLastCorrectNote = useNoteDrillStore((state) => state.setTimeSinceLastCorrectNote);
+  const setDrillScore = useNoteDrillStore((state) => state.setDrillScore);
   // const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
 
   const setButtonInputListener = useNoteInputStore(
@@ -57,6 +63,7 @@ export default function NoteDrill() {
     setPlayedNote(note);
 
     if (currentNote && CheckValidButtonNotePlayed(note, currentNote)) {
+      note.octave = currentNote?.octave || null;
       handleCorrectNotePlayed(note);
       return;
     };
@@ -89,11 +96,25 @@ export default function NoteDrill() {
     incrementCorrectNotesPlayed();
     incrementTotalNotesPlayed();
     setPlayedNoteStatus("correct", note);
+    determineScoreAwarded();
+    PianoAudioPlayer.playNote(note);
+  }
+
+  function determineScoreAwarded() {
+    const timeSinceLastCorrectNote = useNoteDrillStore.getState().timeSinceLastCorrectNote;
+    const timeCorrectNotePlayed: number = Date.now();
+    const elapsedTime = timeCorrectNotePlayed - timeSinceLastCorrectNote;
+    setTimeSinceLastCorrectNote(timeCorrectNotePlayed);
+
+    let score = Math.round(MAX_SCORE * Math.exp(-SCORE_DECAY_RATE * elapsedTime));
+    score = Math.max(score, 0);
+    setDrillScore(score);
   }
 
   function handleDrillTimeout() {
+    const drillScore = useNoteDrillStore.getState().drillScore;
     // resetDrillOptions();
-    console.log("OVER");
+    console.log(`TIMEOUT: SCORE ${drillScore}`);
   }
 
   useEffect(() => {

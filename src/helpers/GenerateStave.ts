@@ -10,12 +10,12 @@ const MIN_HEIGHT_STAVE: number = 72;
 const MIN_STAVE_ABOVE_PADDING: number = 0.5;
 
 export default class GenerateStave {
-  #context: RenderContext;
-  #stave: Stave;
-  #renderer: Renderer;
-  #svgContext: SVGContext;
-  #clef: DrillClefTypes;
-  #wrongNoteTimeout: number | undefined;
+  private context: RenderContext;
+  private stave: Stave;
+  private renderer: Renderer;
+  private svgContext: SVGContext;
+  private clef: DrillClefTypes;
+  private wrongNoteTimeout: number | undefined;
 
   constructor(
     svgRef: HTMLDivElement,
@@ -37,28 +37,28 @@ export default class GenerateStave {
     newStaveHeight = newStaveHeight + spaceBelowStaff * STAVE_SPACE_HEIGHT;
     newStaveHeight = Math.max(newStaveHeight, MIN_HEIGHT_STAVE);
 
-    this.#renderer = new Renderer(svgRef, Renderer.Backends.SVG);
-    this.#renderer.resize(200, newStaveHeight * scale);
+    this.renderer = new Renderer(svgRef, Renderer.Backends.SVG);
+    this.renderer.resize(200, newStaveHeight * scale);
 
-    this.#context = this.#renderer.getContext();
-    this.#svgContext = this.#renderer.getContext() as SVGContext;
-    this.#context.scale(scale, scale);
+    this.context = this.renderer.getContext();
+    this.svgContext = this.renderer.getContext() as SVGContext;
+    this.context.scale(scale, scale);
 
     if (scalableWidth) {
-      this.#svgContext.parent.classList.add("stave-scalable");
+      this.svgContext.parent.classList.add("stave-scalable");
     };
 
-    this.#stave = new Stave(0, 0, (200 / scale) - 1, {
+    this.stave = new Stave(0, 0, (200 / scale) - 1, {
       spaceAboveStaffLn: newSpacesAbove,
     });
-    this.#clef = clef;
+    this.clef = clef;
 
     // Draw clef w/ empty staff
-    this.#stave.setBegBarType(Barline.type.NONE);
-    this.#stave.setEndBarType(Barline.type.NONE);
-    this.#stave.addClef(clef, clefSize, undefined);
+    this.stave.setBegBarType(Barline.type.NONE);
+    this.stave.setEndBarType(Barline.type.NONE);
+    this.stave.addClef(clef, clefSize, undefined);
 
-    this.#stave.setContext(this.#context).draw();
+    this.stave.setContext(this.context).draw();
   };
 
   drawNote(note: GenericNote) {
@@ -68,14 +68,14 @@ export default class GenerateStave {
     const staveNote = new StaveNote({
       keys: [convertedVexNote],
       duration: "w",
-      clef: this.#clef,
+      clef: this.clef,
       alignCenter: true,
     });
     if (note.accidental) {
       staveNote.addModifier(new Accidental(note.accidental));
     }
 
-    Formatter.FormatAndDraw(this.#context, this.#stave, [staveNote]);
+    Formatter.FormatAndDraw(this.context, this.stave, [staveNote]);
 
   };
 
@@ -88,7 +88,7 @@ export default class GenerateStave {
       const staveNote = new StaveNote({
         keys: [convertedVexNote],
         duration: "w",
-        clef: this.#clef,
+        clef: this.clef,
       });
 
       staveNotes.push(staveNote);
@@ -96,26 +96,26 @@ export default class GenerateStave {
     const voice = new Voice({ numBeats: 8, beatValue: 4 });
     voice.addTickables(staveNotes);
 
-    new Formatter().joinVoices([voice]).format([voice], this.#svgContext.width - 40);
-    voice.draw(this.#context, this.#stave);
+    new Formatter().joinVoices([voice]).format([voice], this.svgContext.width - 40);
+    voice.draw(this.context, this.stave);
   };
 
   changeClef(clef: DrillClefTypes) {
-    this.#stave.setClef(clef);
+    this.stave.setClef(clef);
   };
 
   drawWrongNote(prevNote: GenericNote, wrongNote: GenericNote) {
     this.clearStave();
 
-    if (this.#wrongNoteTimeout) {
-      clearTimeout(this.#wrongNoteTimeout);
-      this.#wrongNoteTimeout = undefined;
+    if (this.wrongNoteTimeout) {
+      clearTimeout(this.wrongNoteTimeout);
+      this.wrongNoteTimeout = undefined;
     };
 
     const prevStaveNote = new StaveNote({
       keys: [ConvertGenericNoteToVexNote(prevNote)],
       duration: "w",
-      clef: this.#clef,
+      clef: this.clef,
       alignCenter: true
     });
     if (prevNote.accidental) {
@@ -124,7 +124,7 @@ export default class GenerateStave {
     const wrongStaveNote = new StaveNote({
       keys: [ConvertGenericNoteToVexNote(wrongNote)],
       duration: "w",
-      clef: this.#clef,
+      clef: this.clef,
       alignCenter: true
     });
     if (wrongNote.accidental) {
@@ -133,12 +133,12 @@ export default class GenerateStave {
     wrongStaveNote.setStyle({ fillStyle: "var(--color-error)" });
     wrongStaveNote.setLedgerLineStyle({ fillStyle: "var(--color-error)", strokeStyle: "var(--color-error)" });
 
-    Formatter.FormatAndDraw(this.#context, this.#stave, [prevStaveNote, wrongStaveNote]);
+    Formatter.FormatAndDraw(this.context, this.stave, [prevStaveNote, wrongStaveNote]);
     let svg = wrongStaveNote.getSVGElement();
 
     svg?.classList.add("stave-show-wrong-note");
 
-    this.#wrongNoteTimeout = setTimeout(() => {
+    this.wrongNoteTimeout = setTimeout(() => {
       svg?.classList.remove("stave-show-wrong-note");
       svg?.classList.add("stave-hide-wrong-note");
 
@@ -146,7 +146,7 @@ export default class GenerateStave {
   };
 
   clearStave() {
-    const svg = this.#svgContext.svg;
+    const svg = this.svgContext.svg;
     if (!svg) return;
 
     // Select all SVG elements except the stave, barlines, and clef

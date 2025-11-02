@@ -28,6 +28,12 @@ interface NoteDrillState {
   decrementDrillTime: () => void;
   setDrillTime: (time: number) => void;
 
+  timeSinceLastCorrectNote: number;
+  setTimeSinceLastCorrectNote: (time: number) => void;
+
+  drillScore: number;
+  setDrillScore: (score: number) => void;
+
   resetDrill: () => void;
   resetDrillOptions: () => void;
 }
@@ -71,7 +77,10 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
   drillTime: 0,
   decrementDrillTime: () => {
     if (get().drillTime < 1) {
-      set({ isDrillTimerRunning: false })
+      set({
+        isDrillTimerRunning: false,
+        drillTime: 0
+      });
     }
     else {
       set((state) => ({
@@ -79,9 +88,20 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
       }));
     }
   },
-  setDrillTime: (time: number) => {
+  setDrillTime: (time) => {
     set({ drillTime: Math.max(0, time) });
   },
+
+  timeSinceLastCorrectNote: 0,
+  setTimeSinceLastCorrectNote: (time) => {
+    set({ timeSinceLastCorrectNote: time });
+  },
+
+  drillScore: 0,
+  setDrillScore: (score) =>
+    set((state) => ({
+      drillScore: state.drillScore + score
+    })),
 
   resetDrill: () => {
     set({
@@ -90,7 +110,10 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
       correctNotesPlayed: 0,
       isDrillTimerRunning: true,
       playedNoteStatus: null,
-      playedStatusNote: null
+      playedStatusNote: null,
+      timeSinceLastCorrectNote: 0,
+      drillScore: 0,
+      drillTime: 0,
     });
   },
   resetDrillOptions: () => {
