@@ -15,13 +15,18 @@ interface Props {
 
 export default function PresetDrills({ onBack }: Props) {
   const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
+  const setIsDrillStarted = useNoteDrillStore((state) => state.setIsDrillStarted);
   const navigate = useNavigate();
 
   const startPresetDrill = (id: string) => {
     const drillOptions = defaultDrillPresetsData.find((e) => e.id === id)?.drillOptions
-    if (drillOptions) setDrillOptions(drillOptions);
+    if (drillOptions) {
+      drillOptions.drillId = id;
+      setDrillOptions(drillOptions);
+    };
     if (!drillOptions) setDrillOptions(defaultDrillOptions);
 
+    setIsDrillStarted(false);
     navigate("/drills/start");
   };
 

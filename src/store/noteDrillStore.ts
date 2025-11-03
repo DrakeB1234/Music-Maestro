@@ -14,16 +14,13 @@ interface NoteDrillState {
   drillOptions: DrillOptions | null;
   setDrillOptions: (options: DrillOptions) => void;
 
-  totalNotesPlayed: number;
-  incrementTotalNotesPlayed: () => void;
-  correctNotesPlayed: number;
-  incrementCorrectNotesPlayed: () => void;
-
   playedNoteStatus: PlayedNoteStatus;
   playedStatusNote: GenericNote | null;
   setPlayedNoteStatus: (status: PlayedNoteStatus, note: GenericNote) => void;
 
-  isDrillTimerRunning: boolean;
+  isDrillStarted: boolean;
+  setIsDrillStarted: (value: boolean) => void;
+
   drillTime: number;
   decrementDrillTime: () => void;
   setDrillTime: (time: number) => void;
@@ -52,19 +49,6 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
     }));
   },
 
-  totalNotesPlayed: 0,
-  incrementTotalNotesPlayed: () => {
-    set((state) => ({
-      totalNotesPlayed: state.totalNotesPlayed + 1
-    }));
-  },
-  correctNotesPlayed: 0,
-  incrementCorrectNotesPlayed: () => {
-    set((state) => ({
-      correctNotesPlayed: state.correctNotesPlayed + 1
-    }));
-  },
-
   playedNoteStatus: null,
   playedStatusNote: null,
   setPlayedNoteStatus: (status, note) =>
@@ -73,12 +57,16 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
       playedStatusNote: note
     }),
 
-  isDrillTimerRunning: true,
+  isDrillStarted: false,
+  setIsDrillStarted: (value) =>
+    set({
+      isDrillStarted: value
+    }),
+
   drillTime: 0,
   decrementDrillTime: () => {
     if (get().drillTime < 1) {
       set({
-        isDrillTimerRunning: false,
         drillTime: 0
       });
     }
@@ -106,14 +94,12 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
   resetDrill: () => {
     set({
       playedNote: null,
-      totalNotesPlayed: 0,
-      correctNotesPlayed: 0,
-      isDrillTimerRunning: true,
       playedNoteStatus: null,
       playedStatusNote: null,
+      isDrillStarted: false,
       timeSinceLastCorrectNote: 0,
-      drillScore: 0,
       drillTime: 0,
+      drillScore: 0
     });
   },
   resetDrillOptions: () => {

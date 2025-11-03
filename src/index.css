@@ -152,7 +152,7 @@ img {
   --elevation-medium: 0 0.125rem 0 0 #00000030;
 }
 
-@media (prefers-color-scheme:) {
+/* @media (prefers-color-scheme:) {
   :root {
     --color-main-1: var(--palette-main-1);
     --color-main-2: var(--palette-main-2);
@@ -194,7 +194,7 @@ img {
     --color-input-border: var(--palette-light-2);
     --color-input-hover: var(--palette-dark-1);
   }
-}
+} */
 
 html {
   font-size: 16px;
@@ -220,12 +220,12 @@ body {
 /* Font defaults / classes */
 
 h1 {
-  font: var(--weight-bold) var(--font-size-large)/1.4 var(--font-family);
+  font: var(--weight-semibold) var(--font-size-large)/1.4 var(--font-family);
   color: var(--color-text-body-1);
 }
 
 h2 {
-  font: var(--weight-bold) var(--font-size-base)/1.4 var(--font-family);
+  font: var(--weight-semibold) var(--font-size-base)/1.4 var(--font-family);
   color: var(--color-text-body-1);
 }
 
@@ -234,8 +234,13 @@ p {
   color: var(--color-text-body-1);
 }
 
+.large-heading {
+  font: var(--weight-semibold) var(--font-size-2xlarge)/1.4 var(--font-family);
+  color: var(--color-text-body-1);
+}
+
 .heading {
-  font: var(--weight-bold) var(--font-size-large)/1.4 var(--font-family);
+  font: var(--weight-semibold) var(--font-size-large)/1.4 var(--font-family);
   color: var(--color-text-body-1);
 }
 
@@ -268,10 +273,10 @@ svg.stave-scalable {
 }
 
 .stave-show-wrong-note {
-  animation: fadeInWrongNote 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation: fadeInWrongNote 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards, note-shake 0.3s ease-in-out;
 
   &>path {
-    animation: fadeInWrongNote 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    animation: fadeInWrongNote 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards, note-shake 0.3s ease-in-out;
   }
 }
 
@@ -292,6 +297,30 @@ svg.stave-scalable {
   100% {
     fill: var(--color-error);
     stroke: var(--color-error);
+  }
+}
+
+@keyframes note-shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-1px);
+  }
+
+  40% {
+    transform: translateX(1px);
+  }
+
+  60% {
+    transform: translateX(-1px);
+  }
+
+  80% {
+    transform: translateX(1px);
   }
 }
 

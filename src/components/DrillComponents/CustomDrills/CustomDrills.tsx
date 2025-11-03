@@ -29,6 +29,7 @@ interface AccidentalToggles {
 
 export default function CustomDrills({ onBack }: Props) {
   const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
+  const setIsDrillStarted = useNoteDrillStore((state) => state.setIsDrillStarted);
   const { openModal } = useModal();
   const navigate = useNavigate();
 
@@ -107,6 +108,7 @@ export default function CustomDrills({ onBack }: Props) {
     }
 
     const newOptions = {
+      drillId: undefined,
       clef: clefRef.current,
       timer: time,
       octaveRange: currentOctaveRange,
@@ -117,6 +119,7 @@ export default function CustomDrills({ onBack }: Props) {
       },
     } as DrillOptions;
 
+    setIsDrillStarted(false);
     setDrillOptions(newOptions);
     navigate("/drills/start");
   };

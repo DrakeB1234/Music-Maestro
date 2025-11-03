@@ -4,35 +4,44 @@ import Card from "@/components/UIComponents/Card";
 import { CheckValidButtonNotePlayed, CheckValidMidiNotePlayed, GenerateRandomInclusiveNote, GenerateRandomNote, GenericNote, PrintGenericNote } from "@/helpers/NoteHelpers";
 import { useNoteDrillStore } from "@/store/noteDrillStore";
 import NoteButtonInput from "@/components/NoteButtonInput/NoteButtonInput";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNoteInputStore } from "@/store/noteInputStore";
 import { formatSeconds } from "@/helpers/helpers";
 import { PianoAudioPlayer } from "@/helpers/PianoAudioPlayer";
+import { useModal } from "@/context/ModalProvider";
+import DrillOver from "@/components/ModalComponents/DrillOver/DrillOver";
+import { useNavigate } from "react-router-dom";
+import { useDrillProgressResults } from "@/hooks/useDrillProgressResultStorage";
 
-const MAX_SCORE: number = 200;
-const SCORE_DECAY_RATE: number = 0.0002;
+const MAX_SCORE: number = 150;
+const SCORE_DECAY_RATE: number = 0.0004;
 
 export default function NoteDrill() {
   // Store states
   const setCurrentNote = useNoteDrillStore((state) => state.setCurrentNote);
-  const incrementTotalNotesPlayed = useNoteDrillStore((state) => state.incrementTotalNotesPlayed);
-  const incrementCorrectNotesPlayed = useNoteDrillStore((state) => state.incrementCorrectNotesPlayed);
   const setPlayedNote = useNoteDrillStore((state) => state.setPlayedNote);
   const setPlayedNoteStatus = useNoteDrillStore((state) => state.setPlayedNoteStatus);
   const setTimeSinceLastCorrectNote = useNoteDrillStore((state) => state.setTimeSinceLastCorrectNote);
   const setDrillScore = useNoteDrillStore((state) => state.setDrillScore);
-  // const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
+  const setIsDrillStarted = useNoteDrillStore((state) => state.setIsDrillStarted);
+  const resetDrillOptions = useNoteDrillStore((state) => state.resetDrillOptions);
+  const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
 
-  const setButtonInputListener = useNoteInputStore(
-    (s) => s.setButtonInputListener
-  );
+  const setButtonInputListener = useNoteInputStore((state) => state.setButtonInputListener);
   const addMidiListener = useNoteInputStore((state) => state.addMidiListener);
   const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
 
+  const { addResult } = useDrillProgressResults();
+
+  const totalNotesPlayed = useRef<number>(0);
+  const correctNotesPlayed = useRef<number>(0);
+
+  const { openModal, setPreventClose, closeModal } = useModal();
+  const navigate = useNavigate();
+
   function handleGenerateNote() {
-    const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
     const drillOptions = useNoteDrillStore.getState().drillOptions;
-    if (!isDrillTimerRunning || !drillOptions) return;
+    if (!drillOptions) return;
 
     const currentNote = useNoteDrillStore.getState().currentNote;
 
@@ -56,15 +65,15 @@ export default function NoteDrill() {
   }
 
   function handleButtonPlayed(note: GenericNote) {
-    const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
-    if (!isDrillTimerRunning) return;
+    const isDrillRunning = useNoteDrillStore.getState().isDrillStarted;
+    if (!isDrillRunning) return;
 
     const currentNote = useNoteDrillStore.getState().currentNote;
     setPlayedNote(note);
 
     if (currentNote && CheckValidButtonNotePlayed(note, currentNote)) {
       note.octave = currentNote?.octave || null;
-      handleCorrectNotePlayed(note);
+      handleCorrectNotePlayed(currentNote);
       return;
     };
 
@@ -73,8 +82,8 @@ export default function NoteDrill() {
   }
 
   function handleMidiPlayed(note: GenericNote) {
-    const isDrillTimerRunning = useNoteDrillStore.getState().isDrillTimerRunning;
-    if (!isDrillTimerRunning) return;
+    const isDrillRunning = useNoteDrillStore.getState().isDrillStarted;
+    if (!isDrillRunning) return;
 
     const currentNote = useNoteDrillStore.getState().currentNote;
     setPlayedNote(note);
@@ -87,14 +96,15 @@ export default function NoteDrill() {
   };
 
   function handleIncorrectNotePlayed(note: GenericNote) {
-    incrementTotalNotesPlayed();
+    totalNotesPlayed.current += 1;
     setPlayedNoteStatus("wrong", note);
   }
 
   function handleCorrectNotePlayed(note: GenericNote) {
     handleGenerateNote();
-    incrementCorrectNotesPlayed();
-    incrementTotalNotesPlayed();
+    totalNotesPlayed.current += 1;
+    correctNotesPlayed.current += 1;
+
     setPlayedNoteStatus("correct", note);
     determineScoreAwarded();
     PianoAudioPlayer.playNote(note);
@@ -112,10 +122,58 @@ export default function NoteDrill() {
   }
 
   function handleDrillTimeout() {
+    const score = useNoteDrillStore.getState().drillScore;
+    const drillOptions = useNoteDrillStore.getState().drillOptions;
+
+    // Only store data if drillId is provided (id's are only set on preset drills)
+    if (drillOptions?.drillId) {
+      addResult({
+        id: drillOptions.drillId,
+        correctNotes: correctNotesPlayed.current,
+        totalNotes: totalNotesPlayed.current,
+        score: score
+      });
+    };
+
+    setIsDrillStarted(false);
+    handleOpenModal();
+  };
+
+  function handleDrillExit() {
+    setPreventClose(false);
+    closeModal();
+    resetDrillOptions();
+    navigate("/");
+  };
+
+  function handleDrillTryAgain() {
+    const drillOptions = useNoteDrillStore.getState().drillOptions;
+    correctNotesPlayed.current = 0;
+    totalNotesPlayed.current = 0;
+    setDrillScore(0);
+
+    if (drillOptions) {
+      setDrillOptions({ ...drillOptions });
+    };
+
+    setPreventClose(false);
+    closeModal();
+  };
+
+  const handleOpenModal = () => {
     const drillScore = useNoteDrillStore.getState().drillScore;
-    // resetDrillOptions();
-    console.log(`TIMEOUT: SCORE ${drillScore}`);
-  }
+
+    setPreventClose(true);
+    openModal(
+      <DrillOver
+        drillScore={drillScore}
+        correctNotesPlayed={correctNotesPlayed.current}
+        totalNotesPlayed={totalNotesPlayed.current}
+        handleDrillExit={handleDrillExit}
+        handleDrillTryAgain={handleDrillTryAgain}
+      />
+    );
+  };
 
   useEffect(() => {
     setButtonInputListener((note) => handleButtonPlayed(note));
@@ -139,7 +197,7 @@ export default function NoteDrill() {
       <Card>
         <div className={styles.TopBarWrapper}>
           <DrillTimer handleTimeOut={handleDrillTimeout} />
-          <Stats />
+          <DrillScore />
         </div>
         <StatusBar />
         <DrillStaff />
@@ -169,17 +227,11 @@ function Info() {
   )
 }
 
-function Stats() {
-  const totalNotesPlayed = useNoteDrillStore((state) => state.totalNotesPlayed);
-  const correctNotesPlayed = useNoteDrillStore((state) => state.correctNotesPlayed);
-  const calculatePercentage = Math.ceil((correctNotesPlayed / totalNotesPlayed) * 100);
-  const correctPercentage = !isNaN(calculatePercentage) ? calculatePercentage + "%" : "0%"
+function DrillScore() {
+  const drillScore = useNoteDrillStore((state) => state.drillScore);
 
   return (
-    <>
-      <p>{correctPercentage}</p>
-      <p>{correctNotesPlayed}/{totalNotesPlayed}</p>
-    </>
+    <p>{drillScore}</p>
   )
 }
 
@@ -188,12 +240,14 @@ interface DrillTimerProps {
 }
 
 function DrillTimer({ handleTimeOut }: DrillTimerProps) {
-  const isDrillTimerRunning = useNoteDrillStore((state) => state.isDrillTimerRunning);
   const drillTime = useNoteDrillStore((state) => state.drillTime);
+  const isDrillStarted = useNoteDrillStore((state) => state.isDrillStarted);
   const decrementDrillTime = useNoteDrillStore((state) => state.decrementDrillTime);
 
   useEffect(() => {
-    if (!isDrillTimerRunning) {
+    if (!isDrillStarted) return;
+
+    if (drillTime < 1) {
       handleTimeOut();
       return;
     };
@@ -205,7 +259,7 @@ function DrillTimer({ handleTimeOut }: DrillTimerProps) {
     return () => {
       clearInterval(interval)
     };
-  }, [isDrillTimerRunning, decrementDrillTime]);
+  }, [drillTime]);
 
   return (
     <p>{formatSeconds(drillTime)}</p>

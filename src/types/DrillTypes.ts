@@ -44,4 +44,6 @@ export type DrillOptions = {
   // Will ONLY include notes provided in arr
   inclusiveNotes?: GenericNote[]
   clef?: DrillClefTypes;
+  // Used when a preset drill is ran, to store drill data into local storage
+  drillId?: string;
 }
