@@ -8,6 +8,8 @@ import type { DrillPreset } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
 import { useNoteDrillStore } from '@/store/noteDrillStore';
 import { defaultDrillOptions } from '@/helpers/DrillHelpers';
+import { useModal } from '@/context/ModalProvider';
+import DrillProgress from '@/components/ModalComponents/DrillProgress/DrillProgress';
 
 interface Props {
   onBack: () => void;
@@ -17,6 +19,8 @@ export default function PresetDrills({ onBack }: Props) {
   const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
   const setIsDrillStarted = useNoteDrillStore((state) => state.setIsDrillStarted);
   const navigate = useNavigate();
+
+  const { openModal } = useModal();
 
   const startPresetDrill = (id: string) => {
     const drillOptions = defaultDrillPresetsData.find((e) => e.id === id)?.drillOptions
@@ -30,6 +34,10 @@ export default function PresetDrills({ onBack }: Props) {
     navigate("/drills/start");
   };
 
+  function handleOpenModal(id: string) {
+    openModal(<DrillProgress presetId={id} />)
+  }
+
   return (
     <div className={styles.PresetDrillsWrapper}>
       <div className={styles.HeadingContainer}>
@@ -42,7 +50,8 @@ export default function PresetDrills({ onBack }: Props) {
             key={e.id}
             headerText={e.name}
             descriptionText={e.description}
-            handleNavigate={startPresetDrill}
+            handleStartPressed={startPresetDrill}
+            handleProgressPressed={handleOpenModal}
             drillId={e.id}
           />
         ))}
@@ -55,14 +64,16 @@ interface CardProps {
   headerText: string;
   descriptionText: string;
   drillId: string,
-  handleNavigate: (id: string) => void;
+  handleStartPressed: (id: string) => void;
+  handleProgressPressed: (id: string) => void;
 }
 
 function PresetCard({
   headerText,
   descriptionText,
   drillId,
-  handleNavigate
+  handleStartPressed,
+  handleProgressPressed
 }: CardProps) {
   return (
     <Card>
@@ -74,8 +85,8 @@ function PresetCard({
         <p className='caption'>{descriptionText}</p>
       </div>
       <div className={styles.PracticeButtonContainer}>
-        <Button text='Progress' variant='outlined' fullWidth={true} />
-        <Button onClick={() => handleNavigate(drillId)} icon={<PlayIcon color='var(--color-text-main-1)' />} text='Practice' fullWidth={true} />
+        <Button onClick={() => handleProgressPressed(drillId)} text='Progress' variant='outlined' fullWidth={true} />
+        <Button onClick={() => handleStartPressed(drillId)} icon={<PlayIcon color='var(--color-text-main-1)' />} text='Practice' fullWidth={true} />
       </div>
     </Card>
   )

@@ -2,7 +2,6 @@ import Modal from '@components/UIComponents/Modal';
 import { TrophyIcon } from "@components/Icons/Icons";
 import styles from './DrillOver.module.css';
 import Button from "@components/UIComponents/Button";
-import { useNoteDrillStore } from '@/store/noteDrillStore';
 
 interface DrillOverProps {
   drillScore: number;
@@ -20,8 +19,7 @@ export default function DrillOver({
   handleDrillTryAgain,
 }: DrillOverProps) {
 
-  const accuracyPercantageString = `${Math.ceil(correctNotesPlayed / totalNotesPlayed * 100)}%`;
-  const drillOptions = useNoteDrillStore.getState().drillOptions;
+  const accuracyPercantage = Math.ceil(correctNotesPlayed / totalNotesPlayed * 100);
 
   return (
     <Modal headerText="Drill Over!" icon={<TrophyIcon />} overrideExitButtonPressed={handleDrillExit}>
@@ -36,10 +34,9 @@ export default function DrillOver({
           <h1 className='body'>Accuracy</h1>
           <div className={styles.AccuracyContainer}>
             <p className='heading-secondary'>{`Correct: ${correctNotesPlayed}/${totalNotesPlayed}`}</p>
-            <p className='heading-secondary'>{accuracyPercantageString}</p>
+            <p className='heading-secondary'>{!isNaN(accuracyPercantage) ? accuracyPercantage : 0}%</p>
           </div>
         </div>
-        <p>{drillOptions?.drillId}</p>
       </div>
       <div className={styles.ModalActionButtonsContainer}>
         <Button text="Close" variant='outlined' fullWidth={true} onClick={handleDrillExit} />

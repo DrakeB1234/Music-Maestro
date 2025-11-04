@@ -124,6 +124,10 @@ export default function NoteDrill() {
   function handleDrillTimeout() {
     const score = useNoteDrillStore.getState().drillScore;
     const drillOptions = useNoteDrillStore.getState().drillOptions;
+    const drillTime = drillOptions?.timer ? drillOptions.timer : 1;
+    const correctNotesPerMinute = Math.round(correctNotesPlayed.current / drillTime * 60);
+
+    console.log(correctNotesPerMinute)
 
     // Only store data if drillId is provided (id's are only set on preset drills)
     if (drillOptions?.drillId) {
@@ -131,7 +135,8 @@ export default function NoteDrill() {
         id: drillOptions.drillId,
         correctNotes: correctNotesPlayed.current,
         totalNotes: totalNotesPlayed.current,
-        score: score
+        score: score,
+        correctNotesPerMinute: correctNotesPerMinute
       });
     };
 

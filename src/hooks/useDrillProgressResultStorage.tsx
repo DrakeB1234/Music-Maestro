@@ -20,9 +20,14 @@ export function useDrillProgressResults() {
     return results;
   };
 
+  const getResultsById = (id: string): DrillProgressResult[] => {
+    return results.filter(e => e.id === id);
+  };
+
   return {
     addResult,
     clearResults,
     getResults,
+    getResultsById
   };
 }

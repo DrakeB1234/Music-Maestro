@@ -65,8 +65,6 @@ img {
   --font-size-2xlarge: 1.5rem;
   --font-size-3xlarge: 2rem;
 
-
-
   /* application vars */
   --max-app-width: 1000px;
   --min-button-size: 40px;
@@ -80,6 +78,8 @@ img {
   --transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
   --ui-font: var(--weight-semibold) var(--font-size-base)/1.4 var(--font-family);
+
+  --line-graph-label-font: var(--weight-bold) var(--font-size-base)/1.4 var(--font-family);
 
   /* COLORS */
   --palette-main-1: #D5E6FF;
@@ -115,8 +115,10 @@ img {
   --color-text-main-2: var(--palette-light-3);
 
   --color-surface-light-1: var(--palette-light-1);
+  --color-surface-light-2: var(--palette-light-3);
   --color-surface-main-1: var(--palette-light-1);
-  --color-surface-border: var(--palette-light-4);
+  --color-surface-border-1: var(--palette-light-4);
+  --color-surface-border-2: var(--palette-dark-1);
 
   --color-body-background: var(--palette-light-2);
 
@@ -167,7 +169,7 @@ img {
 
     --color-surface-light-1: var(--palette-dark-4);
     --color-surface-main-1: var(--palette-dark-5);
-    --color-surface-border: var(--palette-dark-3);
+    --color-surface-border-1: var(--palette-dark-3);
 
     --color-body-background: var(--palette-dark-5);
 

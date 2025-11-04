@@ -4,4 +4,5 @@ export interface DrillProgressResult {
   score: number;
   correctNotes: number;
   totalNotes: number;
+  correctNotesPerMinute: number;
 }
