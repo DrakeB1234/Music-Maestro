@@ -1,8 +1,8 @@
 import styles from './Navbar.module.css';
-import { CloseIcon, DashboardIcon, DataIcon, LinkIcon, MenuIcon, MusicNoteIcon, SoundIcon, StatusIcon } from '@components/Icons/Icons';
+import { CloseIcon, DashboardIcon, DataIcon, HomeIcon, LinkIcon, MenuIcon, MusicNoteIcon, SoundIcon, StatusIcon } from '@components/Icons/Icons';
 import Button from '@components/UIComponents/Button';
 import IconWrapper from '@components/UIComponents/IconWrapper';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useNoteInputStore } from '@/store/noteInputStore';
 import { CONFIG_ROUTE_PARAMS } from '@/pages/ConfigPage';
@@ -45,6 +45,9 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
   const isMidiDeviceConnected = useNoteInputStore((state) => state.isMidiDeviceConnected);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { pathname, search } = location;
+  const url = pathname + search;
 
   function handleNavigate(route: string) {
     onClose();
@@ -62,7 +65,13 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className={styles.Header}>
           <Button variant='text-secondary' icon={<CloseIcon color='var(--color-dark-2)' />} onClick={onClose} />
         </div>
-        <div className={`${styles.SidebarItemContainer} ${styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.DeviceSetup}`)} tabIndex={0}>
+        <div className={`${styles.SidebarItemContainer} ${url === `/` && styles.Active}`} onClick={() => handleNavigate(`/`)} tabIndex={0}>
+          <div className={styles.SidebarItemTextContainer}>
+            <HomeIcon />
+            <p>Home</p>
+          </div>
+        </div>
+        <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.DeviceSetup}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.DeviceSetup}`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
             <LinkIcon />
             <p>Device Setup</p>
@@ -74,19 +83,19 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
           }
         </div>
-        <div className={styles.SidebarItemContainer} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.MIDIPlayback}`)} tabIndex={0}>
+        <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.MIDIPlayback}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.MIDIPlayback}`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
             <SoundIcon />
             <p>MIDI Playback</p>
           </div>
         </div>
-        <div className={styles.SidebarItemContainer} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.ManageData}`)} tabIndex={0}>
+        <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.ManageData}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.ManageData}`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
             <DataIcon />
             <p>Manage Data</p>
           </div>
         </div>
-        <div className={styles.SidebarItemContainer} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.PWA}`)} tabIndex={0}>
+        <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.PWA}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.PWA}`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
             <DashboardIcon />
             <p>PWA Download</p>
