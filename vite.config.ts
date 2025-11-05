@@ -3,12 +3,48 @@ import react from '@vitejs/plugin-react'
 import mkcert from 'vite-plugin-mkcert';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     mkcert(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg'],
+      manifest: {
+        name: 'My Piano App',
+        short_name: 'Piano',
+        start_url: '/',
+        display: 'standalone',
+        background_color: '#ffffff',
+        theme_color: '#000000',
+        icons: [
+          {
+            src: 'favicon.svg',
+            type: 'image/svg+xml',
+            sizes: 'any'
+          }
+        ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3,wav}'],
+        navigateFallback: '/index.html',
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/piano_samples/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'piano-samples',
+              expiration: {
+                maxEntries: 100,
+              },
+            },
+          },
+        ],
+      },
+    })
   ],
   server: {
     host: true,

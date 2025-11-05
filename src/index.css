@@ -19,7 +19,8 @@ h5,
 h6,
 p,
 ol,
-ul {
+ul,
+input[type="range" i] {
   margin: 0;
   padding: 0;
   color: inherit;
@@ -66,7 +67,7 @@ img {
   --font-size-3xlarge: 2rem;
 
   /* application vars */
-  --max-app-width: 1000px;
+  --max-app-width: 1100px;
   --min-button-size: 40px;
   --max-phone-width: 600px;
 
@@ -108,6 +109,7 @@ img {
   --color-main-4: var(--palette-main-4);
 
   --color-dark-2: var(--palette-dark-2);
+  --color-dark-3: var(--palette-dark-3);
 
   --color-text-body-1: var(--palette-dark-5);
   --color-text-body-2: var(--palette-dark-2);

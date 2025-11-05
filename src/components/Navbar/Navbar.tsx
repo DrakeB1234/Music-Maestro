@@ -1,7 +1,6 @@
 import styles from './Navbar.module.css';
-import { CloseIcon, DashboardIcon, DataIcon, HomeIcon, LinkIcon, MenuIcon, MusicNoteIcon, SoundIcon, StatusIcon } from '@components/Icons/Icons';
+import { AppGraphic, CloseIcon, DashboardIcon, DataIcon, HomeIcon, LinkIcon, MenuIcon, VolumeMaxIcon, StatusIcon } from '@components/Icons/Icons';
 import Button from '@components/UIComponents/Button';
-import IconWrapper from '@components/UIComponents/IconWrapper';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useNoteInputStore } from '@/store/noteInputStore';
@@ -22,9 +21,8 @@ export default function Navbar() {
       <div className={styles.NavbarWrapper}>
         <div className={styles.SizeWrapper}>
           <div onClick={handleIconPressed} className={styles.IconTextContainer}>
-            <IconWrapper icon={<MusicNoteIcon />} />
+            <AppGraphic />
             <div className={styles.TitleContainer}>
-              <h1 className='body mobile-hide'>Sightreading</h1>
             </div>
           </div>
           <Button onClick={() => setSidebarOpen(true)} icon={<MenuIcon color='var(--color-dark-2)' />} variant='outlined' />
@@ -63,6 +61,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <div className={`${styles.SidebarWrapper} ${isOpen ? styles.open : ""}`}>
         <div className={styles.Header}>
+          <AppGraphic />
           <Button variant='text-secondary' icon={<CloseIcon color='var(--color-dark-2)' />} onClick={onClose} />
         </div>
         <div className={`${styles.SidebarItemContainer} ${url === `/` && styles.Active}`} onClick={() => handleNavigate(`/`)} tabIndex={0}>
@@ -85,7 +84,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
         <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.MIDIPlayback}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.MIDIPlayback}`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
-            <SoundIcon />
+            <VolumeMaxIcon />
             <p>MIDI Playback</p>
           </div>
         </div>

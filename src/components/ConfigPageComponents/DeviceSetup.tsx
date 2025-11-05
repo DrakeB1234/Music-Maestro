@@ -6,7 +6,7 @@ import ToggleButton from '@/components/UIComponents/ToggleButton';
 import { useEffect, useState } from 'react';
 import { useNoteInputStore } from '@/store/noteInputStore';
 import { PrintGenericNote, type GenericNote } from '@/helpers/NoteHelpers';
-import styles from './DeviceSetup.module.css';
+import styles from './ConfigPageComponents.module.css';
 import { useAppPreferences } from "@/hooks/useAppPreferences";
 
 interface DeviceSetupProps {

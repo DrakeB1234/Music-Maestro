@@ -13,6 +13,9 @@ import DrillOver from "@/components/ModalComponents/DrillOver/DrillOver";
 import { useNavigate } from "react-router-dom";
 import { useDrillProgressResults } from "@/hooks/useDrillProgressResultStorage";
 import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
+import { useAppPreferences } from "@/hooks/useAppPreferences";
+import PianoRollInput from "@/components/PianoRollInput/PianoRollInput";
+import Button from "@/components/UIComponents/Button";
 
 const MAX_SCORE: number = 150;
 const SCORE_DECAY_RATE: number = 0.0004;
@@ -33,6 +36,7 @@ export default function NoteDrill() {
   const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
 
   const { addResult } = useDrillProgressResults();
+  const { prefs } = useAppPreferences();
 
   const totalNotesPlayed = useRef<number>(0);
   const correctNotesPlayed = useRef<number>(0);
@@ -128,8 +132,6 @@ export default function NoteDrill() {
     const drillTime = drillOptions?.timer ? drillOptions.timer : 1;
     const correctNotesPerMinute = Math.round(correctNotesPlayed.current / drillTime * 60);
 
-    console.log(correctNotesPerMinute)
-
     // Only store data if drillId is provided (id's are only set on preset drills)
     if (drillOptions?.drillId) {
       addResult({
@@ -196,6 +198,12 @@ export default function NoteDrill() {
 
   useEffect(() => {
     handleGenerateNote();
+
+    if (prefs.midiPlaybackEnabled && prefs.midiPlaybackVolume) PianoAudioPlayer.applyPreferences({
+      playbackEnabled: prefs.midiPlaybackEnabled,
+      volume: prefs.midiPlaybackVolume
+    });
+
   }, []);
 
   return (
@@ -209,12 +217,45 @@ export default function NoteDrill() {
         <StatusBar />
         <DrillStaff />
         <Info />
-        <div className={styles.ButtonInputWrapper}>
-          <NoteButtonInput />
-        </div>
+        <DetermineInputType />
       </Card>
     </div>
   );
+};
+
+function DetermineInputType() {
+  const { prefs } = useAppPreferences();
+  const inputType = prefs.inputType;
+  const { connectMidiDevice } = useNoteInputStore();
+  const isMidiDeviceConnected = useNoteInputStore((state) => state.isMidiDeviceConnected);
+
+  if (inputType === "buttons") {
+    return (
+      <div className={`${styles.ButtonInputWrapper}`}>
+        <NoteButtonInput />
+      </div>
+    );
+  }
+  else if (inputType === "piano") {
+    return (
+      <div className={`${styles.ButtonInputWrapper} ${styles.PianoInput}`}>
+        <PianoRollInput />
+      </div>
+    );
+  }
+  else {
+    return (
+      <div className={`${styles.ButtonInputWrapper} ${styles.MIDIInput}`}>
+        {isMidiDeviceConnected && <p>MIDI Device Connected</p>}
+        {!isMidiDeviceConnected &&
+          <div className={styles.MIDIInputDisconnectedContainer}>
+            <p>MIDI Device Disconnected</p>
+            <Button text="Connect" variant="outlined" onClick={connectMidiDevice} />
+          </div>
+        }
+      </div>
+    );
+  };
 };
 
 function StatusBar() {

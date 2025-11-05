@@ -1,10 +1,21 @@
 import { PIANO_AUDIO_SAMPLES_URLS } from "@/data/PianoAudioSamples";
 import { NoteToAbsoluteSemitone, PrintGenericNote, type GenericNote } from "./NoteHelpers";
 
+const MAX_AUDIO_GAIN = 0.6;
+
+type AudioPreferences = {
+  volume: number;
+  playbackEnabled: boolean;
+};
+
 export class PianoAudioPlayer {
   static audioContext: AudioContext;
   private static pianoBuffers: Record<string, AudioBuffer> = {};
   private static masterGain: GainNode;
+  static audioPrefs: AudioPreferences = {
+    volume: 50,
+    playbackEnabled: false
+  }
 
   private static playbackNoteLimit = {
     min: { name: "C", octave: 1 } as GenericNote,
@@ -17,9 +28,11 @@ export class PianoAudioPlayer {
     }
     if (!this.masterGain) {
       this.masterGain = this.audioContext.createGain();
-      this.masterGain.gain.value = 0.4;
+      this.masterGain.gain.value = MAX_AUDIO_GAIN;
       this.masterGain.connect(this.audioContext.destination);
     }
+
+    this.setVolume(this.audioPrefs.volume);
   };
 
   static async loadSample(note: string, url: string) {
@@ -58,6 +71,12 @@ export class PianoAudioPlayer {
   static playNote(note: GenericNote, decayTime = 5) {
     if (this.audioContext.state !== "running") this.audioContext.resume();
 
+    if (!this.audioPrefs.playbackEnabled) return;
+
+    if (this.audioPrefs.volume) {
+      this.setVolume(this.audioPrefs.volume);
+    };
+
     const noteSemitones = NoteToAbsoluteSemitone(note);
     const min = NoteToAbsoluteSemitone(this.playbackNoteLimit.min);
     const max = NoteToAbsoluteSemitone(this.playbackNoteLimit.max);
@@ -87,7 +106,10 @@ export class PianoAudioPlayer {
   }
 
   static setVolume(value: number) {
-    this.init();
-    this.masterGain.gain.value = Math.min(value, 1.0);
+    this.masterGain.gain.value = Math.max(0, MAX_AUDIO_GAIN * (value / 100));
   };
+
+  static applyPreferences(prefs: AudioPreferences) {
+    PianoAudioPlayer.audioPrefs = prefs;
+  }
 };

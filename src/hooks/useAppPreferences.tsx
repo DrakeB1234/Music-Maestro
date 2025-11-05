@@ -4,7 +4,9 @@ import { useLocalStorage } from "./useLocalStorage";
 const STORAGE_KEY = "appPreferences";
 
 const DEFAULT_PREFS: AppPreferences = {
-  inputType: "buttons"
+  inputType: "buttons",
+  midiPlaybackEnabled: false,
+  midiPlaybackVolume: 50
 };
 
 export function useAppPreferences() {
@@ -17,11 +19,16 @@ export function useAppPreferences() {
     setPrefs({ ...prefs, inputType: value });
   };
 
+  const setPrefsByKey = (key: keyof (AppPreferences), value: unknown) => {
+    setPrefs({ ...prefs, [key]: value });
+  };
+
   const resetPreferences = () => setPrefs(DEFAULT_PREFS);
 
   return {
     prefs,
     setInputType,
     resetPreferences,
+    setPrefsByKey
   };
 }

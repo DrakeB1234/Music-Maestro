@@ -2,6 +2,7 @@ import type { Accidental, AllowedAccidentals, DrillClefTypes, NOTE_NAME_TYPES, O
 import { Note } from "webmidi";
 
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+export const ACCIDENTAL_NOTE_NAMES = ['C#', 'D#', 'F#', 'G#', 'A#'];
 export const NOTE_SEMITONE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
 const NOTE_SEMITONES: Record<NOTE_NAME_TYPES, number> = {
@@ -101,16 +102,19 @@ export function GenerateRandomInclusiveNote(inclusiveNotes: GenericNote[], exclu
 }
 
 // This means that a G# is also a Ab. This checks whether the note played is enharmonic to another
-function IsNoteEnharmonic(playedNote: GenericNote, targetNote: GenericNote): boolean {
-  const originalNoteSemitone: number = NoteToAbsoluteSemitone(playedNote);
-  const targetNoteSemitone: number = NoteToAbsoluteSemitone(targetNote);
-  if (originalNoteSemitone == targetNoteSemitone) {
-    return true
+function IsNoteEnharmonic(
+  playedNote: GenericNote,
+  targetNote: GenericNote
+): boolean {
+  const originalSemitone = NoteToAbsoluteSemitone(playedNote);
+  const targetSemitone = NoteToAbsoluteSemitone(targetNote);
+
+  if (!playedNote.octave) {
+    return originalSemitone % 12 === targetSemitone % 12;
   }
-  else {
-    return false;
-  }
-};
+
+  return originalSemitone === targetSemitone;
+}
 
 export function CheckValidButtonNotePlayed(playedNote: GenericNote, targetNote: GenericNote): boolean {
   // Ignores octave checking for button notes
