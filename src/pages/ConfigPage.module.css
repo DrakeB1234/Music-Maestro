@@ -1,0 +1,85 @@
+.PageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--navbar-height);
+  background-color: var(--palette-white);
+  border-bottom: 2px solid var(--palette-grey-200);
+}
+
+.SizeWrapper {
+  width: 100%;
+  max-width: 30rem;
+  padding: var(--spacing-small);
+}
+
+.CardsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base)
+}
+
+.InputDeviceHeader {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-base) var(--spacing-small);
+
+  &> :first-child {
+    flex: 1;
+  }
+}
+
+.InputDeviceDropDownButton.Rotated svg {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.InputDeviceDropDownButton svg {
+  transition: transform 0.2s ease;
+}
+
+.InputDeviceTextContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xsmall);
+}
+
+.InputDeviceTextContainer>.InputDeviceTextItem:nth-child(2n) {
+  gap: 0;
+}
+
+.InputDeviceTextItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xsmall);
+}
+
+.InputDeviceButtonContainer {
+  margin-top: var(--spacing-2xsmall);
+}
+
+.ExpandedContent {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.25s ease;
+  padding: 0 var(--spacing-small);
+}
+
+.Show {
+  max-height: 500px;
+  opacity: 1;
+  padding: var(--spacing-small);
+  border-top: 1px solid var(--color-surface-border-1);
+}
+
+.ExpandedContentButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-base);
+}
+
+.ErrorText {
+  color: var(--color-error);
+  margin-top: var(--spacing-2xsmall);
+}

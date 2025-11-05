@@ -1,20 +1,16 @@
-import { useModal } from '@/context/ModalProvider';
 import styles from './Navbar.module.css';
-import MidiDeviceSelection from '@components/ModalComponents/MidiDeviceSelection/MidiDeviceSelection';
-import { MenuIcon, MusicNoteIcon } from '@components/Icons/Icons';
+import { CloseIcon, DashboardIcon, DataIcon, LinkIcon, MenuIcon, MusicNoteIcon, SoundIcon, StatusIcon } from '@components/Icons/Icons';
 import Button from '@components/UIComponents/Button';
 import IconWrapper from '@components/UIComponents/IconWrapper';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNoteInputStore } from '@/store/noteInputStore';
+import { CONFIG_ROUTE_PARAMS } from '@/pages/ConfigPage';
 
 export default function Navbar() {
-  const { openModal } = useModal();
-  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    openModal(
-      <MidiDeviceSelection />
-    );
-  };
+  const navigate = useNavigate();
 
   const handleIconPressed = () => {
     navigate("/");
@@ -22,19 +18,81 @@ export default function Navbar() {
   }
 
   return (
-    <div className={styles.NavbarWrapper}>
-
-      <div className={styles.SizeWrapper}>
-        <div onClick={handleIconPressed} className={styles.IconTextContainer}>
-          <IconWrapper icon={<MusicNoteIcon />} />
-          <div className={styles.TitleContainer}>
-            <h1 className='body mobile-hide'>Sightreading</h1>
+    <>
+      <div className={styles.NavbarWrapper}>
+        <div className={styles.SizeWrapper}>
+          <div onClick={handleIconPressed} className={styles.IconTextContainer}>
+            <IconWrapper icon={<MusicNoteIcon />} />
+            <div className={styles.TitleContainer}>
+              <h1 className='body mobile-hide'>Sightreading</h1>
+            </div>
           </div>
+          <Button onClick={() => setSidebarOpen(true)} icon={<MenuIcon color='var(--color-dark-2)' />} variant='outlined' />
         </div>
-        <Button onClick={handleOpenModal} icon={<MenuIcon color='var(--color-dark-2)' />} variant='outlined' />
       </div>
 
-    </div>
-
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    </>
   )
+}
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const isMidiDeviceConnected = useNoteInputStore((state) => state.isMidiDeviceConnected);
+
+  const navigate = useNavigate();
+
+  function handleNavigate(route: string) {
+    onClose();
+    navigate(route);
+  };
+
+  return (
+    <>
+      <div
+        className={`${styles.Backdrop} ${isOpen ? styles.show : ""}`}
+        onClick={onClose}
+      />
+
+      <div className={`${styles.SidebarWrapper} ${isOpen ? styles.open : ""}`}>
+        <div className={styles.Header}>
+          <Button variant='text-secondary' icon={<CloseIcon color='var(--color-dark-2)' />} onClick={onClose} />
+        </div>
+        <div className={`${styles.SidebarItemContainer} ${styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.DeviceSetup}`)} tabIndex={0}>
+          <div className={styles.SidebarItemTextContainer}>
+            <LinkIcon />
+            <p>Device Setup</p>
+          </div>
+          {isMidiDeviceConnected &&
+            <div className={styles.SidebarItemSubTextContainer}>
+              <StatusIcon color='var(--color-success)' />
+              <p className='caption'>MIDI Connected</p>
+            </div>
+          }
+        </div>
+        <div className={styles.SidebarItemContainer} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.MIDIPlayback}`)} tabIndex={0}>
+          <div className={styles.SidebarItemTextContainer}>
+            <SoundIcon />
+            <p>MIDI Playback</p>
+          </div>
+        </div>
+        <div className={styles.SidebarItemContainer} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.ManageData}`)} tabIndex={0}>
+          <div className={styles.SidebarItemTextContainer}>
+            <DataIcon />
+            <p>Manage Data</p>
+          </div>
+        </div>
+        <div className={styles.SidebarItemContainer} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.PWA}`)} tabIndex={0}>
+          <div className={styles.SidebarItemTextContainer}>
+            <DashboardIcon />
+            <p>PWA Download</p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

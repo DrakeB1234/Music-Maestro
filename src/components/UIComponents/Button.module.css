@@ -50,6 +50,11 @@
     top: 1px;
     box-shadow: none;
   }
+
+  &>svg>path {
+    fill: var(--color-text-main-1);
+    color: var(--color-text-main-1);
+  }
 }
 
 .outlined {

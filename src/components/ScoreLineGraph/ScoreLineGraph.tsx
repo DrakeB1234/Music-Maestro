@@ -10,11 +10,11 @@ interface LineGraphProps extends React.HTMLAttributes<HTMLCanvasElement> {
 const MAX_GRAPH_POINTS = 8;
 const MAX_Y_LABELS = 4;
 const CANVAS_PADDING = 10;
-const LABEL_PADDING = 50;
+const LABEL_PADDING = 55;
 const Y_LABEL_VALUE_INCREMENT = 500;
 const GRID_LINES_PADDING = 20;
-const DATA_LINE_THICK = 4;
-const DATA_POINT_SIZE = 16;
+const DATA_LINE_THICK = 6;
+const DATA_POINT_SIZE = 15;
 
 export function ScoreLineGraph({ data, width = 600, height = 140, ...props }: LineGraphProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -96,12 +96,9 @@ export function ScoreLineGraph({ data, width = 600, height = 140, ...props }: Li
       const y = graphBottom - ((score - minScore) / (maxScore - minScore)) * graphHeight;
       const x = graphLeft + xStep * i;
 
-      context.fillRect(
-        x - DATA_POINT_SIZE / 2,
-        y - DATA_POINT_SIZE / 2,
-        DATA_POINT_SIZE,
-        DATA_POINT_SIZE
-      );
+      context.beginPath();
+      context.arc(x, y, DATA_POINT_SIZE / 2, 0, Math.PI * 2);
+      context.fill();
     });
   };
 

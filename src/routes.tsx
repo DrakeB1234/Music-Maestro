@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import DrillPage from "./pages/DrillPage";
 import React from "react";
 import LoadingPage from "./pages/LoadingPage";
+import ConfigPage from "./pages/ConfigPage";
 
 const DrillStartPage = lazy(() => import("@pages/DrillStartPage"));
 
@@ -28,6 +29,14 @@ export const routes: AppRoute[] = [
       <>
         <Navbar />
         <DrillPage />
+      </>,
+  },
+  {
+    path: "/config",
+    element:
+      <>
+        <Navbar />
+        <ConfigPage />
       </>,
   },
   {

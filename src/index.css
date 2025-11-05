@@ -116,6 +116,7 @@ img {
 
   --color-surface-light-1: var(--palette-light-1);
   --color-surface-light-2: var(--palette-light-3);
+  --color-surface-light-3: var(--palette-light-4);
   --color-surface-main-1: var(--palette-light-1);
   --color-surface-border-1: var(--palette-light-4);
   --color-surface-border-2: var(--palette-dark-1);

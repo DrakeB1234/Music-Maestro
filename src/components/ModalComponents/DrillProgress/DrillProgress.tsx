@@ -29,7 +29,7 @@ export default function DrillProgress({
   const totalNotes = data.reduce((sum, obj) => sum + obj.totalNotes, 0);
   const averageAccuracy = Math.round(correctNotes / totalNotes * 100);
   const totalCorrectNotesPerMinute = data.reduce((sum, obj) => sum + obj.correctNotesPerMinute, 0);
-  const averageCorrectNotesPerMinute = totalCorrectNotesPerMinute / data.length;
+  const averageCorrectNotesPerMinute = Math.round(totalCorrectNotesPerMinute / data.length);
 
   const graphData = data.map(e => ({
     ...e,
@@ -40,10 +40,10 @@ export default function DrillProgress({
     return (
       <Modal headerText="Drill Progress">
         <div className={styles.ModalContentContainer}>
-          <h1>{presetData?.name && presetData?.name}</h1>
-          <div className={styles.EmptyGraphContainer} style={{ height: `${LINE_GRAPH_HEIGHT}px` }}>
+          <h1 className='body'>{presetData?.name && presetData?.name}</h1>
+          <div className={styles.EmptyGraphContainer} style={{ minHeight: `${LINE_GRAPH_HEIGHT}px` }}>
             <HeadphonesGraphic scale={2.2} />
-            <p>Practice this drill again to see your progress!</p>
+            <p>Practice this drill to see your progress!</p>
           </div>
         </div>
         <div className={styles.ModalActionButtonsContainer}>
@@ -57,7 +57,7 @@ export default function DrillProgress({
     <Modal headerText="Drill Progress">
       {data.length < 1 && <p>No Data Found!</p>}
       <div className={styles.ModalContentContainer}>
-        <h1>{presetData?.name && presetData?.name}</h1>
+        <h1 className='body'>{presetData?.name && presetData?.name}</h1>
         {data.length > 1 ? <ScoreLineGraph data={graphData} width={LINE_GRAPH_WIDTH} height={LINE_GRAPH_HEIGHT} className={styles.LineGraphContainer} />
           :
           <div className={styles.EmptyGraphContainer} style={{ minHeight: `${LINE_GRAPH_HEIGHT}px` }}>

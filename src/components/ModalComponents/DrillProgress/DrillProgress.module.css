@@ -13,7 +13,8 @@
 }
 
 .LineGraphContainer {
-  margin: var(--spacing-base) 0;
+  margin-top: var(--spacing-small);
+  margin-bottom: var(--spacing-large);
 }
 
 .DataContainer {

@@ -12,6 +12,7 @@ import { useModal } from "@/context/ModalProvider";
 import DrillOver from "@/components/ModalComponents/DrillOver/DrillOver";
 import { useNavigate } from "react-router-dom";
 import { useDrillProgressResults } from "@/hooks/useDrillProgressResultStorage";
+import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
 
 const MAX_SCORE: number = 150;
 const SCORE_DECAY_RATE: number = 0.0004;
@@ -199,6 +200,7 @@ export default function NoteDrill() {
 
   return (
     <div className={styles.NoteDrillWrapper}>
+      <BackButtonContainer onBack={handleDrillExit} />
       <Card>
         <div className={styles.TopBarWrapper}>
           <DrillTimer handleTimeOut={handleDrillTimeout} />
