@@ -27,7 +27,6 @@ export default function PianoRollInput() {
     if (note) {
       const { noteName, noteAccidental } = splitNote(note);
       if (!noteName) return;
-      console.log(note)
       triggerButtonInput({ name: noteName as NOTE_NAME_TYPES, accidental: noteAccidental ? noteAccidental as Accidental : null, octave: null });
     }
   };

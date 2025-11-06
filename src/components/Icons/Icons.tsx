@@ -192,6 +192,51 @@ export function VolumeMuteIcon({ size = 24, color = DEFAULT_COLOR }) {
     </svg>
   );
 }
+export function FileExportIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path
+        color={color}
+        d="M480-480ZM202-65l-56-57 118-118h-90v-80h226v226h-80v-89L202-65Zm278-15v-80h240v-440H520v-200H240v400h-80v-400q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H480Z"
+      />
+    </svg>
+  );
+}
+export function FileImportIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path
+        color={color}
+        d="M240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v240h-80v-200H520v-200H240v640h360v80H240Zm638 15L760-183v89h-80v-226h226v80h-90l118 118-56 57Zm-638-95v-640 640Z"
+      />
+    </svg>
+  );
+}
+export function DeleteIcon({ size = 24, color = DEFAULT_COLOR }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 -960 960 960"
+      fill={color}
+    >
+      <path
+        color={color}
+        d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+      />
+    </svg>
+  );
+}
 export function StatusIcon({ size = 24, color = DEFAULT_COLOR }) {
   return (
     <svg

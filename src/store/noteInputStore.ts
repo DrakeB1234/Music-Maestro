@@ -56,7 +56,6 @@ export const useNoteInputStore = create<NoteInputState>((set, get) => ({
         get().removeMidiDevice();
 
         WebMidi.inputs.forEach((input) => {
-          console.log(`MIDI connected: ${input.name}`);
           input.addListener("noteon", (event) => {
             get().triggerMidiInput(ConvertMidiNoteToGenericNote(event.note));
           });
@@ -72,7 +71,6 @@ export const useNoteInputStore = create<NoteInputState>((set, get) => ({
   },
   removeMidiDevice: () => {
     WebMidi.inputs.forEach((input) => {
-      console.log(`MIDI listener removed: ${input.name}`);
       input.removeListener();
     });
   },

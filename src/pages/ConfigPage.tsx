@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import DeviceSetup from '@/components/ConfigPageComponents/DeviceSetup';
 import MidiPlayback from '@/components/ConfigPageComponents/MidiPlayback';
+import ManageData from '@/components/ConfigPageComponents/ManageData';
+import ConfigPWA from '@/components/ConfigPageComponents/ConfigPWA';
 
 export const CONFIG_ROUTE_PARAMS = {
   DeviceSetup: "devicesetup",
@@ -30,7 +32,11 @@ export default function ConfigPage() {
     <div className={styles.PageWrapper}>
       {searchKey === CONFIG_ROUTE_PARAMS.DeviceSetup ? <DeviceSetup onBack={handleBackButtonPressed} /> :
         searchKey === CONFIG_ROUTE_PARAMS.MIDIPlayback ? <MidiPlayback onBack={handleBackButtonPressed} />
-          : <></>
+          :
+          searchKey === CONFIG_ROUTE_PARAMS.ManageData ? <ManageData onBack={handleBackButtonPressed} />
+            :
+            searchKey === CONFIG_ROUTE_PARAMS.PWA ? <ConfigPWA onBack={handleBackButtonPressed} />
+              : <></>
       }
     </div>
   );

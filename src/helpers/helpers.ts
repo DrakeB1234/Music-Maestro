@@ -28,7 +28,7 @@ export async function getCacheUsageByPath(pathPrefix: string) {
 
   return {
     totalBytes,
-    totalMB: (totalBytes / (1024 * 1024)).toFixed(2),
+    totalKB: (totalBytes / (1024)).toFixed(2),
     details: results
   };
 }

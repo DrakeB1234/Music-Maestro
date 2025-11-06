@@ -111,3 +111,18 @@ select:open::picker-icon {
     cursor: grabbing;
   }
 }
+
+.CustomFileInput::file-selector-button {
+  background-color: var(--color-main-2);
+  color: var(--color-text-main-1);
+  padding: var(--spacing-xsmall) var(--spacing-small);
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font: var(--ui-font);
+}
+
+.CustomFileInput::file-selector-button:hover {
+  background-color: var(--color-button-text-primary-hover);
+}

@@ -33,8 +33,9 @@ function MidiPlaybackCard() {
 
   const [expanded, setExpanded] = useState(false);
   const [activeToggle, setActiveToggle] = useState<boolean>(prefs.midiPlaybackEnabled);
+  let cacheData: string = "";
 
-  getCacheUsageByPath("/piano_samples").then(console.log)
+  getCacheUsageByPath("/piano_samples").then(e => cacheData = e.totalKB);
 
   function handleToggleChanged(value: boolean) {
     setActiveToggle(value);
@@ -63,11 +64,7 @@ function MidiPlaybackCard() {
       <div className={`${styles.ExpandedContent} ${styles.MidiPlaybackExapandedContent} ${expanded ? styles.Show : ""}`}>
         <p className="caption">MIDI playback can be used in certain features of this application (Note Drills), which will playback requested piano sounds.</p>
         <p className="caption">Enabling this will download ~170kb of piano samples in order to play the sounds.</p>
-        <p className="caption">Current Cached Samples: <span className="body">167kb</span></p>
-
-        <div className={styles.ExpandedContentButtonContainer}>
-          <Button text='Clear Cache' />
-        </div>
+        <p className="caption">Current Cached Samples: <span className="body">{cacheData ? cacheData : "-"}kb</span></p>
       </div>
     </Card>
   )
