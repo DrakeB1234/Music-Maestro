@@ -199,11 +199,6 @@ export default function NoteDrill() {
   useEffect(() => {
     handleGenerateNote();
 
-    if (prefs.midiPlaybackEnabled && prefs.midiPlaybackVolume) PianoAudioPlayer.applyPreferences({
-      playbackEnabled: prefs.midiPlaybackEnabled,
-      volume: prefs.midiPlaybackVolume
-    });
-
   }, []);
 
   return (

@@ -27,8 +27,14 @@ export default function DrillStartPage() {
     setIsDrillStarted(true);
     setTimeSinceLastCorrectNote(Date.now());
 
-    // Start up the singleton PianoAudioPlayer by loading samples
-    if (prefs.midiPlaybackEnabled) PianoAudioPlayer.loadAllSamples();
+    if (prefs.midiPlaybackEnabled)
+      if (prefs.midiPlaybackEnabled && prefs.midiPlaybackVolume) {
+        PianoAudioPlayer.applyPreferences({
+          playbackEnabled: prefs.midiPlaybackEnabled,
+          volume: prefs.midiPlaybackVolume
+        });
+        PianoAudioPlayer.loadAllSamples();
+      }
 
   }, [drillOptions]);
 

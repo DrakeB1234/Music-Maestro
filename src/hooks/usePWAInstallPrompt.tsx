@@ -28,11 +28,6 @@ export function usePWAInstallPrompt() {
     // Wait for user to respond to the prompt
     // @ts-ignore
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      console.log("PWA installation accepted");
-    } else {
-      console.log("PWA installation dismissed");
-    }
 
     setDeferredPrompt(null);
     setIsInstallable(false);

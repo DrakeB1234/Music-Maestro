@@ -7,7 +7,6 @@ export type DrillDifficultyTypes = "easy" | "medium" | "hard";
 export type NOTE_NAME_TYPES = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 export type NOTE_SEMITONES_NAME_TYPES = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A" | "A#" | "B";
 export type Accidental = "#" | "b" | "n";
-export type ScaleTypes = "Major" | "Minor"
 
 export type OctaveRangeSet = {
   clef: DrillClefTypes,

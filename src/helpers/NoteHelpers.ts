@@ -1,78 +1,168 @@
-import type { Accidental, AllowedAccidentals, DrillClefTypes, NOTE_NAME_TYPES, NOTE_SEMITONES_NAME_TYPES, OctaveRange, ScaleTypes } from "@/types/DrillTypes";
+import type { Accidental, AllowedAccidentals, DrillClefTypes, NOTE_NAME_TYPES, NOTE_SEMITONES_NAME_TYPES, OctaveRange } from "@/types/DrillTypes";
 import { Note } from "webmidi";
 
 // Building keys / scales / chords
-const MAJOR_SCALE_STEPS = [2, 2, 1, 2, 2, 2, 1];
-const MINOR_SCALE_STEPS = [2, 1, 2, 2, 1, 2, 2];
-const romanNumeralsMajor = ["I", "ii", "iii", "IV", "V", "vi", "vii°"];
-const romanNumeralsMinor = ["i", "ii°", "III", "iv", "v", "VI", "VII"];
+type ScaleDegree = "I" | "i" | "i°" |
+  "II" | "ii" | "ii°" |
+  "III" | "iii" | "iii°" |
+  "IV" | "iv" | "iv°" |
+  "V" | "v" | "v°" | "V°" |
+  "VI" | "vi" | "vi°" |
+  "VII" | "vii" | "vii°";
+type ChordType = "Major" | "Minor" | "Diminished";
+export type ScaleTypes = "Major" | "Minor" | "Lydian" | "Dorian" | "Mixolydian" | "Phrygian" | "Locrian";
+export const SCALE_TYPES_ARR = ["Major", "Minor", "Lydian", "Dorian", "Mixolydian", "Phrygian", "Locrian"];
 
-export const MAJOR_CHORD_PATTERN = [
-  { degree: "I", type: "major" },
-  { degree: "ii", type: "minor" },
-  { degree: "iii", type: "minor" },
-  { degree: "IV", type: "major" },
-  { degree: "V", type: "major" },
-  { degree: "vi", type: "minor" },
-  { degree: "vii°", type: "diminished" },
-];
+type ChordPatternEntry = {
+  degrees: { degree: ScaleDegree; chordType: ChordType }[];
+  scaleSteps: number[];
+};
 
-export const MINOR_CHORD_PATTERN = [
-  { degree: "i", type: "minor" },
-  { degree: "ii°", type: "diminished" },
-  { degree: "III", type: "major" },
-  { degree: "iv", type: "minor" },
-  { degree: "v", type: "minor" },
-  { degree: "VI", type: "major" },
-  { degree: "VII", type: "major" },
-];
+const CHORD_PATTERNS: Record<ScaleTypes, ChordPatternEntry> = {
+  Major: {
+    degrees: [
+      { degree: "I", chordType: "Major" },
+      { degree: "ii", chordType: "Minor" },
+      { degree: "iii", chordType: "Minor" },
+      { degree: "IV", chordType: "Major" },
+      { degree: "V", chordType: "Major" },
+      { degree: "vi", chordType: "Minor" },
+      { degree: "vii°", chordType: "Diminished" },
+    ],
+    scaleSteps: [2, 2, 1, 2, 2, 2, 1],
+  },
 
-export function getScale(root: NOTE_SEMITONES_NAME_TYPES, type: ScaleTypes): string[] {
-  const pattern = type === "Major" ? MAJOR_SCALE_STEPS : MINOR_SCALE_STEPS;
-  const startIndex = NOTE_SEMITONE_NAMES.indexOf(root);
-  if (startIndex === -1) return [];
+  Minor: {
+    degrees: [
+      { degree: "i", chordType: "Minor" },
+      { degree: "ii°", chordType: "Diminished" },
+      { degree: "III", chordType: "Major" },
+      { degree: "iv", chordType: "Minor" },
+      { degree: "v", chordType: "Minor" },
+      { degree: "VI", chordType: "Major" },
+      { degree: "VII", chordType: "Major" },
+    ],
+    scaleSteps: [2, 1, 2, 2, 1, 2, 2],
+  },
+
+  Lydian: {
+    degrees: [
+      { degree: "I", chordType: "Major" },
+      { degree: "II", chordType: "Major" },
+      { degree: "iii", chordType: "Minor" },
+      { degree: "iv°", chordType: "Diminished" },
+      { degree: "V", chordType: "Major" },
+      { degree: "vi", chordType: "Minor" },
+      { degree: "vii", chordType: "Minor" },
+    ],
+    scaleSteps: [2, 2, 2, 1, 2, 2, 1],
+  },
+
+  Dorian: {
+    degrees: [
+      { degree: "i", chordType: "Minor" },
+      { degree: "ii", chordType: "Minor" },
+      { degree: "III", chordType: "Major" },
+      { degree: "IV", chordType: "Major" },
+      { degree: "v", chordType: "Minor" },
+      { degree: "vi°", chordType: "Diminished" },
+      { degree: "VII", chordType: "Major" },
+    ],
+    scaleSteps: [2, 1, 2, 2, 2, 1, 2],
+  },
+
+  Mixolydian: {
+    degrees: [
+      { degree: "I", chordType: "Major" },
+      { degree: "ii", chordType: "Minor" },
+      { degree: "iii°", chordType: "Diminished" },
+      { degree: "IV", chordType: "Major" },
+      { degree: "v", chordType: "Minor" },
+      { degree: "vi", chordType: "Minor" },
+      { degree: "VII", chordType: "Major" },
+    ],
+    scaleSteps: [2, 2, 1, 2, 2, 1, 2],
+  },
+
+  Phrygian: {
+    degrees: [
+      { degree: "i", chordType: "Minor" },
+      { degree: "II", chordType: "Major" },
+      { degree: "iii", chordType: "Minor" },
+      { degree: "iv", chordType: "Minor" },
+      { degree: "V°", chordType: "Diminished" },
+      { degree: "VI", chordType: "Major" },
+      { degree: "vii", chordType: "Minor" },
+    ],
+    scaleSteps: [1, 2, 2, 2, 1, 2, 2],
+  },
+
+  Locrian: {
+    degrees: [
+      { degree: "i°", chordType: "Diminished" },
+      { degree: "II", chordType: "Major" },
+      { degree: "iii", chordType: "Minor" },
+      { degree: "iv", chordType: "Minor" },
+      { degree: "V", chordType: "Major" },
+      { degree: "vi", chordType: "Minor" },
+      { degree: "vii", chordType: "Minor" },
+    ],
+    scaleSteps: [1, 2, 2, 1, 2, 2, 2],
+  },
+};
+
+
+export function getScaleNotes(root: NOTE_SEMITONES_NAME_TYPES, scaleType: ScaleTypes): NOTE_SEMITONES_NAME_TYPES[] {
+  const pattern = CHORD_PATTERNS[scaleType].scaleSteps;
+
+  let index = NOTE_SEMITONE_NAMES.indexOf(root);
+  if (index === -1) return [];
 
   const scale: NOTE_SEMITONES_NAME_TYPES[] = [root];
-  let current = startIndex;
 
-  for (let i = 0; i < 6; i++) {
-    current = (current + pattern[i]) % NOTE_SEMITONE_NAMES.length;
-    scale.push(NOTE_SEMITONE_NAMES[current] as NOTE_SEMITONES_NAME_TYPES);
+  for (let i = 0; i < pattern.length - 1; i++) {
+    index = (index + pattern[i]) % NOTE_SEMITONE_NAMES.length;
+    scale.push(NOTE_SEMITONE_NAMES[index] as NOTE_SEMITONES_NAME_TYPES);
   }
 
   return scale;
 }
 
-export type ScaleChordsReturn = {
-  degree: string;
-  notes: string[];
-  chordName: string;
-}[]
-
-export function getChordsInScale(root: NOTE_SEMITONES_NAME_TYPES, type: ScaleTypes): ScaleChordsReturn {
-  const scale = getScale(root, type);
-  if (type === "Major") {
-    return scale.map((noteName, i) => ({
-      degree: romanNumeralsMajor[i],
-      notes: getChord(scale, i),
-      chordName: `${noteName} ${MAJOR_CHORD_PATTERN[i].type}`
-    }));
-  }
-  else {
-    return scale.map((noteName, i) => ({
-      degree: romanNumeralsMinor[i],
-      notes: getChord(scale, i),
-      chordName: `${noteName} ${MINOR_CHORD_PATTERN[i].type}`
-    }));
-  }
+export interface GetChordsInScaleReturn {
+  degree: ScaleDegree,
+  chordType: ChordType,
+  chordName: string,
+  chordNotes: string[]
 }
 
-function getChord(scale: string[], i: number) {
-  return [
-    scale[i % 7],
-    scale[(i + 2) % 7],
-    scale[(i + 4) % 7],
-  ];
+export function getChordsInScale(root: NOTE_SEMITONES_NAME_TYPES, scaleType: ScaleTypes): GetChordsInScaleReturn[] {
+  const scale = getScaleNotes(root, scaleType);
+  const degrees = CHORD_PATTERNS[scaleType].degrees;
+
+  const chords: GetChordsInScaleReturn[] = [];
+
+  for (let i = 0; i < degrees.length; i++) {
+    const degreeEntry = degrees[i];
+
+    const chordNotes = [
+      scale[i % 7],
+      scale[(i + 2) % 7],
+      scale[(i + 4) % 7],
+    ];
+
+    const chordName = `${scale[i]} ${degreeEntry.chordType}`;
+
+    const chordObj: GetChordsInScaleReturn = {
+      degree: degreeEntry.degree,
+      chordType: degreeEntry.chordType,
+      chordName,
+      chordNotes,
+    };
+
+    chords.push(chordObj);
+  }
+
+  return chords;
 }
 
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -113,7 +203,7 @@ export class GenericNote {
   constructor(
     name: NOTE_NAME_TYPES,
     accidental: Accidental | null,
-    octave: number
+    octave: number | null
   ) {
     this.name = name;
     this.accidental = accidental;
@@ -296,6 +386,24 @@ export function GetSpacesBelowStaff(targetNote: GenericNote, clef: DrillClefType
   if (letterSteps <= 0) return 0;
 
   return Math.ceil(letterSteps / 2);
+}
+
+export function ConvertStringNoteToGenericNote(noteStr: string): GenericNote {
+  let name: NOTE_NAME_TYPES;
+  let accidental: Accidental | null = null;
+
+  const match = noteStr.match(/^([A-Ga-g])([#b]?)$/);
+  if (!match) {
+    throw new Error(`Invalid note string: ${noteStr}`);
+  }
+
+  name = match[1].toUpperCase() as NOTE_NAME_TYPES;
+
+  if (match[2]) {
+    accidental = match[2] === '#' ? '#' : 'b';
+  }
+
+  return new GenericNote(name, accidental, 4);
 }
 
 export function ConvertGenericNoteToVexNote(genericNote: GenericNote): string {

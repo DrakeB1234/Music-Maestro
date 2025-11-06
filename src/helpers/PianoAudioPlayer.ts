@@ -71,12 +71,12 @@ export class PianoAudioPlayer {
 
   static playNote(note: GenericNote, decayTime = 5) {
     if (this.audioContext.state !== "running") this.audioContext.resume();
-
     if (!this.audioPrefs.playbackEnabled) return;
 
     if (this.audioPrefs.volume) {
       this.setVolume(this.audioPrefs.volume);
     };
+
 
     const noteSemitones = NoteToAbsoluteSemitone(note);
     const min = NoteToAbsoluteSemitone(this.playbackNoteLimit.min);
@@ -104,6 +104,14 @@ export class PianoAudioPlayer {
       source.disconnect();
       noteGain.disconnect();
     };
+  }
+
+  static playChord(notes: GenericNote[], decayTime = 5) {
+    if (!notes || notes.length === 0) return;
+
+    notes.forEach((note) => {
+      this.playNote(note, decayTime);
+    });
   }
 
   static setVolume(value: number) {

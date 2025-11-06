@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import BackButtonContainer from '@/components/BackButtonContainer/BackButtonContainer';
 import Input from '@/components/UIComponents/Inputs/Input';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
-import { getChordsInScale, getScale, NOTE_SEMITONE_NAMES, type ScaleChordsReturn } from '@/helpers/NoteHelpers';
 import Button from '@/components/UIComponents/Button';
 import { useRef, useState } from 'react';
-import { type NOTE_SEMITONES_NAME_TYPES, type ScaleTypes } from '@/types/DrillTypes';
+import { type NOTE_SEMITONES_NAME_TYPES } from '@/types/DrillTypes';
+import { getChordsInScale, getScaleNotes, NOTE_SEMITONE_NAMES, SCALE_TYPES_ARR, type GetChordsInScaleReturn, type ScaleTypes } from '@/helpers/NoteHelpers';
 
 export default function KeyVisualizerPage() {
   const rootRef = useRef<HTMLInputElement>(null);
   const scaleRef = useRef<HTMLSelectElement>(null);
   const [rootError, setRootError] = useState<string>("");
-  const [scaleNotes, setScaleNotes] = useState<string[]>(getScale("C", "Major"));
-  const [scaleChords, setScaleChords] = useState<ScaleChordsReturn>(getChordsInScale("C", "Major"));
+  const [scaleNotes, setScaleNotes] = useState<NOTE_SEMITONES_NAME_TYPES[]>([]);
+  const [scaleChords, setScaleChords] = useState<GetChordsInScaleReturn[]>([]);
 
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ export default function KeyVisualizerPage() {
     navigate("/");
   };
 
-  function handleInputBlur() {
+  function handleConfirmButtonPressed() {
     if (!scaleRef.current) return;
     if (!rootRef.current) return;
 
@@ -33,13 +33,18 @@ export default function KeyVisualizerPage() {
       setRootError("Invalid note");
       return;
     }
+    getKeyScaleData(rootNoteName, scaleName);
+
     if (rootError) {
       setRootError("");
     }
+  }
 
-    setScaleNotes(getScale(rootNoteName, scaleName));
-
-    setScaleChords(getChordsInScale(rootNoteName, scaleName));
+  function getKeyScaleData(rootNote: NOTE_SEMITONES_NAME_TYPES, scale: ScaleTypes) {
+    const res = getScaleNotes(rootNote, scale);
+    setScaleNotes(res)
+    const chords = getChordsInScale(rootNote, scale);
+    setScaleChords(chords);
   }
 
   return (
@@ -57,21 +62,19 @@ export default function KeyVisualizerPage() {
               type='text'
               defaultValue={"C"}
               ref={rootRef}
-              onBlur={handleInputBlur}
               error={rootError}
               style={{ textTransform: "uppercase" }}
             />
             <SelectInput
               label=''
               htmlName='scale'
-              options={[
-                { label: "Major", value: "Major" },
-                { label: "Minor", value: "Minor" },
-              ]}
+              options={SCALE_TYPES_ARR.map(e => (
+                { label: e, value: e }
+              ))}
               ref={scaleRef}
-              handleChange={handleInputBlur}
             />
           </div>
+          <Button text='Confirm' onClick={handleConfirmButtonPressed} />
         </div>
 
         <div className={styles.NotesInScaleWrapper}>
@@ -79,17 +82,16 @@ export default function KeyVisualizerPage() {
           <div className={styles.NotesContainer}>
             {scaleNotes.map(e => <p className='heading' key={e}>{e}</p>)}
           </div>
-          <Button text='Play notes' variant='outlined' />
         </div>
 
         <div className={styles.ChordsInScaleWrapper}>
           <p>Chords in scale</p>
           {scaleChords.map(e => (
             <ChordItem
-              key={e.degree}
-              degree={e.degree}
+              key={e.chordName}
               chordName={e.chordName}
-              chordNotes={e.notes}
+              chordNotes={e.chordNotes}
+              degree={e.degree}
             />
           ))}
         </div>
@@ -110,13 +112,14 @@ function ChordItem({
   chordName,
   chordNotes
 }: ChordItemProps) {
+
   return (
     <div className={styles.ChordWrapper}>
       <div className={styles.ChordButtonContainer}>
         <p>{degree}</p>
-        <Button text={chordName} size='small' variant='outlined' />
+        <div className={styles.ChordNotes}>{chordNotes.map(e => <p key={e}>{e}</p>)}</div>
+        <Button text={chordName} size='small' variant='outlined' disabled />
       </div>
-      <div className={styles.ChordNotes}>{chordNotes.map(e => <p key={e}>{e}</p>)}</div>
     </div>
   )
 }

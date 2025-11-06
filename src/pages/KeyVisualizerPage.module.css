@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   align-items: start;
+  margin-bottom: var(--font-size-base);
 }
 
 .KeyInputWrapper {
@@ -55,7 +56,7 @@
   gap: var(--spacing-2xsmall);
 
   &>p {
-    width: 1.5rem;
+    width: 3rem;
     overflow: hidden;
   }
 }
@@ -63,4 +64,5 @@
 .ChordNotes {
   display: flex;
   gap: var(--spacing-xsmall);
+  width: 6rem;
 }
