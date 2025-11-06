@@ -157,8 +157,8 @@ img {
   --elevation-medium: 0 0.125rem 0 0 #00000030;
 }
 
-/* @media (prefers-color-scheme:) {
-  :root {
+@media (prefers-color-scheme) {
+  /* :root {
     --color-main-1: var(--palette-main-1);
     --color-main-2: var(--palette-main-2);
     --color-main-5: var(--palette-main-5);
@@ -171,8 +171,11 @@ img {
     --color-text-main-2: var(--palette-light-3);
 
     --color-surface-light-1: var(--palette-dark-4);
+    --color-surface-light-2: var(--palette-dark-3);
+    --color-surface-light-3: var(--palette-dark-2);
     --color-surface-main-1: var(--palette-dark-5);
     --color-surface-border-1: var(--palette-dark-3);
+    --color-surface-border-2: var(--palette-dark-4);
 
     --color-body-background: var(--palette-dark-5);
 
@@ -198,8 +201,8 @@ img {
     --color-input-placeholder-text: var(--palette-dark-1);
     --color-input-border: var(--palette-light-2);
     --color-input-hover: var(--palette-dark-1);
-  }
-} */
+  } */
+}
 
 html {
   font-size: 16px;

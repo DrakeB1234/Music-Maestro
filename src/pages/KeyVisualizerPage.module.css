@@ -1,0 +1,66 @@
+.KeyVisualizerPageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: var(--spacing-2xsmall);
+}
+
+.SizeWrapper {
+  gap: var(--spacing-small);
+  width: 100%;
+  max-width: var(--max-app-width);
+  padding: 0 var(--spacing-base);
+}
+
+.KeyWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.KeyInputWrapper {
+  display: flex;
+}
+
+.NotesInScaleWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--spacing-xsmall);
+}
+
+.NotesContainer {
+  display: flex;
+  gap: var(--spacing-base);
+}
+
+.ChordsInScaleWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--spacing-xsmall);
+  margin-top: var(--spacing-xlarge);
+}
+
+.ChordWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-small);
+}
+
+.ChordButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xsmall);
+
+  &>p {
+    width: 1.5rem;
+    overflow: hidden;
+  }
+}
+
+.ChordNotes {
+  display: flex;
+  gap: var(--spacing-xsmall);
+}

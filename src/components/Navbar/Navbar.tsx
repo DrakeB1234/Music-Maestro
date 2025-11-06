@@ -21,12 +21,12 @@ export default function Navbar() {
       <div className={styles.NavbarWrapper}>
         <div className={styles.SizeWrapper}>
           <div onClick={handleIconPressed} className={styles.IconTextContainer}>
-            <AppGraphic />
-            <h1>Music Maestro</h1>
+            <AppGraphic size={40} />
+            <h1 className='mobile-hide'>Music Maestro</h1>
             <div className={styles.TitleContainer}>
             </div>
           </div>
-          <Button onClick={() => setSidebarOpen(true)} icon={<MenuIcon color='var(--color-dark-2)' />} variant='outlined' />
+          <Button onClick={() => setSidebarOpen(true)} icon={<MenuIcon color='var(--color-dark-2)' />} variant='text-secondary' />
         </div>
       </div>
 
@@ -62,7 +62,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <div className={`${styles.SidebarWrapper} ${isOpen ? styles.open : ""}`}>
         <div className={styles.Header}>
-          <AppGraphic />
+          <AppGraphic size={40} />
           <h1 className='truncate-overflow-text'>Music Maestro</h1>
           <Button variant='text-secondary' icon={<CloseIcon color='var(--color-dark-2)' />} onClick={onClose} />
         </div>

@@ -27,7 +27,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`${styles.button} ${styles[`size-${size}`]} ${styles[variant]} ${active ? styles.active : ''} ${styles[`round-${round}`]} ${fullWidth ? styles.fullWidth : ''} `}
+      className={`${styles.button} ${styles[`size-${size}`]} ${styles[variant]} ${disabled ? styles.disabled : ''} ${active ? styles.active : ''} ${styles[`round-${round}`]} ${fullWidth ? styles.fullWidth : ''} `}
       disabled={disabled}
       {...props}
     >

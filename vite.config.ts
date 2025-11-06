@@ -14,8 +14,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'My Piano App',
-        short_name: 'Piano',
+        name: 'Music Maestro',
+        short_name: 'Music Maestro',
         start_url: '/',
         display: 'standalone',
         background_color: '#D5E6FF',
@@ -39,8 +39,8 @@ export default defineConfig({
             options: {
               cacheName: 'piano-samples',
               expiration: {
-                maxEntries: 50, 
-                maxAgeSeconds: 60 * 60 * 24 * 365, 
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
               },
               cacheableResponse: {
                 statuses: [0, 200],

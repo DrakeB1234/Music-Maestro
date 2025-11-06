@@ -13,6 +13,8 @@ interface Props {
   defaultValue?: string;
   ref?: React.Ref<HTMLSelectElement>;
   handleChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
+  hideLabel?: boolean;
+  value?: string;
 }
 
 export default function SelectInput({
@@ -21,7 +23,8 @@ export default function SelectInput({
   options,
   defaultValue,
   ref,
-  handleChange
+  handleChange,
+  value
 }: Props) {
   return (
     <div className={styles.InputWrapper}>
@@ -33,6 +36,7 @@ export default function SelectInput({
         ref={ref}
         defaultValue={defaultValue}
         onChange={handleChange}
+        value={value}
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>

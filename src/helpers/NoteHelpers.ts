@@ -1,5 +1,79 @@
-import type { Accidental, AllowedAccidentals, DrillClefTypes, NOTE_NAME_TYPES, OctaveRange } from "@/types/DrillTypes";
+import type { Accidental, AllowedAccidentals, DrillClefTypes, NOTE_NAME_TYPES, NOTE_SEMITONES_NAME_TYPES, OctaveRange, ScaleTypes } from "@/types/DrillTypes";
 import { Note } from "webmidi";
+
+// Building keys / scales / chords
+const MAJOR_SCALE_STEPS = [2, 2, 1, 2, 2, 2, 1];
+const MINOR_SCALE_STEPS = [2, 1, 2, 2, 1, 2, 2];
+const romanNumeralsMajor = ["I", "ii", "iii", "IV", "V", "vi", "vii°"];
+const romanNumeralsMinor = ["i", "ii°", "III", "iv", "v", "VI", "VII"];
+
+export const MAJOR_CHORD_PATTERN = [
+  { degree: "I", type: "major" },
+  { degree: "ii", type: "minor" },
+  { degree: "iii", type: "minor" },
+  { degree: "IV", type: "major" },
+  { degree: "V", type: "major" },
+  { degree: "vi", type: "minor" },
+  { degree: "vii°", type: "diminished" },
+];
+
+export const MINOR_CHORD_PATTERN = [
+  { degree: "i", type: "minor" },
+  { degree: "ii°", type: "diminished" },
+  { degree: "III", type: "major" },
+  { degree: "iv", type: "minor" },
+  { degree: "v", type: "minor" },
+  { degree: "VI", type: "major" },
+  { degree: "VII", type: "major" },
+];
+
+export function getScale(root: NOTE_SEMITONES_NAME_TYPES, type: ScaleTypes): string[] {
+  const pattern = type === "Major" ? MAJOR_SCALE_STEPS : MINOR_SCALE_STEPS;
+  const startIndex = NOTE_SEMITONE_NAMES.indexOf(root);
+  if (startIndex === -1) return [];
+
+  const scale: NOTE_SEMITONES_NAME_TYPES[] = [root];
+  let current = startIndex;
+
+  for (let i = 0; i < 6; i++) {
+    current = (current + pattern[i]) % NOTE_SEMITONE_NAMES.length;
+    scale.push(NOTE_SEMITONE_NAMES[current] as NOTE_SEMITONES_NAME_TYPES);
+  }
+
+  return scale;
+}
+
+export type ScaleChordsReturn = {
+  degree: string;
+  notes: string[];
+  chordName: string;
+}[]
+
+export function getChordsInScale(root: NOTE_SEMITONES_NAME_TYPES, type: ScaleTypes): ScaleChordsReturn {
+  const scale = getScale(root, type);
+  if (type === "Major") {
+    return scale.map((noteName, i) => ({
+      degree: romanNumeralsMajor[i],
+      notes: getChord(scale, i),
+      chordName: `${noteName} ${MAJOR_CHORD_PATTERN[i].type}`
+    }));
+  }
+  else {
+    return scale.map((noteName, i) => ({
+      degree: romanNumeralsMinor[i],
+      notes: getChord(scale, i),
+      chordName: `${noteName} ${MINOR_CHORD_PATTERN[i].type}`
+    }));
+  }
+}
+
+function getChord(scale: string[], i: number) {
+  return [
+    scale[i % 7],
+    scale[(i + 2) % 7],
+    scale[(i + 4) % 7],
+  ];
+}
 
 export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 export const ACCIDENTAL_NOTE_NAMES = ['C#', 'D#', 'F#', 'G#', 'A#'];

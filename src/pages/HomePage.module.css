@@ -1,17 +1,52 @@
 .HomePageWrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: var(--navbar-height);
-  background-color: var(--palette-white);
-  border-bottom: 2px solid var(--palette-grey-200);
 }
 
 .SizeWrapper {
-  display: flex;
-  justify-content: center;
   gap: var(--spacing-small);
   width: 100%;
   max-width: var(--max-app-width);
   padding: 0 var(--spacing-base);
+}
+
+.HeaderContainer {
+  margin-top: var(--spacing-base);
+}
+
+.ItemsContainer {
+  margin-top: var(--spacing-2xsmall);
+}
+
+.ItemsContainer:nth-of-type(n + 3) {
+  margin-top: var(--spacing-base);
+}
+
+.CardContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-base);
+  margin-top: var(--spacing-small);
+}
+
+.CardContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: stretch;
+  padding: var(--spacing-base);
+  text-align: center;
+}
+
+.IconContainer {
+  margin: 0 auto;
+  margin-bottom: var(--spacing-xsmall);
+}
+
+@media (min-width: 600px) {
+  .CardContainer {
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: start;
+  }
 }

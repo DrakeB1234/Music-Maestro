@@ -112,9 +112,7 @@ select:open::picker-icon {
   }
 }
 
-.Slider {
-  accent-color: var(--color-main-2);
-}
+.Slider {}
 
 .CustomFileInput::file-selector-button {
   background-color: var(--color-main-2);

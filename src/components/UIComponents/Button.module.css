@@ -57,8 +57,18 @@
   }
 }
 
+.contained.disabled {
+  cursor: default;
+  background-color: var(--color-dark-2);
+
+  &:active {
+    top: unset;
+    box-shadow: var(--elevation-medium);
+  }
+}
+
 .outlined {
-  background-color: transparent;
+  background-color: var(--color-surface-light-1);
   border: 1px solid var(--color-button-outlined-border);
   color: var(--color-button-outlined-text);
 

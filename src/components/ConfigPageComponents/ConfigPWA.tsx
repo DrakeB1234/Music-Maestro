@@ -3,6 +3,7 @@ import { FileExportIcon } from "../Icons/Icons";
 import Card from "../UIComponents/Card";
 import styles from './ConfigPageComponents.module.css';
 import Button from "../UIComponents/Button";
+import { usePWAInstallPrompt } from "@/hooks/usePWAInstallPrompt";
 
 interface ConfigPWAProps {
   onBack: () => void;
@@ -24,6 +25,8 @@ export default function ConfigPWA({
 
 
 function PWACard() {
+  const { isInstallable, promptInstall } = usePWAInstallPrompt();
+
   return (
     <Card>
       <div className={styles.InputDeviceHeader}>
@@ -36,8 +39,13 @@ function PWACard() {
           <div className={styles.TextContent}>
             <p>Download the PWA of this web application for convenient native-like app experience!</p>
           </div>
+          {!isInstallable &&
+            <p className="caption-secondary">
+              (Already installed or not supported)
+            </p>
+          }
           <div className={styles.ExpandedContentButtonContainer}>
-            <Button text='Download' />
+            <Button text='Download' onClick={promptInstall} disabled={!isInstallable} />
           </div>
         </div>
       </div>

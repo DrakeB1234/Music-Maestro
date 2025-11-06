@@ -5,6 +5,7 @@ import DrillPage from "./pages/DrillPage";
 import React from "react";
 import LoadingPage from "./pages/LoadingPage";
 import ConfigPage from "./pages/ConfigPage";
+import KeyVisualizerPage from "./pages/KeyVisualizer";
 
 const DrillStartPage = lazy(() => import("@pages/DrillStartPage"));
 
@@ -16,7 +17,7 @@ export interface AppRoute {
 
 export const routes: AppRoute[] = [
   {
-    path: "/h",
+    path: "/",
     element:
       <>
         <Navbar />
@@ -24,7 +25,7 @@ export const routes: AppRoute[] = [
       </>,
   },
   {
-    path: "/",
+    path: "/drills",
     element:
       <>
         <Navbar />
@@ -45,6 +46,15 @@ export const routes: AppRoute[] = [
       <Suspense fallback={<LoadingPage />}>
         <Navbar />
         <DrillStartPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/keyvisualizer",
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <Navbar />
+        <KeyVisualizerPage />
       </Suspense>
     ),
   }
