@@ -104,8 +104,6 @@ function disconnectMidiDevice() {
 
 function enableMidiAutoReconnect(get: () => NoteInputState) {
   WebMidi.removeListener("connected");
-  console.log("ENABLED AUTO RECONNECT")
-
   WebMidi.addListener("connected", (event) => {
     if (event.port.type === "input") {
       console.log(`MIDI device connected: ${event.port.name}`);
@@ -118,8 +116,6 @@ function enableMidiAutoReconnect(get: () => NoteInputState) {
 
 function disableMidiAutoReconnect() {
   WebMidi.removeListener("connected");
-  console.log("DISABLED AUTO RECONNECT");
-
 }
 
 function enableMidiAutoDisconnect(get: () => NoteInputState) {

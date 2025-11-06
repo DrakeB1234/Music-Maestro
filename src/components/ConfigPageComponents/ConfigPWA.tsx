@@ -1,8 +1,6 @@
-import { useState } from "react";
 import BackButtonContainer from "../BackButtonContainer/BackButtonContainer";
-import { ArrowDownIcon, DataIcon, FileExportIcon, FileImportIcon } from "../Icons/Icons";
+import { FileExportIcon } from "../Icons/Icons";
 import Card from "../UIComponents/Card";
-import ToggleButton from "../UIComponents/ToggleButton";
 import styles from './ConfigPageComponents.module.css';
 import Button from "../UIComponents/Button";
 

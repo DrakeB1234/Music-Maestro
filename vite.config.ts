@@ -18,19 +18,20 @@ export default defineConfig({
         short_name: 'Piano',
         start_url: '/',
         display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#000000',
+        background_color: '#D5E6FF',
+        theme_color: '#2B80FF',
         icons: [
           {
             src: 'favicon.svg',
             type: 'image/svg+xml',
-            sizes: 'any'
-          }
-        ]
+            sizes: 'any',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3,wav}'],
         navigateFallback: '/index.html',
+
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.startsWith('/piano_samples/'),
@@ -38,7 +39,11 @@ export default defineConfig({
             options: {
               cacheName: 'piano-samples',
               expiration: {
-                maxEntries: 100,
+                maxEntries: 50, 
+                maxAgeSeconds: 60 * 60 * 24 * 365, 
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
               },
             },
           },

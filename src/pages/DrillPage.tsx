@@ -3,7 +3,7 @@ import styles from './DrillPage.module.css';
 import Card from "@/components/UIComponents/Card";
 import Button from "@/components/UIComponents/Button";
 import IconWrapper from "@/components/UIComponents/IconWrapper";
-import { DialPadIcon, MIDIIcon, PianoIcon, QueueMusicIcon, StatusIcon, TuneIcon } from "@/components/Icons/Icons";
+import { DialPadIcon, MIDIIcon, PianoIcon, QueueMusicIcon, TuneIcon } from "@/components/Icons/Icons";
 import PresetDrills from "@/components/DrillComponents/PresetDrills/PresetDrills";
 import CustomDrills from "@/components/DrillComponents/CustomDrills/CustomDrills";
 import { useAppPreferences } from "@/hooks/useAppPreferences";
@@ -97,33 +97,34 @@ function ShowCurrentDevice() {
   }
 
   return (
-    <div className={styles.DeviceContainer}>
-      <h2 className="body">Current Input Devices</h2>
-      <div className={styles.DeviceContainerTextContainer}>
-        {isMidiDeviceConnected ?
-          <>
-            <MIDIIcon />
-            <p className="caption-secondary">MIDI</p>
-          </>
-          : <></>
-        }
-      </div>
-      <div className={styles.DeviceContainerTextContainer}>
-        {prefs.inputType === "buttons" ?
-          <>
-            <DialPadIcon />
-            <p className="caption-secondary">Buttons</p>
-          </>
-          :
-          prefs.inputType === "piano" ?
+    <Card onClick={handleChangeDevicePressed} marginTop="var(--spacing-xsmall)">
+      <div className={styles.DeviceContainer} >
+        <h2 className="body">Current Input Devices</h2>
+        <div className={styles.DeviceContainerTextItem}>
+          {isMidiDeviceConnected ?
             <>
-              <PianoIcon />
-              <p className="caption-secondary">Piano Roll</p>
+              <MIDIIcon />
+              <p className="caption-secondary">MIDI</p>
             </>
             : <></>
-        }
+          }
+        </div>
+        <div className={styles.DeviceContainerTextItem}>
+          {prefs.inputType === "buttons" ?
+            <>
+              <DialPadIcon />
+              <p className="caption-secondary">Buttons</p>
+            </>
+            :
+            prefs.inputType === "piano" ?
+              <>
+                <PianoIcon />
+                <p className="caption-secondary">Piano Roll</p>
+              </>
+              : <p className="caption-secondary">None</p>
+          }
+        </div>
       </div>
-      <Button text="Change Device" variant="text-secondary" onClick={handleChangeDevicePressed} />
-    </div>
+    </Card>
   )
 }

@@ -1,7 +1,7 @@
 import { PIANO_AUDIO_SAMPLES_URLS } from "@/data/PianoAudioSamples";
 import { NoteToAbsoluteSemitone, PrintGenericNote, type GenericNote } from "./NoteHelpers";
 
-const MAX_AUDIO_GAIN = 0.6;
+const MAX_AUDIO_GAIN = 0.5;
 
 type AudioPreferences = {
   volume: number;
@@ -46,6 +46,7 @@ export class PianoAudioPlayer {
 
   static async loadAllSamples() {
     this.init();
+
     const promises = PIANO_AUDIO_SAMPLES_URLS.map(async (e) => {
       await this.loadSample(PrintGenericNote(e.note), e.url);
     });

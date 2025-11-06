@@ -31,7 +31,6 @@ interface OctaveSelectorProps {
 
 export default function OctaveSelector({
   octaveRangeLimit,
-  prevOctaveRange,
   clef,
   setOctaveRange,
 }: OctaveSelectorProps) {

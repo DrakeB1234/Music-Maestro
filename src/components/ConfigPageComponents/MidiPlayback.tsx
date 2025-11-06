@@ -2,7 +2,7 @@ import BackButtonContainer from "../BackButtonContainer/BackButtonContainer";
 import { ArrowDownIcon, VolumeMaxIcon, VolumeMuteIcon } from '@/components/Icons/Icons';
 import Card from '@/components/UIComponents/Card';
 import Button from '@/components/UIComponents/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ConfigPageComponents.module.css';
 import ToggleButton from "../UIComponents/ToggleButton";
 import { useAppPreferences } from "@/hooks/useAppPreferences";
@@ -33,9 +33,17 @@ function MidiPlaybackCard() {
 
   const [expanded, setExpanded] = useState(false);
   const [activeToggle, setActiveToggle] = useState<boolean>(prefs.midiPlaybackEnabled);
-  let cacheData: string = "";
+  const [cacheData, setCacheData] = useState<string | null>(null);
 
-  getCacheUsageByPath("/piano_samples").then(e => cacheData = e.totalKB);
+  useEffect(() => {
+    async function loadCacheData() {
+      const usage = await getCacheUsageByPath("/piano_samples/");
+      setCacheData(usage.totalKB.toString());
+    }
+
+    loadCacheData();
+
+  }, []);
 
   function handleToggleChanged(value: boolean) {
     setActiveToggle(value);
@@ -62,8 +70,7 @@ function MidiPlaybackCard() {
       </div>
 
       <div className={`${styles.ExpandedContent} ${styles.MidiPlaybackExapandedContent} ${expanded ? styles.Show : ""}`}>
-        <p className="caption-secondary">MIDI playback can be used in certain features of this application (Note Drills), which will playback requested piano sounds.</p>
-        <p className="caption-secondary">Enabling this will download ~170kb of piano samples in order to play the sounds.</p>
+        <p className="caption-secondary">MIDI playback can be used in certain features of this application, which will playback requested piano sounds.</p>
         <p className="caption-secondary">Current Cached Samples: <span className="body">{cacheData ? cacheData : "-"}kb</span></p>
       </div>
     </Card>

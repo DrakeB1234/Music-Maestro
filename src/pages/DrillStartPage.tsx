@@ -4,8 +4,10 @@ import { useEffect } from "react";
 import { useNoteDrillStore } from "@/store/noteDrillStore";
 import { useNavigate } from "react-router-dom";
 import { PianoAudioPlayer } from "@/helpers/PianoAudioPlayer";
+import { useAppPreferences } from "@/hooks/useAppPreferences";
 
 export default function DrillStartPage() {
+  const { prefs } = useAppPreferences();
   const drillOptions = useNoteDrillStore((state) => state.drillOptions);
   const setDrillTime = useNoteDrillStore((state) => state.setDrillTime);
   const setIsDrillStarted = useNoteDrillStore((state) => state.setIsDrillStarted);
@@ -26,7 +28,7 @@ export default function DrillStartPage() {
     setTimeSinceLastCorrectNote(Date.now());
 
     // Start up the singleton PianoAudioPlayer by loading samples
-    PianoAudioPlayer.loadAllSamples();
+    if (prefs.midiPlaybackEnabled) PianoAudioPlayer.loadAllSamples();
 
   }, [drillOptions]);
 

@@ -13,22 +13,33 @@ export async function getCacheUsageByPath(pathPrefix: string) {
     const cache = await caches.open(cacheName);
     const requests = await cache.keys();
 
-    for (const request of requests) {
-      if (request.url.includes(pathPrefix)) {
+    const filteredRequests = requests.filter(req => req.url.includes(pathPrefix));
+
+    const sizes = await Promise.all(
+      filteredRequests.map(async (request) => {
         const response = await cache.match(request);
-        if (response) {
+        if (!response) return { url: request.url, size: 0 };
+
+        try {
           const blob = await response.clone().blob();
-          const size = blob.size;
-          totalBytes += size;
-          results[request.url] = size;
+          return { url: request.url, size: blob.size };
+        } catch {
+          return { url: request.url, size: 0 };
         }
+      })
+    );
+
+    for (const { url, size } of sizes) {
+      if (size > 0) {
+        results[url] = size;
+        totalBytes += size;
       }
     }
   }
 
   return {
     totalBytes,
-    totalKB: (totalBytes / (1024)).toFixed(2),
-    details: results
+    totalKB: Math.round(totalBytes / 1024),
+    details: results,
   };
 }
