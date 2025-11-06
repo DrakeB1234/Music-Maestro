@@ -29,7 +29,7 @@ export default function InputSlider({
   return (
     <div className={styles.SliderWrapper}>
       <label className={`${styles.SliderLabel}`}>
-        <p className={`caption ${hideLabel && styles.Hide}`}>{label}</p>
+        <p className={`caption-secondary ${hideLabel && styles.Hide}`}>{label}</p>
         <input
           type="range"
           min={min}

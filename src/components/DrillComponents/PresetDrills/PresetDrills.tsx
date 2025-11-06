@@ -82,7 +82,7 @@ function PresetCard({
           <PlaylistIcon color='var(--color-main-2)' />
           <h2 className='heading truncate-overflow-text'>{headerText}</h2>
         </div>
-        <p className='caption'>{descriptionText}</p>
+        <p className='caption-secondary'>{descriptionText}</p>
       </div>
       <div className={styles.PracticeButtonContainer}>
         <Button onClick={() => handleProgressPressed(drillId)} text='Progress' variant='outlined' fullWidth={true} />

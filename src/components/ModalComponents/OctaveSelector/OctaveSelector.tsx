@@ -35,14 +35,22 @@ export default function OctaveSelector({
   clef,
   setOctaveRange,
 }: OctaveSelectorProps) {
-  const [currentOctaveRange, setCurrentOctaveRange] = useState<OctaveRangeSides>({
-    leftNote: prevOctaveRange.minOctave ? prevOctaveRange.minOctave : { name: "C", accidental: null, octave: 4 },
-    rightNote: prevOctaveRange.maxOctave ? prevOctaveRange.maxOctave : { name: "C", accidental: null, octave: 5 },
-  });
+  const [currentOctaveRange, setCurrentOctaveRange] = useState<OctaveRangeSides>(determineInitialOctaveRangeBasedOnClef());
 
   const svgRef = useRef<HTMLDivElement>(null);
   const staveRef = useRef<GenerateStave>(null);
   const { closeModal } = useModal();
+
+  function determineInitialOctaveRangeBasedOnClef(): OctaveRangeSides {
+    if (clef === "treble") return {
+      leftNote: { name: "C", accidental: null, octave: 4 },
+      rightNote: { name: "C", accidental: null, octave: 5 }
+    }
+    else return {
+      leftNote: { name: "C", accidental: null, octave: 3 },
+      rightNote: { name: "C", accidental: null, octave: 4 }
+    }
+  }
 
   function handleOctaveButtonPressed(action: StaveButtonPressAction) {
     if (!currentOctaveRange) return;

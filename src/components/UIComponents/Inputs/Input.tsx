@@ -24,7 +24,7 @@ export default function Input({
         ref={ref}
         {...props}
       />
-      <p className={`caption truncate-overflow-text ${styles.Error}`}> {error && `* ${error}`}</p>
+      <p className={`caption-secondary truncate-overflow-text ${styles.Error}`}> {error && `* ${error}`}</p>
     </div>
   )
 }

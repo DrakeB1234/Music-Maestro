@@ -49,8 +49,8 @@ function ExportDataCard() {
       </div>
 
       <div className={`${styles.ExpandedContent} ${styles.MidiPlaybackExapandedContent} ${expanded ? styles.Show : ""}`}>
-        <p className="caption">Export your data in a convenient file that can be later imported into the app!</p>
-        <p className="caption">Clicking export data below will download a JSON file that will contain your data from preset drill runs. This is mainly used for a personal backup of data in wanted.</p>
+        <p className="caption-secondary">Export your data in a convenient file that can be later imported into the app!</p>
+        <p className="caption-secondary">Clicking export data below will download a JSON file that will contain your data from preset drill runs. This is mainly used for a personal backup of data in wanted.</p>
         <div className={styles.ExpandedContentButtonContainer}>
           <Button text='Export Data' onClick={exportResults} />
         </div>
@@ -90,8 +90,8 @@ function ImportDataCard() {
       </div>
 
       <div className={`${styles.ExpandedContent} ${styles.MidiPlaybackExapandedContent} ${expanded ? styles.Show : ""}`}>
-        <p className="caption">Import app data from a JSON file to get back where you started!</p>
-        <p className="caption">Importing data will ERASE current stored data, so only use this feature as a means to restore a personal backup of app data.</p>
+        <p className="caption-secondary">Import app data from a JSON file to get back where you started!</p>
+        <p className="caption-secondary">Importing data will ERASE current stored data, so only use this feature as a means to restore a personal backup of app data.</p>
         <CustomFileInput
           accept="application/json"
           onFileSelect={handleFileSelect}
@@ -130,7 +130,7 @@ function ClearDataCard() {
       </div>
 
       <div className={`${styles.ExpandedContent} ${styles.MidiPlaybackExapandedContent} ${expanded ? styles.Show : ""}`}>
-        <p className="caption">This option will CLEAR ALL application data. If you would like, please export your data first, then clear if you would like to later backup your data.</p>
+        <p className="caption-secondary">This option will CLEAR ALL application data. If you would like, please export your data first, then clear if you would like to later backup your data.</p>
         <div className={styles.ExpandedContentButtonContainer}>
           <Button text='CLEAR ALL DATA' onClick={handleClearDataPressed} />
         </div>

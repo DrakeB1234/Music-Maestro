@@ -80,12 +80,12 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
           {isMidiDeviceConnected ?
             <div className={styles.SidebarItemSubTextContainer}>
               <StatusIcon color='var(--color-success)' />
-              <p className='caption'>MIDI Connected</p>
+              <p className='caption-secondary'>MIDI Connected</p>
             </div>
             :
             <div className={styles.SidebarItemSubTextContainer}>
               <StatusIcon color='var(--color-error)' />
-              <p className='caption'>MIDI Disconnected</p>
+              <p className='caption-secondary'>MIDI Disconnected</p>
             </div>
           }
         </div>

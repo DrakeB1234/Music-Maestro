@@ -41,7 +41,7 @@ export default function PianoRollInput() {
       className={styles.PianoRollWrapper}
     >
       {NOTE_NAMES.map((note, idx) => (
-        <g className={styles.WhiteKey} key={note}>
+        <g className={styles.WhiteKey} key={note} id={note}>
           <rect
             id={note}
             width={20}
@@ -56,6 +56,7 @@ export default function PianoRollInput() {
             y2={80}
             stroke="var(--color-surface-border-2)"
             strokeWidth={0}
+            id={note}
           />
           <line
             x1={idx * 20 + 20}
@@ -64,11 +65,12 @@ export default function PianoRollInput() {
             y2={80}
             stroke="var(--color-surface-border-2)"
             strokeWidth={0.5}
+            id={note}
           />
         </g>
       ))}
       {ACCIDENTAL_NOTE_NAMES.map((note, idx) => (
-        <g className={styles.BlackKey} key={note}>
+        <g className={styles.BlackKey} key={note} id={note}>
           <rect
             id={note}
             width={9}

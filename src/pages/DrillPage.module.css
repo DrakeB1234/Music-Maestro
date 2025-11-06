@@ -51,6 +51,25 @@
   padding-top: var(--spacing-small)
 }
 
+.DeviceContainer {
+  background-color: var(--color-surface-light-2);
+  padding: var(--spacing-base);
+  border-radius: var(--radius-base);
+  border: 1px solid var(--color-surface-border-1);
+  margin-top: var(--spacing-2xsmall);
+  box-shadow: var(--elevation-light);
+
+  & button {
+    margin-top: var(--spacing-xsmall);
+  }
+}
+
+.DeviceContainerTextContainer {
+  display: flex;
+  gap: var(--spacing-2xsmall);
+  padding-top: var(--spacing-2xsmall);
+}
+
 @media (max-width: 600px) {
   .CardContainer {
     grid-template-columns: 1fr;

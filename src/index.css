@@ -266,6 +266,11 @@ p {
 
 .caption {
   font: var(--weight-base) var(--font-size-small)/1.4 var(--font-family);
+  color: var(--color-text-body-1);
+}
+
+.caption-secondary {
+  font: var(--weight-base) var(--font-size-small)/1.4 var(--font-family);
   color: var(--color-text-body-2);
 }
 

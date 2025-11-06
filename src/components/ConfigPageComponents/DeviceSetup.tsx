@@ -65,7 +65,7 @@ function MIDIInputCard({
           </div>
           <div className={styles.InputDeviceTextItem}>
             <StatusIcon color={isMidiDeviceConnected ? 'var(--color-success)' : 'var(--color-error)'} />
-            <p className='caption'>MIDI {isMidiDeviceConnected ? "Connected" : "Disconnected"}</p>
+            <p className='caption-secondary'>MIDI {isMidiDeviceConnected ? "Connected" : "Disconnected"}</p>
           </div>
         </div>
 
@@ -75,8 +75,8 @@ function MIDIInputCard({
       </div>
 
       <div className={`${styles.ExpandedContent} ${expanded ? styles.Show : ""}`}>
-        <p className='caption'>Connect your MIDI compatible keyboard in the app to read your inputs directly. </p>
-        <p className={`caption ${styles.ErrorText}`}>{midiDeviceErrorMessage && `Error: ${midiDeviceErrorMessage}`}</p>
+        <p className='caption-secondary'>Connect your MIDI compatible keyboard in the app to read your inputs directly. </p>
+        <p className={`caption-secondary ${styles.ErrorText}`}>{midiDeviceErrorMessage && `Error: ${midiDeviceErrorMessage}`}</p>
         <div className={styles.InputDeviceButtonContainer}>
           <p>Auto Reconnect</p>
           <ToggleButton value={activeToggle} onChange={handleToggleChanged} />

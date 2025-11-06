@@ -54,14 +54,13 @@ export function GenerateRandomNote(
 ) {
   const MIN_OCTAVE_SEMITONE = NoteToAbsoluteSemitone(octaveRange.minOctave);
   const MAX_OCTAVE_SEMITONE = NoteToAbsoluteSemitone(octaveRange.maxOctave);
-  const SEMITONE_ACCIDENTAL_OFFSET = 1;
 
   // Handle edgecase of min > max, or the inverse
   const minOctaveSemitone = Math.min(MIN_OCTAVE_SEMITONE, MAX_OCTAVE_SEMITONE);
   const maxOctaveSemitone = Math.max(MIN_OCTAVE_SEMITONE, MAX_OCTAVE_SEMITONE);
 
-  const randomSemitone = minOctaveSemitone + Math.floor(Math.random() * (maxOctaveSemitone - minOctaveSemitone + SEMITONE_ACCIDENTAL_OFFSET));
-  const randomNote = AbsoluteSemitoneToNote(randomSemitone);
+  const randomSemitone = Math.floor(Math.random() * (maxOctaveSemitone - minOctaveSemitone + 1)) + minOctaveSemitone;
+  let randomNote = AbsoluteSemitoneToNote(randomSemitone);
 
   let accidental: string | null = null;
   if (allowedAccidentals) {
@@ -81,7 +80,15 @@ export function GenerateRandomNote(
   // Generate new note name if duplicate was found, ignore if min / max octave ranges are the same
   if (!(MIN_OCTAVE_SEMITONE === MAX_OCTAVE_SEMITONE) && exclusiveNote && randomNote.name === exclusiveNote.name && randomNote.octave === exclusiveNote.octave) {
     const nameIdx = NOTE_NAMES.findIndex(name => name == exclusiveNote.name);
-    randomNote.name = NOTE_NAMES[(nameIdx + 1) % NOTE_NAMES.length] as NOTE_NAME_TYPES;
+    const newName = NOTE_NAMES[(nameIdx + 1) % NOTE_NAMES.length] as NOTE_NAME_TYPES;
+    let newNote = { ...randomNote, name: newName };
+    const newNoteSemitones = NoteToAbsoluteSemitone(newNote);
+
+    // If new note is over octave range, bring down to min octave semitone
+    if (newNoteSemitones > maxOctaveSemitone) {
+      newNote = octaveRange.minOctave;
+    };
+    randomNote = newNote
   }
 
   return randomNote;
