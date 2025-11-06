@@ -22,6 +22,7 @@ export default function Navbar() {
         <div className={styles.SizeWrapper}>
           <div onClick={handleIconPressed} className={styles.IconTextContainer}>
             <AppGraphic />
+            <h1>Music Maestro</h1>
             <div className={styles.TitleContainer}>
             </div>
           </div>
@@ -62,6 +63,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div className={`${styles.SidebarWrapper} ${isOpen ? styles.open : ""}`}>
         <div className={styles.Header}>
           <AppGraphic />
+          <h1 className='truncate-overflow-text'>Music Maestro</h1>
           <Button variant='text-secondary' icon={<CloseIcon color='var(--color-dark-2)' />} onClick={onClose} />
         </div>
         <div className={`${styles.SidebarItemContainer} ${url === `/` && styles.Active}`} onClick={() => handleNavigate(`/`)} tabIndex={0}>
@@ -75,10 +77,15 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
             <LinkIcon />
             <p>Device Setup</p>
           </div>
-          {isMidiDeviceConnected &&
+          {isMidiDeviceConnected ?
             <div className={styles.SidebarItemSubTextContainer}>
               <StatusIcon color='var(--color-success)' />
               <p className='caption'>MIDI Connected</p>
+            </div>
+            :
+            <div className={styles.SidebarItemSubTextContainer}>
+              <StatusIcon color='var(--color-error)' />
+              <p className='caption'>MIDI Disconnected</p>
             </div>
           }
         </div>

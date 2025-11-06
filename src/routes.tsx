@@ -5,6 +5,7 @@ import DrillPage from "./pages/DrillPage";
 import React from "react";
 import LoadingPage from "./pages/LoadingPage";
 import ConfigPage from "./pages/ConfigPage";
+import { MidiAutoReconnectHandler } from "./components/HelperComponents/MidiAutoReconnectHandler";
 
 const DrillStartPage = lazy(() => import("@pages/DrillStartPage"));
 

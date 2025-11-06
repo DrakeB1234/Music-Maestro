@@ -61,7 +61,11 @@
 }
 
 .InputDeviceButtonContainer {
-  margin-top: var(--spacing-2xsmall);
+  margin-top: var(--spacing-small);
+
+  &>p {
+    margin-bottom: var(--spacing-2xsmall);
+  }
 }
 
 .ExpandedContent {

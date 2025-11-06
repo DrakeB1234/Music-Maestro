@@ -3,9 +3,8 @@ import { ArrowDownIcon, DialPadIcon, MIDIIcon, PianoIcon, StatusIcon } from '@/c
 import Card from '@/components/UIComponents/Card';
 import Button from '@/components/UIComponents/Button';
 import ToggleButton from '@/components/UIComponents/ToggleButton';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNoteInputStore } from '@/store/noteInputStore';
-import { PrintGenericNote, type GenericNote } from '@/helpers/NoteHelpers';
 import styles from './ConfigPageComponents.module.css';
 import { useAppPreferences } from "@/hooks/useAppPreferences";
 
@@ -33,8 +32,27 @@ function MIDIInputCard({
 }) {
   const [expanded, setExpanded] = useState(false);
   const connectMidiDevice = useNoteInputStore((state) => state.connectMidiDevice);
+  const enableMidiAutoReconnect = useNoteInputStore((state) => state.enableMidiAutoReconnect);
+  const disableMidiAutoReconnect = useNoteInputStore((state) => state.disableMidiAutoReconnect);
   const midiDeviceErrorMessage = useNoteInputStore((state) => state.midiDeviceErrorMessage);
   const isMidiDeviceConnected = useNoteInputStore((state) => state.isMidiDeviceConnected);
+
+  const { setPrefsByKey, prefs } = useAppPreferences();
+
+  const [activeToggle, setActiveToggle] = useState<boolean>(prefs.midiDeviceAutoConnect);
+
+  function handleToggleChanged(value: boolean,) {
+    setActiveToggle(value);
+    setPrefsByKey("midiDeviceAutoConnect", value);
+
+    if (value) {
+      enableMidiAutoReconnect();
+    }
+    else {
+      disableMidiAutoReconnect();
+    }
+  };
+
 
   return (
     <Card>
@@ -57,47 +75,22 @@ function MIDIInputCard({
       </div>
 
       <div className={`${styles.ExpandedContent} ${expanded ? styles.Show : ""}`}>
-        {!isMidiDeviceConnected ?
-          <>
-            <p className='caption'>Connect your MIDI compatible keyboard in the app to read your inputs directly. </p>
-            <p className={`caption ${styles.ErrorText}`}>{midiDeviceErrorMessage && `Error: ${midiDeviceErrorMessage}`}</p>
-            <div className={styles.ExpandedContentButtonContainer}>
-              <Button text='Connect' onClick={connectMidiDevice} />
-            </div>
-          </>
-          :
-          <>
-            <p className='caption'>Test your device now by playing some notes!</p>
-            <p className={`caption ${styles.ErrorText}`}>{midiDeviceErrorMessage && `Error: ${midiDeviceErrorMessage}`}</p>
-            <div>
-              <PlayedNoteText />
-            </div>
-            <div className={styles.ExpandedContentButtonContainer}>
-              <Button text='Connect' onClick={connectMidiDevice} />
-            </div>
-          </>
-        }
+        <p className='caption'>Connect your MIDI compatible keyboard in the app to read your inputs directly. </p>
+        <p className={`caption ${styles.ErrorText}`}>{midiDeviceErrorMessage && `Error: ${midiDeviceErrorMessage}`}</p>
+        <div className={styles.InputDeviceButtonContainer}>
+          <p>Auto Reconnect</p>
+          <ToggleButton value={activeToggle} onChange={handleToggleChanged} />
+        </div>
+        <div className={styles.ExpandedContentButtonContainer}>
+          {!isMidiDeviceConnected ?
+            <Button text='Connect' onClick={connectMidiDevice} />
+            :
+            <Button text='Disconnect' onClick={connectMidiDevice} />
+          }
+        </div>
       </div>
     </Card>
   )
-}
-
-function PlayedNoteText() {
-  const [playedNote, setPlayedNote] = useState<GenericNote | null>(null);
-  const addMidiListener = useNoteInputStore((state) => state.addMidiListener);
-  const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
-
-  useEffect(() => {
-    const handleMidiEvent = (note: GenericNote) => {
-      setPlayedNote(note);
-    }
-
-    addMidiListener(handleMidiEvent);
-
-    return () => removeMidiListener(handleMidiEvent);
-  }, [addMidiListener, removeMidiListener]);
-
-  return <p>{playedNote && PrintGenericNote(playedNote)}</p>
 }
 
 function InputCards({

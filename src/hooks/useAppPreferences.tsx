@@ -6,7 +6,8 @@ const STORAGE_KEY = "appPreferences";
 const DEFAULT_PREFS: AppPreferences = {
   inputType: "buttons",
   midiPlaybackEnabled: false,
-  midiPlaybackVolume: 50
+  midiPlaybackVolume: 50,
+  midiDeviceAutoConnect: false
 };
 
 export function useAppPreferences() {

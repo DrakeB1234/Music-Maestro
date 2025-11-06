@@ -14,7 +14,10 @@ export function useDrillProgressResults() {
     setResults([...results, result]);
   };
 
-  const clearResults = () => setResults([]);
+  const clearResults = () => {
+    setResults([]);
+    alert("All data cleared.")
+  };
 
   const getResults = (): DrillProgressResult[] => {
     return results;

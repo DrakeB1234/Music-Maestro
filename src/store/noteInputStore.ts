@@ -12,8 +12,10 @@ interface NoteInputState {
   removeMidiListener: (callback: (note: GenericNote) => void) => void;
   triggerMidiInput: (note: GenericNote) => void;
 
+  enableMidiAutoReconnect: () => void;
+  disableMidiAutoReconnect: () => void;
   connectMidiDevice: () => void;
-  removeMidiDevice: () => void;
+  disconnectMidiDevice: () => void;
   forceMidiInput: (note: GenericNote | null) => void;
   isMidiDeviceConnected: boolean;
   setIsMidiDeviceConnected: (value: boolean) => void;
@@ -41,39 +43,10 @@ export const useNoteInputStore = create<NoteInputState>((set, get) => ({
     for (const callback of listeners) callback(note);
   },
 
-  connectMidiDevice: () => {
-    const setMidiDeviceErrorMessage = get().setMidiDeviceErrorMessage;
-    const setIsMidiDeviceConnected = get().setIsMidiDeviceConnected;
-
-    WebMidi.enable()
-      .then(() => {
-        if (WebMidi.inputs.length < 1) {
-          setMidiDeviceErrorMessage("No Devices found");
-          setIsMidiDeviceConnected(false);
-          return;
-        }
-
-        get().removeMidiDevice();
-
-        WebMidi.inputs.forEach((input) => {
-          input.addListener("noteon", (event) => {
-            get().triggerMidiInput(ConvertMidiNoteToGenericNote(event.note));
-          });
-        });
-
-        setMidiDeviceErrorMessage(null);
-        setIsMidiDeviceConnected(true);
-      })
-      .catch((err) => {
-        setMidiDeviceErrorMessage(err);
-        setIsMidiDeviceConnected(false);
-      });
-  },
-  removeMidiDevice: () => {
-    WebMidi.inputs.forEach((input) => {
-      input.removeListener();
-    });
-  },
+  disableMidiAutoReconnect: () => disableMidiAutoReconnect(),
+  enableMidiAutoReconnect: () => enableMidiAutoReconnect(get),
+  connectMidiDevice: () => connectMidiDevice(get),
+  disconnectMidiDevice: () => disconnectMidiDevice(),
   forceMidiInput: (note) => {
 
     get().triggerMidiInput(note !== null ? note : {
@@ -91,3 +64,74 @@ export const useNoteInputStore = create<NoteInputState>((set, get) => ({
     set({ midiDeviceErrorMessage: message });
   },
 }));
+
+function connectMidiDevice(get: () => NoteInputState) {
+  const setMidiDeviceErrorMessage = get().setMidiDeviceErrorMessage;
+  const setIsMidiDeviceConnected = get().setIsMidiDeviceConnected;
+
+  WebMidi.enable()
+    .then(() => {
+      if (WebMidi.inputs.length < 1) {
+        setMidiDeviceErrorMessage("No Devices found");
+        setIsMidiDeviceConnected(false);
+        return;
+      }
+
+      get().disconnectMidiDevice();
+
+      WebMidi.inputs.forEach((input) => {
+        input.addListener("noteon", (event) => {
+          get().triggerMidiInput(ConvertMidiNoteToGenericNote(event.note));
+        });
+      });
+
+      enableMidiAutoDisconnect(get);
+
+      setMidiDeviceErrorMessage(null);
+      setIsMidiDeviceConnected(true);
+    })
+    .catch((err) => {
+      setMidiDeviceErrorMessage(err);
+      setIsMidiDeviceConnected(false);
+    });
+};
+
+function disconnectMidiDevice() {
+  WebMidi.inputs.forEach((input) => {
+    input.removeListener();
+  });
+}
+
+function enableMidiAutoReconnect(get: () => NoteInputState) {
+  WebMidi.removeListener("connected");
+  console.log("ENABLED AUTO RECONNECT")
+
+  WebMidi.addListener("connected", (event) => {
+    if (event.port.type === "input") {
+      console.log(`MIDI device connected: ${event.port.name}`);
+      connectMidiDevice(get);
+    }
+  });
+
+  enableMidiAutoDisconnect(get);
+}
+
+function disableMidiAutoReconnect() {
+  WebMidi.removeListener("connected");
+  console.log("DISABLED AUTO RECONNECT");
+
+}
+
+function enableMidiAutoDisconnect(get: () => NoteInputState) {
+  WebMidi.removeListener("disconnected");
+
+  WebMidi.addListener("disconnected", (event) => {
+    if (event.port.type === "input") {
+      console.log(`MIDI device disconnected: ${event.port.name}`);
+      if (WebMidi.inputs.length < 1) {
+        get().setIsMidiDeviceConnected(false);
+        get().setMidiDeviceErrorMessage("MIDI device disconnected");
+      }
+    }
+  });
+}

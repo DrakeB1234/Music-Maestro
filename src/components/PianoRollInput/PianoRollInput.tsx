@@ -34,9 +34,9 @@ export default function PianoRollInput() {
   return (
     <svg
       width="140"
-      height="70"
+      height="80"
       fill="none"
-      viewBox="0 0 140 70"
+      viewBox="0 0 140 80"
       onClick={handleClick}
       className={styles.PianoRollWrapper}
     >
@@ -45,7 +45,7 @@ export default function PianoRollInput() {
           <rect
             id={note}
             width={20}
-            height={70}
+            height={80}
             fill='var(--color-surface-light-1)'
             x={20 * idx}
           />
@@ -53,7 +53,7 @@ export default function PianoRollInput() {
             x1={idx * 20 + 1}
             x2={idx * 20 + 1}
             y1={0}
-            y2={70}
+            y2={80}
             stroke="var(--color-surface-border-2)"
             strokeWidth={0}
           />
@@ -61,7 +61,7 @@ export default function PianoRollInput() {
             x1={idx * 20 + 20}
             x2={idx * 20 + 20}
             y1={0}
-            y2={70}
+            y2={80}
             stroke="var(--color-surface-border-2)"
             strokeWidth={0.5}
           />

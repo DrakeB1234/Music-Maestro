@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { routes } from "./routes";
+import { MidiAutoReconnectHandler } from "./components/HelperComponents/MidiAutoReconnectHandler";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
           </Route>
         ))}
       </Routes>
+      <MidiAutoReconnectHandler />
     </BrowserRouter>
   );
 }
