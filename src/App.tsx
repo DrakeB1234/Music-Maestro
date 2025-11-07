@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { Routes, Route, HashRouter } from "react-router";
 import { routes } from "./routes";
 import { MidiAutoReconnectHandler } from "./components/HelperComponents/MidiAutoReconnectHandler";
 
 function App() {
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         {routes.map((route) => (
           <Route key={route.path} path={route.path} element={route.element}>
@@ -16,7 +16,7 @@ function App() {
         ))}
       </Routes>
       <MidiAutoReconnectHandler />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

@@ -36,7 +36,6 @@ export default function NoteDrill() {
   const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
 
   const { addResult } = useDrillProgressResults();
-  const { prefs } = useAppPreferences();
 
   const totalNotesPlayed = useRef<number>(0);
   const correctNotesPlayed = useRef<number>(0);

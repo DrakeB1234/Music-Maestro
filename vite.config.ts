@@ -2,55 +2,51 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react'
 import mkcert from 'vite-plugin-mkcert';
 import path from 'path';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { VitePWA } from 'vite-plugin-pwa';
 
-// https://vite.dev/config/
 export default defineConfig({
-  base: '/Music-Maestro/',
   plugins: [
     react(),
     mkcert(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
-      manifest: {
-        name: 'Music Maestro',
-        short_name: 'Music Maestro',
-        start_url: '/',
-        display: 'standalone',
-        background_color: '#D5E6FF',
-        theme_color: '#2B80FF',
-        icons: [
-          {
-            src: 'favicon.svg',
-            type: 'image/svg+xml',
-            sizes: 'any',
-          },
-        ],
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3,wav}'],
-        navigateFallback: '/index.html',
+    //   VitePWA({
+    //     registerType: 'autoUpdate',
+    //     includeAssets: ['favicon.svg', `index.html`],
+    //     manifest: {
+    //       name: 'Music Maestro',
+    //       short_name: 'Music Maestro',
+    //       start_url: './',
+    //       display: 'standalone',
+    //       background_color: '#D5E6FF',
+    //       theme_color: '#2B80FF',
+    //       icons: [
+    //         {
+    //           src: 'favicon.svg',
+    //           type: 'image/svg+xml',
+    //           sizes: 'any',
+    //         },
+    //       ],
+    //     },
+    //     workbox: {
+    //       globPatterns: ['**/*.{js,css,html,ico,png,svg,mp3,wav}'],
+    //       navigateFallback: '/index.html',
 
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => url.pathname.startsWith('/piano_samples/'),
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'piano-samples',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
-      },
-    })
+    //       runtimeCaching: [
+    //         {
+    //           urlPattern: ({ url }) => url.pathname.startsWith('/piano_samples/'),
+    //           handler: 'CacheFirst',
+    //           options: {
+    //             cacheName: 'piano-samples',
+    //             expiration: {
+    //               maxEntries: 50,
+    //               maxAgeSeconds: 60 * 60 * 24 * 365,
+    //             },
+    //             cacheableResponse: {
+    //               statuses: [0, 200],
+    //             },
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   })
   ],
   server: {
     host: true,
@@ -82,15 +78,6 @@ export default defineConfig({
           }
         }
       },
-      plugins: [
-        visualizer({
-          filename: 'stats.html',
-          title: 'Bundle Visualizer',
-          open: true,
-          gzipSize: true,
-          brotliSize: true,
-        }),
-      ],
     },
   },
 })
