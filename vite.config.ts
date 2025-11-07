@@ -4,7 +4,7 @@ import mkcert from 'vite-plugin-mkcert';
 import path from 'path';
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/Music-Maestro/' : '/',
+  base: process.env.NODE_ENV === 'production' ? process.env.VITE_BASE_PATH || '/Music-Maestro' : '/',
   plugins: [
     react(),
     mkcert(),
