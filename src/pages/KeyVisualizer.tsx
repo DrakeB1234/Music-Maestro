@@ -1,15 +1,14 @@
 import styles from './KeyVisualizerPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import BackButtonContainer from '@/components/BackButtonContainer/BackButtonContainer';
-import Input from '@/components/UIComponents/Inputs/Input';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
 import Button from '@/components/UIComponents/Button';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { type NOTE_SEMITONES_NAME_TYPES } from '@/types/DrillTypes';
 import { getChordsInScale, getScaleNotes, NOTE_SEMITONE_NAMES, SCALE_TYPES_ARR, type GetChordsInScaleReturn, type ScaleTypes } from '@/helpers/NoteHelpers';
 
 export default function KeyVisualizerPage() {
-  const rootRef = useRef<HTMLInputElement>(null);
+  const rootRef = useRef<HTMLSelectElement>(null);
   const scaleRef = useRef<HTMLSelectElement>(null);
   const [rootError, setRootError] = useState<string>("");
   const [scaleNotes, setScaleNotes] = useState<NOTE_SEMITONES_NAME_TYPES[]>([]);
@@ -21,7 +20,7 @@ export default function KeyVisualizerPage() {
     navigate("/");
   };
 
-  function handleConfirmButtonPressed() {
+  function handleInputChange() {
     if (!scaleRef.current) return;
     if (!rootRef.current) return;
 
@@ -47,6 +46,10 @@ export default function KeyVisualizerPage() {
     setScaleChords(chords);
   }
 
+  useEffect(() => {
+    handleInputChange();
+  }, []);
+
   return (
     <div className={styles.KeyVisualizerPageWrapper}>
       <div className={styles.SizeWrapper}>
@@ -55,15 +58,14 @@ export default function KeyVisualizerPage() {
         <div className={styles.KeyWrapper}>
           <p>Key</p>
           <div className={styles.KeyInputWrapper}>
-            <Input
+            <SelectInput
               label=''
-              htmlName='rootnote'
-              placeholder='C'
-              type='text'
-              defaultValue={"C"}
+              htmlName='scale'
+              options={NOTE_SEMITONE_NAMES.map(e => (
+                { label: e, value: e }
+              ))}
               ref={rootRef}
-              error={rootError}
-              style={{ textTransform: "uppercase" }}
+              handleChange={handleInputChange}
             />
             <SelectInput
               label=''
@@ -72,9 +74,9 @@ export default function KeyVisualizerPage() {
                 { label: e, value: e }
               ))}
               ref={scaleRef}
+              handleChange={handleInputChange}
             />
           </div>
-          <Button text='Confirm' onClick={handleConfirmButtonPressed} />
         </div>
 
         <div className={styles.NotesInScaleWrapper}>

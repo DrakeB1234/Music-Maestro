@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: var(--spacing-2xsmall);
+  padding-bottom: var(--spacing-large);
 }
 
 .SizeWrapper {
@@ -21,6 +22,10 @@
 
 .KeyInputWrapper {
   display: flex;
+}
+
+.KeyInputWrapper select:last-child {
+  width: 10em;
 }
 
 .NotesInScaleWrapper {
