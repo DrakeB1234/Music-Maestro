@@ -50,6 +50,7 @@ export default function PresetDrills({ onBack }: Props) {
             key={e.id}
             headerText={e.name}
             descriptionText={e.description}
+            difficulty={e.difficulty}
             handleStartPressed={startPresetDrill}
             handleProgressPressed={handleOpenModal}
             drillId={e.id}
@@ -63,7 +64,8 @@ export default function PresetDrills({ onBack }: Props) {
 interface CardProps {
   headerText: string;
   descriptionText: string;
-  drillId: string,
+  drillId: string;
+  difficulty: string;
   handleStartPressed: (id: string) => void;
   handleProgressPressed: (id: string) => void;
 }
@@ -72,6 +74,7 @@ function PresetCard({
   headerText,
   descriptionText,
   drillId,
+  difficulty,
   handleStartPressed,
   handleProgressPressed
 }: CardProps) {
@@ -81,6 +84,9 @@ function PresetCard({
         <div className={styles.HeaderContainer}>
           <PlaylistIcon color='var(--color-main-2)' />
           <h2 className='heading truncate-overflow-text'>{headerText}</h2>
+        </div>
+        <div>
+          <p className={`caption-secondary ${styles.DifficultyPill}`}>{difficulty}</p>
         </div>
         <p className='caption-secondary'>{descriptionText}</p>
       </div>

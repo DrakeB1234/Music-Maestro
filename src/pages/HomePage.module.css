@@ -16,11 +16,11 @@
 }
 
 .ItemsContainer {
-  margin-top: var(--spacing-2xsmall);
+  margin-top: var(--spacing-small);
 }
 
-.ItemsContainer:nth-of-type(n + 3) {
-  margin-top: var(--spacing-base);
+.HomePageWrapper .ItemsContainer:nth-child(n + 3) {
+  margin-top: var(--spacing-xlarge);
 }
 
 .CardContainer {

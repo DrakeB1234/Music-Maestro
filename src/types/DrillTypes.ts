@@ -3,7 +3,7 @@ import type { GenericNote } from "@/helpers/NoteHelpers"
 
 export type DrillKind = "custom" | "preset";
 export type DrillClefTypes = "treble" | "bass";
-export type DrillDifficultyTypes = "easy" | "medium" | "hard";
+export type DrillDifficultyTypes = "Easy" | "Medium" | "Hard";
 export type NOTE_NAME_TYPES = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 export type NOTE_SEMITONES_NAME_TYPES = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A" | "A#" | "B";
 export type Accidental = "#" | "b" | "n";

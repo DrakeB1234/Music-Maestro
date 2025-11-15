@@ -20,7 +20,7 @@ export default function HomePage() {
 
       <div className={styles.SizeWrapper}>
         <div className={styles.HeaderContainer}>
-          <h1 className={`large-heading`}>Music Maestro</h1>
+          <h1 className={`heading`}>Music Maestro</h1>
         </div>
 
         <div className={styles.ItemsContainer}>
