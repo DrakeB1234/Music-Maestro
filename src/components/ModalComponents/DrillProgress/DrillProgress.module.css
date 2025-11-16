@@ -1,25 +1,11 @@
-.ModalActionButtonsContainer {
-  display: flex;
-  gap: var(--spacing-small);
-  padding: var(--spacing-base);
-  border-top: 1px solid var(--color-surface-border-1);
-}
-
-.ModalContentContainer {
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-small) var(--spacing-base);
-  padding-bottom: var(--spacing-large);
-}
-
 .LineGraphContainer {
   margin-top: var(--spacing-small);
   margin-bottom: var(--spacing-large);
 }
 
 .DataContainer {
-  color: var(--color-text-main-1);
-  background-color: var(--color-main-2);
+  color: var(--color-white);
+  background-color: var(--color-primary-base);
   width: fit-content;
   padding: var(--spacing-small) var(--spacing-base);
   border-radius: var(--radius-base);
@@ -33,8 +19,8 @@
   align-items: center;
   gap: var(--spacing-base);
   padding: var(--spacing-base);
-  background-color: var(--color-surface-light-2);
-  border: 1px solid var(--color-surface-border-1);
+  background-color: var(--color-neutral-dark);
+  border: 1px solid var(--color-neutral-base);
   border-radius: var(--radius-base);
   margin: var(--spacing-base) 0;
   text-align: center;

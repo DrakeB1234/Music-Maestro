@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./ToggleButton.module.css";
+import styles from "./UIComponents.module.css";
 
 interface ToggleProps {
   value?: boolean;
@@ -26,11 +26,11 @@ export default function ToggleButton({ value, initial = false, onChange }: Toggl
   return (
     <button
       type="button"
-      className={`${styles.Toggle} ${checked ? styles.Checked : ""}`}
+      className={`${styles.ToggleWrapper} ${checked ? styles.ToggleChecked : ""}`}
       onClick={toggle}
       aria-pressed={checked}
     >
-      <div className={styles.Thumb} />
+      <div className={styles.ToggleThumb} />
     </button>
   );
 }

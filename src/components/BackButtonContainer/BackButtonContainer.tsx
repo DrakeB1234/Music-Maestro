@@ -1,5 +1,5 @@
 import { BackIcon } from '@components/Icons/Icons';
-import Button from '@components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import styles from './BackButtonContainer.module.css';
 
 export default function BackButtonContainer({ onBack }: { onBack: () => void }) {

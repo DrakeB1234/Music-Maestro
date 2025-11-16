@@ -26,9 +26,9 @@ export function ScoreLineGraph({ data, width = 600, height = 140, ...props }: Li
     if (!context) return;
 
     const root = document.documentElement;
-    const primaryColor = getComputedStyle(root).getPropertyValue("--color-main-2").trim();
-    const textColor = getComputedStyle(root).getPropertyValue("--color-text-body-1").trim();
-    const borderColor = getComputedStyle(root).getPropertyValue("--color-surface-border-1").trim();
+    const primaryColor = getComputedStyle(root).getPropertyValue("--color-primary-base").trim();
+    const textColor = getComputedStyle(root).getPropertyValue("--color-shade-2xdark").trim();
+    const borderColor = getComputedStyle(root).getPropertyValue("--color-neutral-dark").trim();
     const labelFont = getComputedStyle(root).getPropertyValue("--line-graph-label-font").trim();
 
 

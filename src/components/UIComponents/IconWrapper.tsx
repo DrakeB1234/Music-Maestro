@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './IconWrapper.module.css';
+import styles from './UIComponents.module.css';
 
 export default function IconWrapper({ icon }: { icon: React.ReactNode }) {
   return (
-    <div className={styles.iconWrapper}>
+    <div className={styles.IconWrapper}>
       {icon}
     </div>
   )

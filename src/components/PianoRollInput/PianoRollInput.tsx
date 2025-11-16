@@ -46,24 +46,15 @@ export default function PianoRollInput() {
             id={note}
             width={20}
             height={80}
-            fill='var(--color-surface-light-1)'
+            fill='var(--color-white)'
             x={20 * idx}
-          />
-          <line
-            x1={idx * 20 + 1}
-            x2={idx * 20 + 1}
-            y1={0}
-            y2={80}
-            stroke="var(--color-surface-border-2)"
-            strokeWidth={0}
-            id={note}
           />
           <line
             x1={idx * 20 + 20}
             x2={idx * 20 + 20}
             y1={0}
             y2={80}
-            stroke="var(--color-surface-border-2)"
+            stroke="var(--color-neutral-2xdark)"
             strokeWidth={0.5}
             id={note}
           />

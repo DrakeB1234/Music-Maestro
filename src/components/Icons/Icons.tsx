@@ -1,4 +1,4 @@
-const DEFAULT_COLOR: string = "var(--color-text-body-1)"
+const DEFAULT_COLOR: string = "var(--color-shade-2xdark)"
 
 export function LoadingSpininer({ size = 40, color = DEFAULT_COLOR }) {
   return (

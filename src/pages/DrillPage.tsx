@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from './DrillPage.module.css';
 import Card from "@/components/UIComponents/Card";
-import Button from "@/components/UIComponents/Button";
+import Button from "@/components/UIComponents/Inputs/Button";
 import IconWrapper from "@/components/UIComponents/IconWrapper";
 import { DialPadIcon, MIDIIcon, PianoIcon, QueueMusicIcon, TuneIcon } from "@/components/Icons/Icons";
 import PresetDrills from "@/components/DrillComponents/PresetDrills/PresetDrills";

@@ -2,7 +2,7 @@ import BackButtonContainer from '@/components/BackButtonContainer/BackButtonCont
 import styles from './PresetDrills.module.css';
 import { PlayIcon, PlaylistIcon } from '@/components/Icons/Icons';
 import Card from '@/components/UIComponents/Card';
-import Button from '@/components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import { defaultDrillPresetsData } from '@/data/NoteDrillPresets';
 import type { DrillPreset } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';
@@ -86,13 +86,13 @@ function PresetCard({
           <h2 className='heading truncate-overflow-text'>{headerText}</h2>
         </div>
         <div>
-          <p className={`caption-secondary ${styles.DifficultyPill}`}>{difficulty}</p>
+          <p className={`caption ${styles.DifficultyPill}`}>{difficulty}</p>
         </div>
         <p className='caption-secondary'>{descriptionText}</p>
       </div>
       <div className={styles.PracticeButtonContainer}>
         <Button onClick={() => handleProgressPressed(drillId)} text='Progress' variant='outlined' fullWidth={true} />
-        <Button onClick={() => handleStartPressed(drillId)} icon={<PlayIcon color='var(--color-text-main-1)' />} text='Practice' fullWidth={true} />
+        <Button onClick={() => handleStartPressed(drillId)} icon={<PlayIcon color='var(--color-white)' />} text='Practice' fullWidth={true} />
       </div>
     </Card>
   )

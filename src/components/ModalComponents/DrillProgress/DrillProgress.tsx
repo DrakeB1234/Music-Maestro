@@ -1,6 +1,7 @@
 import Modal from '@components/UIComponents/Modal';
 import styles from './DrillProgress.module.css';
-import Button from "@components/UIComponents/Button";
+import modalStyles from '../ModalComponents.module.css';
+import Button from "@/components/UIComponents/Inputs/Button";
 import { useModal } from '@/context/ModalProvider';
 import { useDrillProgressResults } from '@/hooks/useDrillProgressResultStorage';
 import { ScoreLineGraph } from '@/components/ScoreLineGraph/ScoreLineGraph';
@@ -46,7 +47,7 @@ export default function DrillProgress({
             <p>Practice this drill to see your progress!</p>
           </div>
         </div>
-        <div className={styles.ModalActionButtonsContainer}>
+        <div className={modalStyles.ModalActionButtonsContainer}>
           <Button text="Close" variant='outlined' fullWidth={true} onClick={closeModal} />
         </div>
       </Modal>
@@ -56,7 +57,7 @@ export default function DrillProgress({
   return (
     <Modal headerText="Drill Progress">
       {data.length < 1 && <p>No Data Found!</p>}
-      <div className={styles.ModalContentContainer}>
+      <div className={modalStyles.ModalContentContainer}>
         <h1 className='body'>{presetData?.name && presetData?.name}</h1>
         {data.length > 1 ? <ScoreLineGraph data={graphData} width={LINE_GRAPH_WIDTH} height={LINE_GRAPH_HEIGHT} className={styles.LineGraphContainer} />
           :
@@ -73,7 +74,7 @@ export default function DrillProgress({
         <h2 className='body'>Average Correct Notes Per Minute</h2>
         <p className={`heading ${styles.DataContainer}`}>{!isNaN(averageCorrectNotesPerMinute) ? averageCorrectNotesPerMinute : 0}</p>
       </div>
-      <div className={styles.ModalActionButtonsContainer}>
+      <div className={modalStyles.ModalActionButtonsContainer}>
         <Button text="Close" variant='outlined' fullWidth={true} onClick={closeModal} />
       </div>
     </Modal>

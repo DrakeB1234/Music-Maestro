@@ -1,8 +1,8 @@
 import { useModal } from "@/context/ModalProvider";
 import { CloseIcon } from "@components/Icons/Icons";
-import Button from "./Button";
+import Button from "./Inputs/Button";
 import Card from "./Card";
-import styles from './Modal.module.css';
+import styles from './UIComponents.module.css';
 
 interface Props {
   children?: React.ReactNode;
@@ -30,10 +30,10 @@ export default function Modal({
 
   return (
     <Card>
-      <div className={styles.headerContainer}>
+      <div className={styles.modalHeaderContainer}>
         {icon}
         <h1 className="truncate-overflow-text">{headerText}</h1>
-        <Button onClick={handleExitButtonPressed} icon={<CloseIcon color="var(--color-text-body-2)" />} variant="text-secondary" />
+        <Button onClick={handleExitButtonPressed} icon={<CloseIcon color="var(--color-shade-base)" />} variant="text-secondary" />
       </div>
       {children}
     </Card>

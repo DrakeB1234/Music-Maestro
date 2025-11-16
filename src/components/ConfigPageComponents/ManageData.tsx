@@ -3,7 +3,7 @@ import BackButtonContainer from "../BackButtonContainer/BackButtonContainer";
 import { ArrowDownIcon, DeleteIcon, FileExportIcon, FileImportIcon } from "../Icons/Icons";
 import Card from "../UIComponents/Card";
 import styles from './ConfigPageComponents.module.css';
-import Button from "../UIComponents/Button";
+import Button from "../UIComponents/Inputs/Button";
 import { useDrillProgressResults } from "@/hooks/useDrillProgressResultStorage";
 import CustomFileInput from "../UIComponents/Inputs/CustomFileInput";
 

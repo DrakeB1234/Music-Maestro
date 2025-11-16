@@ -1,7 +1,7 @@
 import BackButtonContainer from "../BackButtonContainer/BackButtonContainer";
 import { ArrowDownIcon, DialPadIcon, MIDIIcon, PianoIcon, StatusIcon } from '@/components/Icons/Icons';
 import Card from '@/components/UIComponents/Card';
-import Button from '@/components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import ToggleButton from '@/components/UIComponents/ToggleButton';
 import { useState } from 'react';
 import { useNoteInputStore } from '@/store/noteInputStore';
@@ -64,7 +64,7 @@ function MIDIInputCard({
             <p>External MIDI Device</p>
           </div>
           <div className={styles.InputDeviceTextItem}>
-            <StatusIcon color={isMidiDeviceConnected ? 'var(--color-success)' : 'var(--color-error)'} />
+            <StatusIcon color={isMidiDeviceConnected ? 'var(--color-success-base)' : 'var(--color-error-base)'} />
             <p className='caption-secondary'>MIDI {isMidiDeviceConnected ? "Connected" : "Disconnected"}</p>
           </div>
         </div>

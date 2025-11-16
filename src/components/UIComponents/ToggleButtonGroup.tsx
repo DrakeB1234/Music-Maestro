@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Button from "./Button";
-import styles from './ToggleButtonGroup.module.css';
+import Button from "./Inputs/Button";
+import styles from './UIComponents.module.css';
 
 interface ToggleButton {
   label: string;
@@ -8,9 +8,9 @@ interface ToggleButton {
 }
 
 interface ToggleButtonGroupProps {
-  buttons: ToggleButton[]; // buttons to render
-  defaultValue?: string | number; // initial active button
-  onChange?: (value: string | number) => void; // callback when a button is pressed
+  buttons: ToggleButton[];
+  defaultValue?: string | number;
+  onChange?: (value: string | number) => void;
 }
 
 export default function ToggleButtonGroup({
@@ -27,7 +27,7 @@ export default function ToggleButtonGroup({
   };
 
   return (
-    <div className={styles.ButtonGroupWrapper}>
+    <div className={styles.ToggleButtonGroupWrapper}>
       {buttons.map((button) => (
         <Button
           key={button.value}

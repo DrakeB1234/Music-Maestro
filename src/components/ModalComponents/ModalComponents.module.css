@@ -1,0 +1,18 @@
+.ModalContentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small) var(--spacing-base);
+}
+
+.ModalActionButtonsContainer {
+  display: flex;
+  gap: var(--spacing-small);
+  padding: var(--spacing-base);
+  border-top: 1px solid var(--color-neutral-dark);
+}
+
+.ModalFlexContainer {
+  display: flex;
+  overflow: hidden;
+}

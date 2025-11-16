@@ -2,14 +2,14 @@
   width: 100%;
   height: auto;
   max-width: 400px;
-  border: 1px solid var(--color-surface-border-2);
+  border: 1px solid var(--color-neutral-dark);
 }
 
 g.WhiteKey {
   cursor: pointer;
 }
 
-g.WhiteKey:nth-child(7)>line:nth-child(3) {
+g.WhiteKey:nth-child(7)>line {
   stroke-width: 0;
 }
 
@@ -17,33 +17,11 @@ g.BlackKey {
   cursor: pointer;
 }
 
-.PianoRollWrapper g.WhiteKey:hover rect {
-  fill: var(--color-surface-light-3);
-}
-
-.PianoRollWrapper g.WhiteKey:active {
-  &>line {
-    stroke: var(--color-surface-border-2);
-    stroke-width: 2px;
-    z-index: 9;
-  }
-
-  &>line:last-child {
-    stroke: var(--color-surface-border-2);
-    stroke-width: 2px;
-    z-index: 9;
-    transform: translateX(-1px);
-  }
-}
-
-.PianoRollWrapper g.BlackKey:hover rect {
-  fill: #3a3a3a;
+.PianoRollWrapper g.WhiteKey:active rect {
+  fill: var(--color-error-base);
 }
 
 .PianoRollWrapper g.BlackKey:active rect {
-  fill: #1a1a1a;
-  stroke: #000;
-  stroke-width: 2px;
-  width: 10px;
-  transform: translateX(-0.5px) translateY(0.5px);
+  fill: var(--color-error-base);
+  stroke: rgb(201, 9, 9);
 }

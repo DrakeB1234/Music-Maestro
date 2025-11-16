@@ -2,7 +2,7 @@ import styles from './KeyVisualizerPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import BackButtonContainer from '@/components/BackButtonContainer/BackButtonContainer';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
-import Button from '@/components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import { useEffect, useRef, useState } from 'react';
 import { type NOTE_SEMITONES_NAME_TYPES } from '@/types/DrillTypes';
 import { getChordsInScale, getScaleNotes, NOTE_SEMITONE_NAMES, SCALE_TYPES_ARR, type GetChordsInScaleReturn, type ScaleTypes } from '@/helpers/NoteHelpers';

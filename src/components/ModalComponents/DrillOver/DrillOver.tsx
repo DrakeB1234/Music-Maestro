@@ -1,7 +1,8 @@
 import Modal from '@components/UIComponents/Modal';
 import { TrophyIcon } from "@components/Icons/Icons";
 import styles from './DrillOver.module.css';
-import Button from "@components/UIComponents/Button";
+import modalStyles from '../ModalComponents.module.css';
+import Button from "@/components/UIComponents/Inputs/Button";
 
 interface DrillOverProps {
   drillScore: number;
@@ -23,7 +24,7 @@ export default function DrillOver({
 
   return (
     <Modal headerText="Drill Over!" icon={<TrophyIcon />} overrideExitButtonPressed={handleDrillExit}>
-      <div className={styles.ModalContentContainer}>
+      <div className={modalStyles.ModalContentContainer}>
         <div className={styles.ContentWrapper}>
           <h1 className='body'>Your Score</h1>
           <div className={styles.ScoreContainer}>
@@ -38,7 +39,7 @@ export default function DrillOver({
           </div>
         </div>
       </div>
-      <div className={styles.ModalActionButtonsContainer}>
+      <div className={modalStyles.ModalActionButtonsContainer}>
         <Button text="Close" variant='outlined' fullWidth={true} onClick={handleDrillExit} />
         <Button text="Try Again" fullWidth={true} onClick={handleDrillTryAgain} />
       </div>

@@ -1,7 +1,8 @@
 import { ArrowDownIcon, ArrowUpIcon, MusicNoteIcon } from "@/components/Icons/Icons";
 import Modal from "@/components/UIComponents/Modal";
 import styles from './OctaveSelector.module.css';
-import Button from "@/components/UIComponents/Button";
+import modalStyles from '../ModalComponents.module.css';
+import Button from "@/components/UIComponents/Inputs/Button";
 import { useModal } from "@/context/ModalProvider";
 import { useEffect, useRef, useState } from "react";
 import GenerateStave from "@/helpers/GenerateStave";
@@ -126,7 +127,7 @@ export default function OctaveSelector({
 
   return (
     <Modal headerText="Octave Selector" icon={<MusicNoteIcon />}>
-      <div className={styles.ModalContentContainer}>
+      <div className={modalStyles.ModalContentContainer}>
         <StaveWithButtons handleButtonPress={handleOctaveButtonPressed}>
           <div ref={svgRef} className={styles.StaveContainer} />
         </StaveWithButtons>
@@ -137,7 +138,7 @@ export default function OctaveSelector({
           </div>
         </div>
       </div>
-      <div className={styles.ModalActionButtonsContainer}>
+      <div className={modalStyles.ModalActionButtonsContainer}>
         <Button onClick={closeModal} text="Cancel" variant="outlined" fullWidth={true} />
         <Button text="Set" variant="contained" fullWidth={true} onClick={handleOctaveSetPressed} />
       </div>
@@ -153,7 +154,7 @@ interface StaveWithButtonsProps {
 function StaveWithButtons({ children, handleButtonPress }: StaveWithButtonsProps) {
 
   return (
-    <div className={styles.ModalFlexContainer}>
+    <div className={modalStyles.ModalFlexContainer}>
       <div className={styles.OctaveButtonsContainer}>
         <Button icon={<ArrowUpIcon color="var(--color-dark-2)" />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.LEFT_INCREASE_OCTAVE)} />
         <Button icon={<ArrowDownIcon color="var(--color-dark-2)" />} variant="outlined" onClick={() => handleButtonPress(StaveButtonPressAction.LEFT_DECREASE_OCTAVE)} />

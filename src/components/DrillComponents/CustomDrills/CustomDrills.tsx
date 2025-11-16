@@ -3,7 +3,7 @@ import styles from './CustomDrills.module.css';
 import Card from '@/components/UIComponents/Card';
 import Input from '@/components/UIComponents/Inputs/Input';
 import { useRef, useState, type ChangeEvent } from 'react';
-import Button from '@/components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
 import { type DrillClefTypes, type DrillOptions, type OctaveRange } from '@/types/DrillTypes';
 import { useNavigate } from 'react-router-dom';

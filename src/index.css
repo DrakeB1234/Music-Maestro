@@ -66,90 +66,49 @@ img {
   --font-size-2xlarge: 1.5rem;
   --font-size-3xlarge: 2rem;
 
-  /* application vars */
-  --max-app-width: 1100px;
-  --min-button-size: 40px;
-  --max-phone-width: 600px;
-
+  /* Radius sizes */
   --radius-small: 4px;
   --radius-base: 8px;
   --radius-large: 16px;
   --radius-full: 99rem;
 
+  /* application vars */
+  --max-app-width: 1100px;
+  --min-button-size: 40px;
+  --max-phone-width: 600px;
+
   --transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+  /* Font shorthands */
 
   --ui-font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
 
   --line-graph-label-font: var(--weight-bold) var(--font-size-base)/1.4 var(--font-family);
 
   /* COLORS */
-  --palette-main-1: #D5E6FF;
-  /* BRAND main-2 */
-  --palette-main-2: #2B80FF;
-  --palette-main-3: #145EFC;
-  --palette-main-4: #1551d3;
-  --palette-main-5: #102974;
+  --color-primary-xlight: #f5f9ff;
+  --color-primary-light: #D5E6FF;
+  --color-primary-base: #2B80FF;
+  --color-primary-dark: #145EFC;
+  --color-primary-xdark: #1551d3;
+  --color-primary-2xdark: #102974;
 
-  --palette-light-1: #FFFFFF;
-  --palette-light-2: #f5f9ff;
-  --palette-light-3: #EFF0F4;
-  --palette-light-4: #E0E2EB;
+  --color-neutral-light: hsl(216, 12%, 98%);
+  --color-neutral-base: hsl(216, 15%, 95%);
+  --color-neutral-dark: hsl(228, 19%, 92%);
+  --color-neutral-xdark: hsl(229, 22%, 87%);
+  --color-neutral-2xdark: hsl(229, 24%, 80%);
 
-  --palette-dark-1: #8F98AE;
-  --palette-dark-2: #6B7282;
-  --palette-dark-3: #33435c;
-  --palette-dark-4: #23324b;
-  --palette-dark-5: #172336;
+  --color-shade-light: #8F98AE;
+  --color-shade-base: #6B7282;
+  --color-shade-dark: #33435c;
+  --color-shade-xdark: #23324b;
+  --color-shade-2xdark: #172336;
 
-  --palette-red-1: #CA4848;
-  --palette-green-1: #53ca48;
+  --color-white: #ffffff;
 
-  --color-main-1: var(--palette-main-1);
-  --color-main-2: var(--palette-main-2);
-  --color-main-4: var(--palette-main-4);
-
-  --color-dark-2: var(--palette-dark-2);
-  --color-dark-3: var(--palette-dark-3);
-
-  --color-text-body-1: var(--palette-dark-5);
-  --color-text-body-2: var(--palette-dark-2);
-  --color-text-main-1: var(--palette-light-1);
-  --color-text-main-2: var(--palette-light-3);
-
-  --color-surface-light-1: var(--palette-light-1);
-  --color-surface-light-2: var(--palette-light-3);
-  --color-surface-light-3: var(--palette-light-4);
-  --color-surface-main-1: var(--palette-light-1);
-  --color-surface-border-1: var(--palette-light-4);
-  --color-surface-border-2: var(--palette-dark-1);
-
-  --color-body-background: var(--palette-light-2);
-
-  --color-button-contained-primary-background: var(--palette-main-2);
-  --color-button-contained-primary-hover: var(--palette-main-3);
-  --color-button-contained-primary-text: var(--palette-light-1);
-  --color-button-contained-secondary-background: var(--palette-light-1);
-  --color-button-contained-secondary-hover: var(--palette-light-3);
-  --color-button-contained-secondary-text: var(--palette-dark-5);
-
-  --color-button-outlined-hover: var(--palette-light-3);
-  --color-button-outlined-text: var(--palette-dark-3);
-  --color-button-outlined-border: var(--palette-dark-1);
-  --color-button-outlined-focus: var(--palette-main-2);
-
-  --color-button-text-primary-text: var(--palette-light-1);
-  --color-button-text-primary-hover: var(--palette-main-3);
-  --color-button-text-secondary-text: var(--palette-dark-3);
-  --color-button-text-secondary-hover: var(--palette-light-3);
-
-  --color-input-background: var(--palette-light-1);
-  --color-input-text: var(--palette-dark-5);
-  --color-input-placeholder-text: var(--palette-dark-2);
-  --color-input-border: var(--palette-dark-1);
-  --color-input-hover: var(--palette-light-3);
-
-  --color-error: var(--palette-red-1);
-  --color-success: var(--palette-green-1);
+  --color-error-base: #CA4848;
+  --color-success-base: #53ca48;
 
   --color-modal-background: #00000070;
 
@@ -157,60 +116,12 @@ img {
   --elevation-medium: 0 0.125rem 0 0 #00000030;
 }
 
-@media (prefers-color-scheme) {
-  /* :root {
-    --color-main-1: var(--palette-main-1);
-    --color-main-2: var(--palette-main-2);
-    --color-main-5: var(--palette-main-5);
-
-    --color-dark-2: var(--palette-dark-2);
-
-    --color-text-body-1: var(--palette-light-1);
-    --color-text-body-2: var(--palette-light-4);
-    --color-text-main-1: var(--palette-light-1);
-    --color-text-main-2: var(--palette-light-3);
-
-    --color-surface-light-1: var(--palette-dark-4);
-    --color-surface-light-2: var(--palette-dark-3);
-    --color-surface-light-3: var(--palette-dark-2);
-    --color-surface-main-1: var(--palette-dark-5);
-    --color-surface-border-1: var(--palette-dark-3);
-    --color-surface-border-2: var(--palette-dark-4);
-
-    --color-body-background: var(--palette-dark-5);
-
-    --color-button-contained-primary-background: var(--palette-main-3);
-    --color-button-contained-primary-hover: var(--palette-main-4);
-    --color-button-contained-primary-text: var(--palette-light-1);
-    --color-button-contained-secondary-background: var(--palette-dark-3);
-    --color-button-contained-secondary-hover: var(--palette-dark-2);
-    --color-button-contained-secondary-text: var(--palette-light-1);
-
-    --color-button-outlined-hover: var(--palette-dark-3);
-    --color-button-outlined-text: var(--palette-light-2);
-    --color-button-outlined-border: var(--palette-dark-2);
-    --color-button-outlined-focus: var(--palette-main-3);
-
-    --color-button-text-primary-text: var(--palette-light-1);
-    --color-button-text-primary-hover: var(--palette-main-2);
-    --color-button-text-secondary-text: var(--palette-light-2);
-    --color-button-text-secondary-hover: var(--palette-dark-4);
-
-    --color-input-background: var(--palette-dark-4);
-    --color-input-text: var(--palette-light-1);
-    --color-input-placeholder-text: var(--palette-dark-1);
-    --color-input-border: var(--palette-light-2);
-    --color-input-hover: var(--palette-dark-1);
-  } */
-}
-
 html {
-  font-size: 16px;
   font-family: var(--font-family);
 }
 
 body {
-  background-color: var(--color-body-background);
+  background-color: var(--color-primary-xlight);
 }
 
 .size-wrapper {
@@ -229,52 +140,52 @@ body {
 
 h1 {
   font: var(--weight-semibold) var(--font-size-large)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 h2 {
   font: var(--weight-semibold) var(--font-size-base)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 p {
   font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 .large-heading {
   font: var(--weight-semibold) var(--font-size-2xlarge)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 .heading {
   font: var(--weight-semibold) var(--font-size-large)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 .heading-secondary {
   font: var(--weight-base) var(--font-size-large)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 .body {
   font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 .body-secondary {
   font: var(--weight-base) var(--font-size-base)/1.4 var(--font-family);
-  color: var(--color-text-body-2);
+  color: var(--color-shade-base);
 }
 
 .caption {
   font: var(--weight-base) var(--font-size-small)/1.4 var(--font-family);
-  color: var(--color-text-body-1);
+  color: var(--color-shade-2xdark);
 }
 
 .caption-secondary {
   font: var(--weight-base) var(--font-size-small)/1.4 var(--font-family);
-  color: var(--color-text-body-2);
+  color: var(--color-shade-base);
 }
 
 /* Special classes */
@@ -308,8 +219,8 @@ svg.stave-scalable {
   }
 
   100% {
-    fill: var(--color-error);
-    stroke: var(--color-error);
+    fill: var(--color-error-base);
+    stroke: var(--color-error-base);
   }
 }
 

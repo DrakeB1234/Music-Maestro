@@ -1,7 +1,7 @@
 import BackButtonContainer from "../BackButtonContainer/BackButtonContainer";
 import { ArrowDownIcon, VolumeMaxIcon, VolumeMuteIcon } from '@/components/Icons/Icons';
 import Card from '@/components/UIComponents/Card';
-import Button from '@/components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import { useEffect, useState } from 'react';
 import styles from './ConfigPageComponents.module.css';
 import ToggleButton from "../UIComponents/ToggleButton";

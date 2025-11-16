@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import styles from './Card.module.css';
+import styles from './UIComponents.module.css';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -15,7 +15,7 @@ export default function Card({
 }: Props) {
   return (
     <div
-      className={`${styles.cardWrapper} ${onClick ? styles.Clickable : ''}`}
+      className={`${styles.CardWrapper} ${onClick ? styles.CardClickable : ''}`}
       onClick={onClick}
       style={{ marginTop: marginTop }}
       {...props}>

@@ -2,7 +2,7 @@ import BackButtonContainer from "../BackButtonContainer/BackButtonContainer";
 import { FileExportIcon } from "../Icons/Icons";
 import Card from "../UIComponents/Card";
 import styles from './ConfigPageComponents.module.css';
-import Button from "../UIComponents/Button";
+import Button from "../UIComponents/Inputs/Button";
 import { usePWAInstallPrompt } from "@/hooks/usePWAInstallPrompt";
 
 interface ConfigPWAProps {

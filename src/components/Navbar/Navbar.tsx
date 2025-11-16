@@ -1,6 +1,6 @@
 import styles from './Navbar.module.css';
 import { AppGraphic, CloseIcon, DashboardIcon, DataIcon, HomeIcon, LinkIcon, MenuIcon, VolumeMaxIcon, StatusIcon } from '@components/Icons/Icons';
-import Button from '@components/UIComponents/Button';
+import Button from '@/components/UIComponents/Inputs/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useNoteInputStore } from '@/store/noteInputStore';
@@ -64,7 +64,7 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className={styles.Header}>
           <AppGraphic size={40} />
           <h1 className='truncate-overflow-text'>Music Maestro</h1>
-          <Button variant='text-secondary' icon={<CloseIcon color='var(--color-dark-2)' />} onClick={onClose} />
+          <Button variant='text-secondary' icon={<CloseIcon color='var(--color-shade-base)' />} onClick={onClose} />
         </div>
         <div className={`${styles.SidebarItemContainer} ${url === `/` && styles.Active}`} onClick={() => handleNavigate(`/`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
@@ -79,12 +79,12 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
           {isMidiDeviceConnected ?
             <div className={styles.SidebarItemSubTextContainer}>
-              <StatusIcon color='var(--color-success)' />
+              <StatusIcon color='var(--color-success-base)' />
               <p className='caption-secondary'>MIDI Connected</p>
             </div>
             :
             <div className={styles.SidebarItemSubTextContainer}>
-              <StatusIcon color='var(--color-error)' />
+              <StatusIcon color='var(--color-error-base)' />
               <p className='caption-secondary'>MIDI Disconnected</p>
             </div>
           }

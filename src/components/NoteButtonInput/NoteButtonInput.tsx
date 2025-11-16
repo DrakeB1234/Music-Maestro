@@ -1,5 +1,5 @@
 import { GenericNote, NOTE_NAMES } from "@/helpers/NoteHelpers";
-import Button from "@components/UIComponents/Button";
+import Button from "@/components/UIComponents/Inputs/Button";
 import styles from './NoteButtonInput.module.css';
 import { useRef, useState } from "react";
 import { FlatIcon, SharpIcon } from "@components/Icons/Icons";

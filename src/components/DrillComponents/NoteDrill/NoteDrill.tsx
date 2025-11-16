@@ -15,7 +15,7 @@ import { useDrillProgressResults } from "@/hooks/useDrillProgressResultStorage";
 import BackButtonContainer from "@/components/BackButtonContainer/BackButtonContainer";
 import { useAppPreferences } from "@/hooks/useAppPreferences";
 import PianoRollInput from "@/components/PianoRollInput/PianoRollInput";
-import Button from "@/components/UIComponents/Button";
+import Button from "@/components/UIComponents/Inputs/Button";
 
 const MAX_SCORE: number = 150;
 const SCORE_DECAY_RATE: number = 0.0004;

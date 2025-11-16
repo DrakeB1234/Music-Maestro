@@ -38,12 +38,12 @@
 
 .contained {
   position: relative;
-  background-color: var(--color-button-contained-primary-background);
-  color: var(--color-button-contained-primary-text);
+  background-color: var(--color-primary-base);
+  color: var(--color-white);
   box-shadow: var(--elevation-medium);
 
   &:hover {
-    background-color: var(--color-button-contained-primary-hover);
+    background-color: var(--color-primary-base);
   }
 
   &:active {
@@ -52,14 +52,14 @@
   }
 
   &>svg>path {
-    fill: var(--color-text-main-1);
-    color: var(--color-text-main-1);
+    fill: var(--color-white);
+    color: var(--color-white);
   }
 }
 
 .contained.disabled {
   cursor: default;
-  background-color: var(--color-dark-2);
+  background-color: var(--color-shade-base);
 
   &:active {
     top: unset;
@@ -68,26 +68,26 @@
 }
 
 .outlined {
-  background-color: var(--color-surface-light-1);
-  border: 1px solid var(--color-button-outlined-border);
-  color: var(--color-button-outlined-text);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-shade-light);
+  color: var(--color-shade-2xdark);
 
   &:hover {
-    background-color: var(--color-button-outlined-hover);
+    background-color: var(--color-neutral-base);
   }
 
   &:focus {
-    outline: 2px solid var(--color-button-outlined-focus);
+    outline: 2px solid var(--color-primary-base);
   }
 }
 
 .outlined.active {
-  color: var(--color-text-main-1);
-  background-color: var(--color-main-2);
+  color: var(--color-white);
+  background-color: var(--color-primary-base);
 
   &>svg>path {
-    fill: var(--color-text-main-1);
-    color: var(--color-text-main-1);
+    fill: var(--color-white);
+    color: var(--color-white);
   }
 
   &:focus {
@@ -97,39 +97,39 @@
 
 .text {
   &:hover {
-    background-color: var(--color-button-text-primary-hover);
+    background-color: var(--color-primary-base);
   }
 }
 
 .text-secondary {
-  color: var(--color-button-text-secondary-text);
+  color: var(--color-shade-xdark);
 
   &:hover {
-    background-color: var(--color-button-text-secondary-hover);
+    background-color: var(--color-neutral-base);
   }
 
   &:focus {
-    outline: 2px solid var(--color-button-outlined-focus);
+    outline: 2px solid var(--color-primary-base);
   }
 }
 
 .text.active {
-  color: var(--color-text-main-1);
-  background-color: var(--color-main-2);
+  color: var(--color-white);
+  background-color: var(--color-primary-base);
 
   &>svg>path {
-    fill: var(--color-text-main-1);
-    color: var(--color-text-main-1);
+    fill: var(--color-white);
+    color: var(--color-white);
   }
 }
 
 .text-secondary.active {
-  color: var(--color-text-main-1);
-  background-color: var(--color-main-2);
+  color: var(--color-white);
+  background-color: var(--color-primary-base);
 
   &>svg>path {
-    fill: var(--color-text-main-1);
-    color: var(--color-text-main-1);
+    fill: var(--color-white);
+    color: var(--color-white);
   }
 
   &:focus {

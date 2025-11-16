@@ -4,13 +4,13 @@
   gap: var(--spacing-xsmall);
   padding: var(--spacing-small) var(--spacing-xsmall);
   padding-left: var(--spacing-large);
-  background-color: var(--color-main-2);
+  background-color: var(--color-primary-base);
 
   & p {
     flex: 1;
     display: flex;
     justify-content: center;
-    color: var(--color-text-main-1);
+    color: var(--color-white);
   }
 }
 
@@ -33,7 +33,7 @@
   padding: var(--spacing-2xsmall) var(--spacing-base);
   margin: var(--spacing-xsmall);
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-surface-border-1);
+  border: 1px solid var(--color-neutral-dark);
 }
 
 .InfoContainer {
@@ -45,25 +45,25 @@
   &>p {
     flex: 1;
     text-align: center;
-    color: var(--color-text-main-1);
+    color: var(--color-white);
   }
 }
 
 .ButtonInputWrapper {
   display: flex;
   justify-content: center;
-  border-top: 1px solid var(--color-surface-border-1);
+  border-top: 1px solid var(--color-neutral-dark);
   padding: var(--spacing-base) var(--spacing-xsmall);
   margin-top: var(--spacing-base);
 }
 
 .ButtonInputWrapper.PianoInput {
-  background-color: var(--color-surface-light-3);
+  background-color: var(--color-neutral-xdark);
   padding: var(--spacing-large) 1px;
 }
 
 .ButtonInputWrapper.MIDIInput {
-  background-color: var(--color-surface-light-3);
+  background-color: var(--color-neutral-xdark);
   padding: var(--spacing-large) 1px;
 }
 
