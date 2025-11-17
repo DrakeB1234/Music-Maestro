@@ -5,11 +5,6 @@ import { PianoAudioPlayer } from '@/helpers/PianoAudioPlayer';
 
 type PlayedNoteStatus = "correct" | "wrong" | null;
 
-type PrefChangeValue = {
-  key: string;
-  value: unknown;
-};
-
 interface NoteDrillState {
   currentNote: GenericNote | null;
   setCurrentNote: (note: GenericNote) => void;

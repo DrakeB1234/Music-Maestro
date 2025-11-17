@@ -101,12 +101,12 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
             <p>Manage Data</p>
           </div>
         </div>
-        <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.PWA}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.PWA}`)} tabIndex={0}>
+        {/* <div className={`${styles.SidebarItemContainer} ${url === `/config?q=${CONFIG_ROUTE_PARAMS.PWA}` && styles.Active}`} onClick={() => handleNavigate(`/config?q=${CONFIG_ROUTE_PARAMS.PWA}`)} tabIndex={0}>
           <div className={styles.SidebarItemTextContainer}>
             <DashboardIcon />
             <p>PWA Download</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -32,8 +32,10 @@ export default function NoteDrill() {
   const setDrillOptions = useNoteDrillStore((state) => state.setDrillOptions);
 
   const setButtonInputListener = useNoteInputStore((state) => state.setButtonInputListener);
-  const addMidiListener = useNoteInputStore((state) => state.addMidiListener);
-  const removeMidiListener = useNoteInputStore((state) => state.removeMidiListener);
+  const addSingleNoteMidiListener = useNoteInputStore((state) => state.addSingleNoteMidiListener);
+  const removeSingleNoteMidiListener = useNoteInputStore((state) => state.removeSingleNoteMidiListener);
+  const addChordMidiListener = useNoteInputStore((state) => state.addChordMidiListener);
+  const removeChordMidiListener = useNoteInputStore((state) => state.removeChordMidiListener);
 
   const { addResult } = useDrillProgressResults();
 
@@ -85,7 +87,7 @@ export default function NoteDrill() {
     handleIncorrectNotePlayed(note);
   }
 
-  function handleMidiPlayed(note: GenericNote) {
+  function handleSingleNoteMidiPlayed(note: GenericNote) {
     const isDrillRunning = useNoteDrillStore.getState().isDrillStarted;
     if (!isDrillRunning) return;
 
@@ -99,9 +101,19 @@ export default function NoteDrill() {
     handleIncorrectNotePlayed(note);
   };
 
+  function handleChordMidiPlayed(notes: GenericNote[]) {
+    console.log(notes);
+    handleIncorrectChordPlayed(notes);
+  }
+
   function handleIncorrectNotePlayed(note: GenericNote) {
     totalNotesPlayed.current += 1;
     setPlayedNoteStatus("wrong", note);
+  }
+
+  function handleIncorrectChordPlayed(notes: GenericNote[]) {
+    totalNotesPlayed.current += 1;
+    setPlayedNoteStatus("wrong", notes[0]);
   }
 
   function handleCorrectNotePlayed(note: GenericNote) {
@@ -185,15 +197,17 @@ export default function NoteDrill() {
   useEffect(() => {
     setButtonInputListener((note) => handleButtonPlayed(note));
 
-  }, [setButtonInputListener]);
+  }, []);
 
   useEffect(() => {
-    addMidiListener(handleMidiPlayed);
+    addSingleNoteMidiListener(handleSingleNoteMidiPlayed);
+    addChordMidiListener(handleChordMidiPlayed);
 
     return () => {
-      removeMidiListener(handleMidiPlayed);
+      removeSingleNoteMidiListener(handleSingleNoteMidiPlayed);
+      removeChordMidiListener(handleChordMidiPlayed);
     }
-  }, [addMidiListener, removeMidiListener]);
+  }, []);
 
   useEffect(() => {
     handleGenerateNote();
