@@ -1,5 +1,5 @@
 import styles from './Navbar.module.css';
-import { AppGraphic, CloseIcon, DashboardIcon, DataIcon, HomeIcon, LinkIcon, MenuIcon, VolumeMaxIcon, StatusIcon } from '@components/Icons/Icons';
+import { AppGraphic, CloseIcon, DataIcon, HomeIcon, LinkIcon, MenuIcon, VolumeMaxIcon, StatusIcon } from '@components/Icons/Icons';
 import Button from '@/components/UIComponents/Inputs/Button';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
