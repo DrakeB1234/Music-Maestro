@@ -110,7 +110,7 @@
 
 .SidebarItemContainer.Active {
   border-left: 3px solid var(--color-primary-base);
-  background-color: var(--color-neutral-base);
+  background-color: var(--color-white);
 }
 
 .SidebarItemTextContainer {

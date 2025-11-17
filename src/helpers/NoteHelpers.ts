@@ -111,6 +111,51 @@ const CHORD_PATTERNS: Record<ScaleTypes, ChordPatternEntry> = {
   },
 };
 
+export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+export const ACCIDENTAL_NOTE_NAMES = ['C#', 'D#', 'F#', 'G#', 'A#'];
+export const NOTE_SEMITONE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+const NOTE_SEMITONES: Record<NOTE_NAME_TYPES, number> = {
+  C: 0,
+  D: 2,
+  E: 4,
+  F: 5,
+  G: 7,
+  A: 9,
+  B: 11,
+};
+
+const TOP_LINE_NOTES: Record<DrillClefTypes, GenericNote> = {
+  "treble": { name: "F", accidental: null, octave: 5 },
+  "bass": { name: "A", accidental: null, octave: 3 },
+};
+
+const BOTTOM_LINE_NOTES: Record<DrillClefTypes, GenericNote> = {
+  "treble": { name: "E", accidental: null, octave: 4 },
+  "bass": { name: "G", accidental: null, octave: 2 },
+};
+
+export const ACCIDENTALS = {
+  Sharp: "#" as Accidental,
+  Flat: "b" as Accidental,
+  Natural: "n" as Accidental
+};
+
+export class GenericNote {
+  name: NOTE_NAME_TYPES;
+  accidental: Accidental | null;
+  octave: number | null;
+
+  constructor(
+    name: NOTE_NAME_TYPES,
+    accidental: Accidental | null,
+    octave: number | null
+  ) {
+    this.name = name;
+    this.accidental = accidental;
+    this.octave = octave;
+  }
+}
 
 export function getScaleNotes(root: NOTE_SEMITONES_NAME_TYPES, scaleType: ScaleTypes): NOTE_SEMITONES_NAME_TYPES[] {
   const pattern = CHORD_PATTERNS[scaleType].scaleSteps;
@@ -163,52 +208,6 @@ export function getChordsInScale(root: NOTE_SEMITONES_NAME_TYPES, scaleType: Sca
   }
 
   return chords;
-}
-
-export const NOTE_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-export const ACCIDENTAL_NOTE_NAMES = ['C#', 'D#', 'F#', 'G#', 'A#'];
-export const NOTE_SEMITONE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-const NOTE_SEMITONES: Record<NOTE_NAME_TYPES, number> = {
-  C: 0,
-  D: 2,
-  E: 4,
-  F: 5,
-  G: 7,
-  A: 9,
-  B: 11,
-};
-
-const TOP_LINE_NOTES: Record<DrillClefTypes, GenericNote> = {
-  "treble": { name: "F", accidental: null, octave: 5 },
-  "bass": { name: "A", accidental: null, octave: 3 },
-};
-
-const BOTTOM_LINE_NOTES: Record<DrillClefTypes, GenericNote> = {
-  "treble": { name: "E", accidental: null, octave: 4 },
-  "bass": { name: "G", accidental: null, octave: 2 },
-};
-
-export const ACCIDENTALS = {
-  Sharp: "#" as Accidental,
-  Flat: "b" as Accidental,
-  Natural: "n" as Accidental
-};
-
-export class GenericNote {
-  name: NOTE_NAME_TYPES;
-  accidental: Accidental | null;
-  octave: number | null;
-
-  constructor(
-    name: NOTE_NAME_TYPES,
-    accidental: Accidental | null,
-    octave: number | null
-  ) {
-    this.name = name;
-    this.accidental = accidental;
-    this.octave = octave;
-  }
 }
 
 export function GenerateRandomNote(
@@ -388,22 +387,39 @@ export function GetSpacesBelowStaff(targetNote: GenericNote, clef: DrillClefType
   return Math.ceil(letterSteps / 2);
 }
 
-export function ConvertStringNoteToGenericNote(noteStr: string): GenericNote {
-  let name: NOTE_NAME_TYPES;
-  let accidental: Accidental | null = null;
+export function ConvertChordStringNotesToGenericNotes(notes: string[]): GenericNote[] {
+  const baseOctave: number = 4;
 
-  const match = noteStr.match(/^([A-Ga-g])([#b]?)$/);
-  if (!match) {
-    throw new Error(`Invalid note string: ${noteStr}`);
+  let lastIdx: number | null = null;
+  let currentOctave: number = baseOctave;
+  const result: GenericNote[] = [];
+
+  for (const noteStr of notes) {
+    const match = noteStr.match(/^([A-Ga-g])([#b]?)$/);
+
+    if (match === null) {
+      throw new Error(`Invalid note string: ${noteStr}`);
+    }
+    const noteNameIdx = NOTE_SEMITONE_NAMES.findIndex(e => e === noteStr);
+    if (noteNameIdx === -1) {
+      throw new Error(`Invalid note string: ${noteStr}`);
+    }
+
+    if (lastIdx === null) {
+      lastIdx = noteNameIdx;
+    } else {
+      if (noteNameIdx <= lastIdx) {
+        currentOctave += 1;
+      }
+      lastIdx = noteNameIdx;
+    }
+    const name = match[1].toUpperCase() as NOTE_NAME_TYPES;
+    const accidental = match[2] ? (match[2] === '#' ? '#' : 'b') : null;
+
+    result.push(new GenericNote(name, accidental, currentOctave));
   }
 
-  name = match[1].toUpperCase() as NOTE_NAME_TYPES;
-
-  if (match[2]) {
-    accidental = match[2] === '#' ? '#' : 'b';
-  }
-
-  return new GenericNote(name, accidental, 4);
+  return result;
 }
 
 export function ConvertGenericNoteToVexNote(genericNote: GenericNote): string {

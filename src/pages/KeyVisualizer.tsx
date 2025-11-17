@@ -5,7 +5,8 @@ import SelectInput from '@/components/UIComponents/Inputs/SelectInput';
 import Button from '@/components/UIComponents/Inputs/Button';
 import { useEffect, useRef, useState } from 'react';
 import { type NOTE_SEMITONES_NAME_TYPES } from '@/types/DrillTypes';
-import { getChordsInScale, getScaleNotes, NOTE_SEMITONE_NAMES, SCALE_TYPES_ARR, type GetChordsInScaleReturn, type ScaleTypes } from '@/helpers/NoteHelpers';
+import { ConvertChordStringNotesToGenericNotes, getChordsInScale, getScaleNotes, NOTE_SEMITONE_NAMES, SCALE_TYPES_ARR, type GetChordsInScaleReturn, type ScaleTypes } from '@/helpers/NoteHelpers';
+import { PianoAudioPlayer } from '@/helpers/PianoAudioPlayer';
 
 export default function KeyVisualizerPage() {
   const rootRef = useRef<HTMLSelectElement>(null);
@@ -44,6 +45,11 @@ export default function KeyVisualizerPage() {
     setScaleNotes(res)
     const chords = getChordsInScale(rootNote, scale);
     setScaleChords(chords);
+  }
+
+  function handleChordPressed(notes: string[]) {
+    const res = ConvertChordStringNotesToGenericNotes(notes);
+    PianoAudioPlayer.playChord(res)
   }
 
   useEffect(() => {
@@ -94,6 +100,7 @@ export default function KeyVisualizerPage() {
               chordName={e.chordName}
               chordNotes={e.chordNotes}
               degree={e.degree}
+              handleChordPressed={handleChordPressed}
             />
           ))}
         </div>
@@ -107,12 +114,14 @@ interface ChordItemProps {
   degree: string;
   chordName: string;
   chordNotes: string[];
+  handleChordPressed: (notes: string[]) => void;
 }
 
 function ChordItem({
   degree,
   chordName,
-  chordNotes
+  chordNotes,
+  handleChordPressed
 }: ChordItemProps) {
 
   return (
@@ -120,7 +129,7 @@ function ChordItem({
       <div className={styles.ChordButtonContainer}>
         <p>{degree}</p>
         <div className={styles.ChordNotes}>{chordNotes.map(e => <p key={e}>{e}</p>)}</div>
-        <Button text={chordName} size='small' variant='outlined' disabled />
+        <Button text={chordName} size='small' variant='outlined' onClick={() => handleChordPressed(chordNotes)} />
       </div>
     </div>
   )

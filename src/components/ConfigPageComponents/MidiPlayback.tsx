@@ -8,6 +8,7 @@ import ToggleButton from "../UIComponents/ToggleButton";
 import { useAppPreferences } from "@/hooks/useAppPreferences";
 import InputSlider from "../UIComponents/Inputs/InputSlider";
 import { getCacheUsageByPath } from "@/helpers/helpers";
+import { useNoteDrillStore } from "@/store/noteDrillStore";
 
 interface MidiPlaybackProps {
   onBack: () => void;
@@ -30,6 +31,7 @@ export default function MidiPlayback({
 
 function MidiPlaybackCard() {
   const { setPrefsByKey, prefs } = useAppPreferences();
+  const handleAudioPlayerPrefsChange = useNoteDrillStore(state => state.handleAudioPlayerPrefsChange);
 
   const [expanded, setExpanded] = useState(false);
   const [activeToggle, setActiveToggle] = useState<boolean>(prefs.midiPlaybackEnabled);
@@ -48,6 +50,7 @@ function MidiPlaybackCard() {
   function handleToggleChanged(value: boolean) {
     setActiveToggle(value);
     setPrefsByKey("midiPlaybackEnabled", value);
+    handleAudioPlayerPrefsChange(value, prefs.midiPlaybackVolume);
   };
 
   return (
@@ -80,10 +83,13 @@ function MidiPlaybackCard() {
 function VolumeCard() {
   const { setPrefsByKey, prefs } = useAppPreferences();
   const [volume, setVolume] = useState(prefs.midiPlaybackVolume);
+  const handleAudioPlayerPrefsChange = useNoteDrillStore(state => state.handleAudioPlayerPrefsChange);
+
 
   function handleVolumeChange(value: number) {
     setVolume(value);
     setPrefsByKey("midiPlaybackVolume", value);
+    handleAudioPlayerPrefsChange(prefs.midiPlaybackEnabled, value);
   }
 
   return (

@@ -70,8 +70,8 @@ export class PianoAudioPlayer {
   };
 
   static playNote(note: GenericNote, decayTime = 5) {
-    if (this.audioContext.state !== "running") this.audioContext.resume();
     if (!this.audioPrefs.playbackEnabled) return;
+    if (this.audioContext.state !== "running") this.audioContext.resume();
 
     if (this.audioPrefs.volume) {
       this.setVolume(this.audioPrefs.volume);
@@ -107,7 +107,7 @@ export class PianoAudioPlayer {
   }
 
   static playChord(notes: GenericNote[], decayTime = 5) {
-    if (!notes || notes.length === 0) return;
+    if (!notes || notes.length === 0 || !this.audioPrefs.playbackEnabled) return;
 
     notes.forEach((note) => {
       this.playNote(note, decayTime);

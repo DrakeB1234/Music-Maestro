@@ -17,11 +17,11 @@ export function useAppPreferences() {
   );
 
   const setInputType = (value: "buttons" | "piano" | null) => {
-    setPrefs({ ...prefs, inputType: value });
+    setPrefs(prev => ({ ...prev, inputType: value }));
   };
 
   const setPrefsByKey = (key: keyof (AppPreferences), value: unknown) => {
-    setPrefs({ ...prefs, [key]: value });
+    setPrefs(prev => ({ ...prev, [key]: value }));
   };
 
   const resetPreferences = () => setPrefs(DEFAULT_PREFS);

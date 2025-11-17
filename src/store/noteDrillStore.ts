@@ -1,8 +1,14 @@
 import { create } from 'zustand';
 import type { GenericNote } from '@/helpers/NoteHelpers';
 import type { DrillOptions } from '@/types/DrillTypes';
+import { PianoAudioPlayer } from '@/helpers/PianoAudioPlayer';
 
 type PlayedNoteStatus = "correct" | "wrong" | null;
+
+type PrefChangeValue = {
+  key: string;
+  value: unknown;
+};
 
 interface NoteDrillState {
   currentNote: GenericNote | null;
@@ -33,6 +39,8 @@ interface NoteDrillState {
 
   resetDrill: () => void;
   resetDrillOptions: () => void;
+
+  handleAudioPlayerPrefsChange: (enabled: boolean, volume: number) => void;
 }
 
 export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
@@ -106,5 +114,13 @@ export const useNoteDrillStore = create<NoteDrillState>((set, get) => ({
     set({
       drillOptions: null
     });
+  },
+
+  handleAudioPlayerPrefsChange: (enabled, volume) => {
+    PianoAudioPlayer.applyPreferences({
+      playbackEnabled: enabled,
+      volume: volume
+    });
+    PianoAudioPlayer.loadAllSamples();
   }
 }));
